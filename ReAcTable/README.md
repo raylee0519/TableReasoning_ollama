@@ -1,6 +1,6 @@
 # ReAcTable
 
-You can see origin code from this.
+You can see origin code of ReAcTable from here.
 https://github.com/yunjiazhang/ReAcTable
 
 ---
