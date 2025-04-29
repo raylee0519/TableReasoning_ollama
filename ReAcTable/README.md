@@ -1,7 +1,7 @@
 # ReAcTable
 
-**ReAcTable** is a reasoning-based framework for Table Question Answering (Table QA), designed to process questions over tabular data using step-by-step logical chains.  
-This project focuses on the WikiTQ dataset and supports single and batch inference.
+You can see origin code from this.
+https://github.com/yunjiazhang/ReAcTable
 
 ---
 
