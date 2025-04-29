@@ -37,5 +37,5 @@ log = codex_prompter._log_dict()
 print(json.dumps(log, indent=2))
 
 # 필요 시 파일로 저장
-with open('single_test_output_5.json', 'w') as f:
+with open('result_one/single_test_output_5.json', 'w') as f:
     json.dump(log, f, indent=4)
