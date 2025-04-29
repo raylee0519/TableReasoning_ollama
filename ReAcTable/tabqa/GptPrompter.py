@@ -256,7 +256,7 @@ class QuestionHandler:
         self.source_csv = os.path.join(source_csv)
         self.target_value = target_value
         self.base_path = base_path
-        self.API_key = "sk-oMs1jGJzVhRAuypxQRJhZwq6xh6obRMLLPsMY8ZA"
+        self.API_key = "ollama"
         self._read_data()
         self.execution_acc = None
         self.execution_err = None
