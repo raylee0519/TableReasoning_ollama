@@ -60,7 +60,7 @@ class ChatGPT:
                     model=self.model_name,
                     messages=messages,
                     stop=end_str,
-                    request_timeout=120,  # 120초로 timeout 설정 추가 (2분)
+                    request_timeout=300,  # 120초로 timeout 설정 추가 (5분)
                     **options
                 )
                 error = None

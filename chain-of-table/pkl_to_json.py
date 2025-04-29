@@ -42,11 +42,11 @@ os.makedirs(os.path.join(result_dir, "json"), exist_ok=True)
 
 # 변환 실행 (각 항목에 idx 추가)
 pkl_to_json_with_index(
-    pkl_path=os.path.join(result_dir, "/home/wooo519/ollama_tableReasoning/results/tabfact_first10/final_result.pkl"),
-    json_path=os.path.join(result_dir, "json", "/home/wooo519/ollama_tableReasoning/results/tabfact_first10/final_result_idx.json")
+    pkl_path=os.path.join(result_dir, "/home/wooo519/ollama_tableReasoning/chain-of-table/results/tabfact_first500/final_result.pkl"),
+    json_path=os.path.join(result_dir, "json", "/home/wooo519/ollama_tableReasoning/chain-of-table/results/tabfact_first500/final_result_idx.json")
 )
 
 pkl_to_json_with_index(
-    pkl_path=os.path.join(result_dir, "/home/wooo519/ollama_tableReasoning/results/tabfact_first10/dynamic_chain_log_list.pkl"),
-    json_path=os.path.join(result_dir, "json", "/home/wooo519/ollama_tableReasoning/results/tabfact_first10/dynamic_chain_log_list_idx.json")
+    pkl_path=os.path.join(result_dir, "/home/wooo519/ollama_tableReasoning/chain-of-table/results/tabfact_first500/dynamic_chain_log_list.pkl"),
+    json_path=os.path.join(result_dir, "json", "/home/wooo519/ollama_tableReasoning/chain-of-table/results/tabfact_first500/dynamic_chain_log_list_idx.json")
 )

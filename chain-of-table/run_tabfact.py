@@ -30,7 +30,7 @@ def main(
     model_name: str = "llama3.3",
     result_dir: str = "results/tabfact",
     openai_api_key: str = "",
-    first_n=100,
+    first_n=-1,
     n_proc=1,
     chunk_size=1,
 ):
