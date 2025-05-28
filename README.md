@@ -18,4 +18,5 @@ Use the following command to start Ollama:
 
 ```bash
 OLLAMA_CONTEXT_LENGTH=8192 ollama serve
+```
 This ensures that up to 8192 tokens can be processed per prompt, which is crucial for handling large tabular inputs.
