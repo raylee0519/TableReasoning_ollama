@@ -6,6 +6,8 @@ This repository enables evaluation of Table Reasoning models on the WikiTableQue
 
 The following models have been tested and are currently supported for evaluation:
 
+- **H-STAR** (✓ WikiTQ compatible)
+- **NormTab** (✓ WikiTQ compatible)
 - **ReAcTable** (✓ WikiTQ compatible)
 - **TabSQLify** (✓ WikiTQ compatible)
 - **Mix-SC** (✓ WikiTQ compatible)
