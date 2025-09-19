@@ -1,0 +1,89 @@
+==== PROMPT ====
+
+Generate SQL with no explanation given the question and table to answer the question correctly.
+
+### SQLite table properties:
+
+Table: Marek Plawgo(row_number,year,competition,venue,position,event,notes)
+
+3 example rows: 
+ select * from T limit 3;
+row_number | year | competition | venue | position | event | notes
+0 | 1999 | european junior championships | riga, latvia | 4th | 400 m hurdles | 52.17
+1 | 2000 | world junior championships | santiago, chile | 1st | 400 m hurdles | 49.23
+2 | 2001 | world championships | edmonton, canada | 18th | 400 m hurdles | 49.8
+
+Q: when was his first 1st place record?
+SQL: select year from T where position = '1st' order by year asc limit 1
+
+### SQLite table properties:
+
+Table: 1981 Houston Oilers season(row_number, week, opponent, date, result_type, result_score, attendance)
+
+3 example rows: 
+ select * from T limit 3;
+ row_number | week | opponent | date | result_type | result_score | attendance
+0 | 1 | at los angeles rams | 1981-09-06 | w | 27-20 | 63198
+1 | 2 | at cleveland browns | 1981-09-13 | w | 9-3 | 79483
+2 | 3 | miami dolphins | 1981-09-20 | l | 16-10 | 47379
+
+Q: how may away games did they win?
+SQL: select count(*) from T where result_type = 'w'
+
+Q: what was the next opponent after the game against the new england patriots?
+SQL: select opponent from T where row_number = (select row_number + 1 from T where opponent like '%new england patriots%')
+
+Q: how many points did they beat the bengals by in week 5? 
+SQL: select abs(cast(substr(result_score, 1, 2) as integer) - cast(substr(result_score, 4, 2) as integer)) as point_difference 
+from T 
+where opponent like '%cincinnati bengals%' and week = 5
+
+Q: how many times did the oilers have consecutive wins?
+SQL:  select count(*) from T where result_type = 'w' and row_number in (select row_number + 1 from T where result_type = 'w')
+
+### SQLite table properties:
+
+Table: Figure skating at the Asian Winter Games(row_number, rank, nation, gold, silver, bronze, total)
+
+3 example rows: 
+ select * from T limit 3;
+ row_number | rank | nation | gold | silver | bronze | total
+0 | 1 | china | 13 | 9 | 13 | 35
+1 | 2 | japan | 7 | 10 | 7 | 24
+2 | 3 | uzbekistan | 1 | 2 | 3 | 6
+
+Q: what is the average number of gold medals won by china, japan, and north korea?
+SQL: select avg(gold) from T where nation in ('china', 'japan', 'north korea')
+
+### SQLite table properties:
+
+Table: 1994 Alabama Crimson Tide football team (row_number, opponent, rank, site, tv, date, result_type, result_score, attendance)
+
+3 example rows: 
+ select * from T limit 3;
+ row_number | opponent | rank | site | tv | date | result_type | result_score | attendance
+0 | tennessee–chattanooga* | #11 | legion field • birmingham, al |  | 1994-09-03 | w | 42-13 | 82109
+1 | vanderbilt | #11 | bryant–denny stadium • tuscaloosa, al | jps | 1994-09-10 | w | 17-7 | 70123
+2 | at arkansas | #12 | razorback stadium • fayetteville, ar | abc | 1994-09-17 | w | 13-6 | 52089
+
+Q: how many games where won with a score of below 20 for the 1994 alabama crimson tide football team?
+SQL: select count(*) from T where result_type = 'w' and result_score < 20
+
+
+
+### SQLite table properties:
+
+Table: 2008 Clásica de San Sebastián (row_number, rank, team, uci_protour_points, cyclist, country, time_seconds)
+
+3 example rows: 
+ select * from T limit 3;
+row_number | rank | team | uci_protour_points | cyclist | country | time_seconds
+0 | 1 | caisse d'epargne | 40 | Alejandro Valverde | ESP | 19750
+1 | 2 | team csc saxo bank | 30 | Alexandr Kolobnev | RUS | 19750
+2 | 3 | gerolsteiner | 25 | Davide Rebellin | ITA | 19750
+
+Q: which other cyclists in the top 10 hailed from the same country as the winner?
+SQL:
+
+==== RAW RESPONSE ====
+select cyclist from T where rank between 2 and 10 and country = (select country from T where rank = 1)

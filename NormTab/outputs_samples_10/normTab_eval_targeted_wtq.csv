@@ -1,0 +1,38 @@
+id,question,answer,prediction,sql,response
+nu-0,which country had the most cyclists finish within the top 10?,italy,fra,select country from T where rank <= 10 group by country order by count(*) desc limit 1,"| country   |
+|:----------|
+| FRA       |"
+nu-165,who was the first cyclist to finish?,alejandro valverde,alejandro valverde,select cyclist from T where rank = 1 limit 1,"| cyclist            |
+|:-------------------|
+| Alejandro Valverde |"
+nu-1902,who came in first in the general standings?,alejandro valverde (esp),alejandro valverde,select cyclist from T where rank = 1,"| cyclist            |
+|:-------------------|
+| Alejandro Valverde |"
+nu-2037,what was the difference in points between davide rebellin and franco pellizotti?,10,10,select abs( (select uci_protour_points from T where cyclist = 'Davide Rebellin') - (select uci_protour_points from T where cyclist = 'Franco Pellizotti') ),"|   abs( (select uci_protour_points from T where cyclist = 'Davide Rebellin') - (select uci_protour_points from T where cyclist = 'Franco Pellizotti') ) |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                                                                                                                                     10 |"
+nu-2400,what was the total number of points by franco pellizotti?,15,15,select uci_protour_points from T where cyclist = 'Franco Pellizotti',"|   uci_protour_points |
+|---------------------:|
+|                   15 |"
+nu-2659,which other cyclists in the top 10 hailed from the same country as the winner?,"samuel sánchez (esp),haimar zubeldia (esp)",,select cyclist from T where rank between 2 and 10 and country = (select country from T where rank = 1),"| cyclist   |
+|-----------|"
+nu-2928,how long did it take for alejandro valverde to finish?,"5h 29' 10""",19750,select time_seconds from T where cyclist = 'Alejandro Valverde',"|   time_seconds |
+|---------------:|
+|          19750 |"
+nu-2976,who was ranked next after davide rebellin?,paolo bettini (ita),paolo bettini,SELECT cyclist FROM T WHERE rank = (SELECT rank FROM T WHERE cyclist = 'Davide Rebellin') + 1,"| cyclist       |
+|:--------------|
+| Paolo Bettini |"
+nu-3349,what country had the most cyclists?,italy,ita,select country from T group by country order by count(*) desc limit 1,"| country   |
+|:----------|
+| ITA       |"
+nu-3353,who was ranked between denis menchov and stephane goubert?,samuel sánchez (esp),,"select cyclist from T where rank > (select min(rank) from T where cyclist in ('denis menchov', 'stephane goubert')) and rank < (select max(rank) from T where cyclist in ('denis menchov', 'stephane goubert'))","| cyclist   |
+|-----------|"
+nu-3876,how many more points did team liquigas score than robobank?,4,none,select (select uci_protour_points from T where team = 'liquigas') - (select uci_protour_points from T where team = 'robobank'),"| (select uci_protour_points from T where team = 'liquigas') - (select uci_protour_points from T where team = 'robobank')   |
+|:--------------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                           |"
+nu-3914,how many cyclists in the top 10 were french?,2,1,select count(*) from T where rank <= 10 and country = 'FRA',"|   count(*) |
+|-----------:|
+|          1 |"
+nu-4082,what is the total number of uci pro tour points scored by an italian cyclist?,60,60,select sum(uci_protour_points) from T where country = 'ITA',"|   sum(uci_protour_points) |
+|--------------------------:|
+|                        60 |"
