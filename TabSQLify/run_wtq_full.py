@@ -9,11 +9,55 @@ from utils.preprocess import *
 from utils.normalizer import *
 from utils.prompt_wtq import *
 
-def tabsqlify_wtq(T, title, tab_col, question, three_row, selection='rc'):
+def clean_log_text(log_text: str) -> str:
+    """
+    불필요한 few-shot 블록 제거
+    """
+    blocks = [
+        (
+            "Table: Marek Plawgo",
+            "SQL: select date, attendance from T order by attendance desc"
+        ),
+        (
+            "Table_title: Piotr Kędzia",
+            "Answer: 12,467"
+        )
+    ]
+
+    cleaned = log_text
+    for start_marker, end_marker in blocks:
+        while True:
+            start_idx = cleaned.find(start_marker)
+            end_idx = cleaned.find(end_marker)
+            if start_idx != -1 and end_idx != -1:
+                cleaned = cleaned[:start_idx] + cleaned[end_idx + len(end_marker):]
+            else:
+                break
+
+    return cleaned.strip()
+
+def get_done_ids(log_dir):
+    """
+    이미 처리된 log 파일들의 id 목록 반환
+    """
+    done_ids = set()
+    if os.path.exists(log_dir):
+        for fname in os.listdir(log_dir):
+            if fname.endswith(".txt"):
+                done_ids.add(fname.replace(".txt", ""))
+    return done_ids
+
+def tabsqlify_wtq(T, title, tab_col, question, three_row, selection='rc', log_file=None):
+    logs = []  # 로그 수집용
+
     prompt = gen_table_decom_prompt(title, tab_col, question, three_row, selection=selection)
-    print(prompt)
+    logs.append("Prompt:\n" + prompt)
     sql = get_sql_3(prompt)
-    print('\nM1: ', sql, '\n')
+    sql = sql.strip()
+    sql = re.sub(r"^```[a-zA-Z]*", "", sql)  # ```sql, ``` 제거
+    sql = re.sub(r"```$", "", sql)           # 마지막 ``` 제거
+    sql = sql.strip()
+    logs.append(f"\nM1 SQL:\n{sql}\n")
 
     response = ""
     output_ans = ""
@@ -22,37 +66,39 @@ def tabsqlify_wtq(T, title, tab_col, question, three_row, selection='rc'):
 
     try:
         result = sqldf(sql, locals())
-    except:
+    except Exception as e:
         output_ans = "error"
+        logs.append(f"SQL Error: {e}")
 
     if result.shape == (1, 1):
         result_list = result.values.tolist()
         output_ans = " ".join(str(coll) for row in result_list for coll in row)
         response = "direct ans"
         output_ans = output_ans.lower()
+        logs.append(f"Direct ans result: {output_ans}")
     elif not result.empty:
         linear_table = table_linearization(result, style='pipe')
         prompt_ans = generate_sql_answer_prompt(title, sql, linear_table, question)
-        print('promt_ans:\n', prompt_ans)
+        logs.append("Answer Prompt:\n" + prompt_ans)
         response = get_answer(prompt_ans)
-        print('response: ', response)
+        logs.append("Model Response:\n" + response)
         try:
             output_ans = response.split("Answer:")[1]
         except:
-            print("Error: Answer generation.")
-            output_ans = "" + response
+            logs.append("Error: Answer generation.")
+            output_ans = response
         match = re.search(r'(The|the) answer is ([^\.]+)\.', output_ans)
         if match:
             output_ans = match.group(2).strip('"')
     else:
-        print('empty.')
+        logs.append("Empty SQL result. Switching to col-selection...")
         prompt = gen_table_decom_prompt(title, tab_col, question, three_row, selection='col')
         sql = get_sql_3(prompt)
-        print('col sql: ', sql)
+        logs.append("Col SQL:\n" + sql)
         try:
             result = sqldf(sql, locals())
-        except:
-            print('col selection - empty/error')
+        except Exception as e:
+            logs.append(f"Col SQL Error: {e}")
         if not result.empty:
             linear_table = table_linearization(result, style='pipe')
         else:
@@ -61,24 +107,37 @@ def tabsqlify_wtq(T, title, tab_col, question, three_row, selection='rc'):
             linear_table = table_linearization(result, style='pipe')
 
         prompt_ans = generate_sql_answer_prompt(title, sql, linear_table, question)
-        print('promt_ans:\n', prompt_ans)
+        logs.append("Answer Prompt:\n" + prompt_ans)
         response = get_answer(prompt_ans)
-        print('response: ', response)
+        logs.append("Model Response:\n" + response)
         try:
             output_ans = response.split("Answer:")[1]
         except:
-            print("Error: Answer generation.")
-            output_ans = "" + response
+            logs.append("Error: Answer generation.")
+            output_ans = response
         match = re.search(r'(The|the) answer is ([^\.]+)\.', output_ans)
         if match:
             output_ans = match.group(2).strip('"')
 
+    # 로그 파일 저장
+    if log_file is not None:
+        cleaned_logs = clean_log_text("\n".join(logs))
+        with open(log_file, 'w', encoding='utf-8') as lf:
+            lf.write(cleaned_logs)
+
     return sql, result, response, output_ans, linear_table
 
 if __name__ == "__main__":
+    log_dir = "outputs/logs"
+    os.makedirs(log_dir, exist_ok=True)
+
     path = 'datasets/wtq_test3.jsonl'
     output_path = 'outputs/wtq_sql_results.jsonl'
     wrong_output_path = 'outputs/wtq_sql_wrong_results.jsonl'
+
+    # 이미 처리된 ID 목록 가져오기
+    done_ids = get_done_ids(log_dir)
+    print("✅ Already processed:", len(done_ids))
 
     correct = 0
     t_samples = 0
@@ -90,6 +149,12 @@ if __name__ == "__main__":
         for i, l in enumerate(f1):
             dic = json.loads(l)
             ids = dic['ids']
+
+            # 이미 로그가 있으면 skip
+            if ids in done_ids:
+                print(f"⏭️ Skip id={ids} (already processed)")
+                continue
+
             title = dic['title']
             table = dic['table_text']
             question = dic['statement']
@@ -111,7 +176,9 @@ if __name__ == "__main__":
                 three_row_df = sqldf(sql_3, locals())
                 three_row = table_linearization(three_row_df, style='pipe')
                 sql, result, response, output_ans, linear_table = tabsqlify_wtq(
-                    T, title, tab_col, question, three_row, selection='rc')
+                    T, title, tab_col, question, three_row, selection='rc',
+                    log_file=os.path.join(log_dir, f"{ids}.txt")
+                )
                 t_num_cell = T.size
                 r_num_cell = result.size
             else:
@@ -152,10 +219,10 @@ if __name__ == "__main__":
             }
 
             with open(output_path, 'a', encoding='utf-8') as fout:
-                fout.write(json.dumps(result_item, ensure_ascii=False) + '\n')
+                fout.write(json.dumps(result_item, ensure_ascii=False, default=str) + '\n')
             if not is_correct:
                 with open(wrong_output_path, 'a', encoding='utf-8') as fwout:
-                    fwout.write(json.dumps(result_item, ensure_ascii=False) + '\n')
+                    fwout.write(json.dumps(result_item, ensure_ascii=False, default=str) + '\n')
 
             if is_correct:
                 correct += 1
