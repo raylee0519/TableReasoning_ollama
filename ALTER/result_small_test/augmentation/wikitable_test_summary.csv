@@ -1,0 +1,1152 @@
+summary,column_description,table_id
+"The table lists the ambassadors of Russia to Austria, including their names, titles, dates of service, and the corresponding Russian and Austrian states during their tenure. The table covers a time period from 1905 to 1973 and includes representatives from the Russian Empire and the Soviet Union.","Name<The name of the ambassador>
+Title<The official title or position held by the ambassador>
+Date_c_from<The starting date of the ambassador's term>
+Date_until<The ending date of the ambassador's term>
+Russian_state<The state or government of Russia that the ambassador represented>
+Austrian_state<The state or government of Austria that the ambassador was accredited to>",csv/203-csv/840.tsv
+"The table contains information about the Men's 50 metre freestyle S4 swimming event at the 2012 Summer Paralympics, including the rank, lane, name, nationality, time, and notes for each athlete.","Rank<The position of the athlete in the competition> 
+Lane<The lane number assigned to the athlete> 
+Name<The full name of the athlete participating in the event> 
+Nationality<The country represented by the athlete> 
+Time<The time taken by the athlete to complete the 50 metre freestyle swim> 
+Notes<Additional information or status, such as 'Q' for qualification>",csv/204-csv/65.tsv
+"The table contains information about the 1986 Australian Grand Prix, including the position, driver number, driver name, constructor, number of laps completed, time retired or finished, grid position, and points earned by each driver.","Pos<The final position of the driver in the race> 
+No<The driver's number> 
+Driver<The name of the driver participating in the race> 
+Constructor<The team or constructor that the driver is racing for> 
+Laps<The total number of laps completed by the driver> 
+Time_Retired<The time at which the driver retired from the race, or the finish time if they completed the race> 
+Grid<The starting grid position of the driver> 
+Points<The points earned by the driver in the race>",csv/203-csv/275.tsv
+"The table contains information about Sky Track Cycling events, including the date, competition, location, country, event type, placing, rider's name, and nationality. The data appears to be focused on specific cycling competitions held in Manchester, United Kingdom, with British riders achieving first-place finishes.","Date<The date of the cycling event>
+Competition<The name or series of the cycling competition>
+Location<The city where the cycling event took place>
+Country<The country where the cycling event was held>
+Event<The type of cycling event, such as sprint or team sprint>
+Placing<The finishing position of the rider in the event>
+Rider<The name of the cyclist who participated in the event>
+Nationality<The country of origin or representation of the cyclist>",csv/204-csv/272.tsv
+"The table contains information about episodes of the TV series ""Women's Murder Club"", including episode numbers, titles, air dates, ratings, shares, and rankings.","num<Episode number in the series>
+Episode<The title of each episode>
+Air_date<The date when each episode was aired>
+Rating<The overall rating of each episode>
+Share<The percentage of viewers watching each episode>
+c_18_49_Rating_Share<The rating and share for the 18-49 age demographic>
+Viewers_m<The number of viewers in millions>
+Rank_night<The ranking of the episode for that night>
+Rank_timeslot<The ranking of the episode in its time slot>
+Rank_overall<The overall ranking of the episode>",csv/203-csv/328.tsv
+"The table provides information about South Korean football matches that took place in 2008, including the dates, venues, opponents, scores, and competitions.","Date<The date of the match> Venue<The location where the match was held, with (N) indicating a neutral venue and (A) indicating an away venue> Opponents<The team that South Korea played against> Score<The result of the match, with South Korea's score first> Competition<The name of the tournament or competition in which the match was played>",csv/204-csv/264.tsv
+"The table contains a list of episodes from the TV series ""Degrassi","No_in_nseason<The episode number within the season> 
+No_in_nseries<The episode number within the entire series> 
+Title<The title of the episode> 
+Canadian_airdate<The date the episode aired in Canada> 
+US_airdate<The date the episode aired in the US> 
+Production_code<A unique code for the episode's production>",csv/204-csv/674.tsv
+"The table contains information about players from the United States men's national soccer team, including their ranking, name, number of goals scored, number of caps (appearances), and career duration.","num<The ranking or position of the player> Player<The name of the soccer player> Goals<The total number of goals scored by the player> Caps<The total number of appearances or caps earned by the player> Career<The duration of the player's career with the team, including start and end years>",csv/204-csv/410.tsv
+"The table contains information about the 2012 GoPro Indy Grand Prix of Sonoma, including the position, driver, team, engine, laps completed, time retired, grid position, laps led, and points earned by each driver.","Pos<The final position of the driver in the race>
+No<The car number of the driver>
+Driver<The name of the driver participating in the race>
+Team<The team that the driver is representing>
+Engine<The type of engine used by the driver's car>
+Laps<The total number of laps completed by the driver>
+Time_Retired<The time difference between the driver and the leader, or an indication if they were lapped>
+Grid<The starting position of the driver on the grid>
+Laps_Led<The number of laps that the driver was in the lead>
+Points<The total points earned by the driver in the race>",csv/204-csv/366.tsv
+"The table provides a record of China's football matches in 2008, including the date, venue, opponent, result, scoreline, and Chinese scorers.","Date<The date of the match> 
+Venue<The location where the match was held> 
+Opponent<The team that China played against> 
+Result<The outcome of the match, either won, lost, or drawn> 
+Scoreline<The final score of the match, including both China's and the opponent's scores> 
+China_scorers<The names of Chinese players who scored goals in the match, along with the minute they scored>",csv/204-csv/224.tsv
+"The table contains information about candidates representing different regions in the Miss Russia 2006 competition, including their name, representation, age, height, and hometown.","Represent<The region or republic that the candidate is representing>
+Candidate<The name of the candidate participating in the competition>
+in_Russian<The candidate's name written in Russian>
+Age<The age of the candidate at the time of participation>
+Height<The physical height of the candidate in meters and feet/inches>
+Hometown<The city or town where the candidate is from>",csv/203-csv/825.tsv
+"The table provides information about the Damen Stan 4207 patrol vessels, including the country that ordered them, the year they were ordered, the quantity of vessels ordered, and additional notes about their operation and deployment.","Nation<Nation or country that ordered the Damen Stan 4207 patrol vessel>
+Date<The year the Damen Stan 4207 patrol vessel was ordered>
+Quantity<The number of Damen Stan 4207 patrol vessels ordered by a nation>
+Type<The type of Damen Stan patrol vessel, which in all cases listed is 4207>
+Notes<Additional information about the operation, deployment, and specifics of the Damen Stan 4207 patrol vessels ordered by each nation>",csv/204-csv/390.tsv
+"The table contains information about Russian detainees at Guantanamo Bay, including their unique identifier (ISN), name, arrival and departure dates, and additional notes on their detention and activities after release.","isn<Unique identifier for each detainee> 
+name<The full name of the Russian detainee> 
+arrival_ndate<The date the detainee arrived at Guantanamo Bay> 
+departure_ndate<The date the detainee departed from Guantanamo Bay> 
+notes<Additional information and notes about the detainee's detention, repatriation, and activities after release>",csv/203-csv/232.tsv
+"The table contains a list of schools in Saginaw, Michigan, including their name, grade range, number of students, number of full-time equivalent teachers, and student-teacher ratio.","School_Name<The name of the school>
+Low_grade<The lowest grade level offered by the school>
+High_grade<The highest grade level offered by the school>
+Students_K_12<The total number of students in grades K-12>
+FTE_Teachers<The number of full-time equivalent teachers at the school>
+Student_teacher_ratio<The ratio of students to full-time equivalent teachers>",csv/203-csv/845.tsv
+"The table contains information about floods in Saint Petersburg, including a unique identifier, chronological number, date of the flood in new style, water level measured in centimeters, and the peak hour of the flood. There are three entries in the table, each representing a different flood event.","NULL_COL<An unknown or unspecified column with numerical values>, Chronological_nNo<A chronological number assigned to each flood event>, Date_nNew_stylenThe date of the flood in new style format (year-month-day)>, Water_level_ncm<The water level measured in centimeters during the flood>, Peak_hour<The hour at which the flood reached its peak, either specified as a time or described as daytime>",csv/203-csv/261.tsv
+"The table provides information about schools in Geauga County, Ohio, including their district names, locations, and the communities or types of students they serve.","District<The name of the school district> Location<The location or township where the school is situated> Communities_served<The type of community, grade level, or admission process served by the school>",csv/200-csv/8.tsv
+"The table provides information about different types of cellulose ethers, their reagents, examples, and applications. It lists various cellulose derivatives, such as ethyl hydroxyethyl cellulose, ethylcellulose, and hydroxyethyl methyl cellulose, along with the reagents used to produce them, their solubility in water, and their uses in industries like coatings, pharmaceuticals, and film production.","Cellulose_ethers<The type of cellulose ether being described> 
+Reagent<The chemical reagent used in the production process> 
+Example<An example of a specific cellulose ether> 
+Reagent_1<Additional or alternative reagents used in the synthesis> 
+Group_R_=_H_or<The functional group attached to the cellulose molecule, either hydrogen or another organic group> 
+Water_solubility<Whether the cellulose derivative is soluble in water> 
+Application<The industrial or commercial use of the cellulose ether> 
+E_number<A unique identifier for food additives, where applicable>",csv/203-csv/162.tsv
+"The table lists Great Officers of State, which are prestigious positions in the UK government and royal household. It provides information about each position, including the current officer holding the position, any superseding positions, and equivalent roles within the Royal Household.","Position<The ranking or order of the Great Officer of State>
+Officer<The title of the Great Officer of State>
+current_officers<The name of the person currently holding the Great Officer of State position>
+superseded_by<The position that has superseded or replaced the Great Officer of State, if applicable>
+Royal_Household<The equivalent role or position within the Royal Household>",csv/204-csv/368.tsv
+"The table contains information about chemical elements, including their atomic number, name, symbol, group, period, block, state at standard temperature and pressure (STP), occurrence, and description. There are three rows of data, each representing a different element","Atomic_nno<The atomic number of the chemical element> 
+Name<The full name of the chemical element> 
+Symbol<The abbreviated symbol for the chemical element> 
+Group<The group number of the chemical element in the periodic table> 
+Period<The period number of the chemical element in the periodic table> 
+Block<The block of the periodic table where the element is located, with 'f' indicating a f-block element and 'p' indicating a p-block element> 
+State_at_nSTP<The state of the element at standard temperature and pressure (STP), either solid, liquid, or gas> 
+Occurrence<The origin or occurrence of the element in nature, with 'Primordial' indicating that it was present on Earth since its formation> 
+Description<A brief description or classification of the chemical element, such as Lanthanide, Actinide, or Metalloid>",csv/203-csv/599.tsv
+"The table contains information about Tony Gulotta's racing performance in different years, including the car number, starting position, qualification speed, rank, finish position, number of laps completed, and whether he led any laps or retired from the race.","Year<The year of the racing event> 
+Car<The car number used by Tony Gulotta in the racing event> 
+Start<The starting position of Tony Gulotta in the racing event> 
+Qual<The qualification speed achieved by Tony Gulotta> 
+Rank<The rank or position of Tony Gulotta after qualifying> 
+Finish<The final finish position of Tony Gulotta in the racing event> 
+Laps<The total number of laps completed by Tony Gulotta> 
+Led<The number of laps led by Tony Gulotta during the racing event> 
+Retired<The reason for Tony Gulotta's retirement from the racing event, if applicable>",csv/203-csv/647.tsv
+"The table lists football stadiums in France, providing details such as stadium name, capacity, location (city and region), home team, and opening year. There are 3 stadiums listed from different regions in France.",num<Unique identifier for each stadium> Stadium<Name of the football stadium> Capacity<The maximum number of spectators the stadium can hold> City<The city where the stadium is located> Region<The administrative region in France where the stadium is situated> Home_Team<The football team that uses the stadium as their home ground> Opened<The year the stadium was opened>,csv/204-csv/67.tsv
+"The table provides information about nuclear reactors, specifically RBMK (Reaktor Bolshoy Moshchnosty Kanalny) type reactors. It lists the location, reactor type, status, and capacity in terms of net and gross megawatts electric (MWe). The reactors are located at different sites including Ignalina, Kursk, and Chernobyl, with varying statuses such as construction cancelled, shelved, or shut down.","Location<The geographical site where the reactor is or was planned to be located> 
+Reactor_type<The specific type of nuclear reactor, including its model or designation> 
+Status<The current state or historical outcome of the reactor's development or operation> 
+Net_nCapacity_nMWe<The net electrical capacity of the reactor in megawatts (MWe), which is the actual power output after accounting for energy losses> 
+Gross_nCapacity_nMWe<The gross electrical capacity of the reactor in megawatts (MWe), representing its total potential power output before deducting energy losses>",csv/204-csv/566.tsv
+"The table shows the medal count for different nations at the 2011 BWF World Junior Championships, listing the rank, nation, and number of gold, silver, and bronze medals won, as well as the total number of medals.","Rank<The ranking position of the nation> Nation<The name of the country participating in the championships> Gold<The number of gold medals won by the nation> Silver<The number of silver medals won by the nation> Bronze<The number of bronze medals won by the nation> Total<The total number of medals won by the nation, including gold, silver, and bronze>",csv/204-csv/594.tsv
+"The table appears to be a record of aerial combat victories achieved by George Goodman Simpson, listing the date, time, aircraft flown, enemy aircraft, result of the engagement, location, and any additional notes. The entries suggest that Simpson was a pilot during World War I, flying different aircraft such as the Sopwith Triplane and Nieuport, and engaging with various Albatros models.","No<The serial number or identifier for each combat victory>
+Date_time<The date and time of the aerial combat engagement>
+Aircraft<The type and serial number of the aircraft flown by George Goodman Simpson during the engagement>
+Foe<The type of enemy aircraft engaged during the combat>
+Result<The outcome of the aerial combat, such as whether the enemy was driven down out of control>
+Location<The geographical location where the aerial combat took place>
+Notes<Additional information or comments regarding the combat victory, such as shared victories with other pilots>",csv/204-csv/830.tsv
+"The table appears to contain information about individuals associated with Boksburg, with multiple columns listing years and corresponding names. The table has six columns, with some cells left blank, suggesting that not all years have a corresponding name listed.","Year<The initial year associated with an individual> 
+Name<The name of the individual associated with the initial year> 
+Year_1<The second year associated with a different individual> 
+Name_1<The name of the individual associated with the second year> 
+Year_2<The third year associated with another individual, if applicable> 
+Name_2<The name of the individual associated with the third year, if listed>",csv/203-csv/474.tsv
+"The table contains information about the 1954 Ottawa Rough Riders season, including the week number, date, opponent, score, result, and record for each game. The data shows that the team had a poor performance, with only one win and multiple losses.","Week<The week number of the season> 
+Date<The date of the match> 
+Opponent<The team that the Ottawa Rough Riders played against> 
+Score<The final score of the game, including both teams' points> 
+Result<The outcome of the game, either a win or a loss for the Ottawa Rough Riders> 
+Record<The overall record of wins and losses for the Ottawa Rough Riders at that point in the season>",csv/204-csv/993.tsv
+"The table contains information about the 1978 Trans-Am season, including the round number, date, circuit, and winning drivers and vehicles for two categories","Round<The round number of the Trans-Am season> 
+Date<The date of the Trans-Am season event> 
+Circuit<The location or track where the Trans-Am season event took place> 
+Winning_driver_TA2<The driver who won in the TA2 category> 
+Winning_vehicle_TA2<The vehicle driven by the winning driver in the TA2 category> 
+Winning_driver_TA1<The driver who won in the TA1 category> 
+Winning_vehicle_TA1<The vehicle driven by the winning driver in the TA1 category>",csv/204-csv/458.tsv
+"The table contains information about the 2003 Grand Prix of Monterey, including the position, driver number, driver name, team name, number of laps completed, time retired or finished, starting grid position, and points earned for each driver.","Pos<The final position of the driver in the race> 
+No<The driver's number> 
+Driver<The name of the driver participating in the race> 
+Team<The team that the driver is representing> 
+Laps<The total number of laps completed by the driver> 
+Time_Retired<The time at which the driver retired or finished the race> 
+Grid<The starting position of the driver on the grid> 
+Points<The number of points earned by the driver in the race>",csv/203-csv/659.tsv
+"The table contains results from the Men's 1000 meters speed skating event at the 2006 Winter Olympics, listing the rank, pair number, name of the athlete, their country, time achieved, and the time difference behind the leader.","Rank<The final position of the athlete in the competition> 
+Pair<The pair number that the athlete was assigned to during the event> 
+Name<The full name of the speed skater participating in the event> 
+Country<The country that the athlete represents in the Olympics> 
+Time<The time taken by the athlete to complete the 1000 meters distance> 
+Time_behind<The difference in time between the athlete's time and the leader's time>",csv/204-csv/201.tsv
+"The table contains information about Martina Hrašnová's performances in various athletic competitions, including the Olympic Games, World Student Games, and World Youth Championships, with details on the year, competition, venue, position, and notes.","Year<The year in which the competition took place> 
+Competition<The name of the athletic competition> 
+Venue<The location where the competition was held> 
+Position<The ranking or position achieved by Martina Hrašnová in the competition> 
+Notes<Additional information, typically the distance achieved, related to Martina Hrašnová's performance in the competition>",csv/203-csv/819.tsv
+"The table provides information about the winners of different divisions in the Imparja Cup, a cricket tournament, across various years. It lists the winning teams or regions for each division, including State/Territory Men's and Women's Divisions, Major Centres Division, Community Division, and Women's Division.","Year<The year the Imparja Cup was held> 
+State_Territory_Mens_Division<The winning state or territory in the men's division> 
+State_Territory_Womens_Division<The winning state or territory in the women's division, if applicable> 
+Major_Centres_Division<The winning major centre in this division> 
+Community_Division<The winning community in this division, if applicable> 
+Womens_Division<The winner of the women's division, which might overlap with other divisions or be a separate category>",csv/204-csv/656.tsv
+"The table contains career statistics of Tommy Robredo, including his outcomes in various tennis tournaments, with details such as the tournament name, surface played on, opponent, and score. The data spans several years, from 2001 to 2007, and includes both wins and losses.","Outcome<The result of the match, either winner or runner-up> 
+No<The serial number of the match> 
+Date<The date of the match> 
+Tournament<The name and location of the tournament> 
+Surface<The type of surface the match was played on, such as clay or hard court> 
+Opponent<The player Tommy Robredo competed against> 
+Score<The final score of the match>",csv/204-csv/285.tsv
+"The table contains information about contestants on Austria's Next Topmodel (cycle 4), including their name, age, height, home city, and rank or elimination status in the competition.","Contestant<The name of the contestant participating in the competition> 
+Age<The age of the contestant at the time of participation> 
+Height<The physical height of the contestant in centimeters and feet/inches> 
+Home_City<The city where the contestant is from or resides> 
+Rank<The status or position of the contestant in the competition, including elimination episodes or any special circumstances like quitting>",csv/204-csv/138.tsv
+"The table provides a summary of the 2010-11 PFC CSKA Sofia season, listing the number of appearances or goals scored by each player in different competitions, including the League, Cup, and Europa League.","Player<The name of the football player>
+League<The number of appearances or goals scored by the player in the league competition>
+Cup<The number of appearances or goals scored by the player in the cup competition>
+Europa League<The number of appearances or goals scored by the player in the Europa League competition>
+Total<The total number of appearances or goals scored by the player across all competitions>",csv/204-csv/744.tsv
+"The table provides information about the Kansas City Brass, a soccer team, and their performance over three seasons (1998, 1999, and 2003) in terms of division, league, regular season standings, playoff results, and Open Cup participation.","Year<The year of the season> 
+Division<The level or tier of the league the team played in> 
+League<The specific league or organization the team was part of> 
+Regular_Season<The team's standing or position at the end of the regular season> 
+Playoffs<The outcome or stage reached by the team in the playoff competition> 
+Open_Cup<The stage or round the team advanced to in the Open Cup tournament>",csv/204-csv/972.tsv
+"The table contains information about Cheltenham Town F.C.'s kit manufacturers and sponsors for specific years. The data includes the year, kit manufacturer, shirt sponsor, back of shirt sponsor, and short sponsor.","Year<The time period during which the sponsorship or kit manufacturing deal was in effect> 
+Kit_Manufacturer<The company that manufactured the team's kits for the specified year> 
+Shirt_Sponsor<The organization that sponsored the front of the team's shirts> 
+Back_of_Shirt_Sponsor<The organization that sponsored the back of the team's shirts, if applicable> 
+Short_Sponsor<The organization that sponsored the team's shorts, if applicable>",csv/203-csv/329.tsv
+"The table contains information about Anne Hobbs' tennis career, specifically her results in various tournaments. It includes details such as the outcome of each match, the date it took place, the category and location of the tournament, the surface played on, her partner, opponents, and the score.","Result<The outcome of the match, either Winner or Runner-up> 
+Date<The date of the match> 
+Category<The type or level of the tournament, including prize money or classification as a Grand Slam> 
+Tournament<The name and location of the tournament> 
+Surface<The type of court surface played on, such as Grass or Hard> 
+Partnering<Anne Hobbs' partner in the match> 
+Opponents<The names of Anne Hobbs' opponents in the match> 
+Score<The final score of the match>",csv/203-csv/596.tsv
+"The table appears to contain information about a football player's career statistics, specifically Chemcedine El Araichi, detailing the seasons played, clubs represented, competitions participated in, number of games played, and goals scored.","Season<The year or period during which the player participated in the competition> 
+Club<The name of the team the player was part of during that season> 
+Competition<The league or tournament in which the player competed> 
+Games<The total number of matches the player played in that season> 
+Goals<The total number of goals scored by the player in those games>",csv/203-csv/624.tsv
+"The table provides information on the casualties of Poland during World War II, categorized by type of loss (Direct War Losses, Murdered, Deaths other countries) and time period (1939-40 to 1944-45), with a total column summarizing the overall losses.","Description_Losses<The type of loss or casualty category> 
+c_1939_40<The number of casualties in the 1939-40 period> 
+c_1940_41<The number of casualties in the 1940-41 period> 
+c_1941_42<The number of casualties in the 1941-42 period> 
+c_1942_43<The number of casualties in the 1942-43 period> 
+c_1943_44<The number of casualties in the 1943-44 period> 
+c_1944_45<The number of casualties in the 1944-45 period> 
+Total<The total number of casualties across all periods>",csv/204-csv/149.tsv
+"The table contains information about the 1986 Dallas Cowboys season, including the week number, date, opponent, result, game site, NFL recap link, and attendance for each game.","Week<The week number of the season> 
+Date<The date of the match> 
+Opponent<The team that the Dallas Cowboys played against> 
+Result<The outcome of the game, including win or loss and score> 
+Game_site<The location where the game was played> 
+NFL_Recap<The link to the NFL recap for the game> 
+Attendance<The number of people who attended the game>",csv/203-csv/334.tsv
+"The table contains information about the Brickyard 400, a NASCAR event, covering various aspects such as the year it took place, the network that broadcasted it, details about the commentators and reporters involved, and viewership ratings.","Year<The year in which the Brickyard 400 took place>
+Network<The television network responsible for broadcasting the event>
+NASCAR_nCountdown<The hosts or presenters of the NASCAR Countdown pre-race show>
+Lap_by_lap<The commentator providing lap-by-lap coverage of the race>
+Color_commentators<The commentators offering color commentary and analysis during the race>
+Pit_reporters<The reporters covering the event from the pit lane, providing updates on teams and drivers>
+Ratings<The television ratings for the broadcast, indicating its popularity>
+Viewers<The number of viewers who watched the event>",csv/203-csv/122.tsv
+"The table contains a list of Israeli cities, including their common name, district, Hebrew and Arabic names, population in 2009, area in square kilometers, and the name of the mayor.","Common_name <The commonly used name of the city>
+District <The administrative district where the city is located>
+Hebrew <The name of the city in Hebrew language>
+Arabic <The name of the city in Arabic language>
+Population_n2009 <The population of the city as of 2009>
+Area_nkm² <The area of the city in square kilometers>
+Mayor <The name of the mayor of the city>",csv/204-csv/512.tsv
+"The table provides an overview of the health care system in different regions of Ethiopia, including the number of physicians, health officers, nurses, midwives, and Health Extension Workers (HEWs), as well as their respective population ratios.","Region<The name of the region in Ethiopia>
+Physician_GP_specialist<The total number of general practitioner specialists in the region>
+Physician_Population_Ratio<The ratio of physicians to the population in the region>
+Health_Officer<The total number of health officers in the region>
+HO_Population_Ratio<The ratio of health officers to the population in the region>
+All_Nurses<The total number of nurses in the region>
+Nurse_Population_Ratio<The ratio of nurses to the population in the region>
+Mid_wives<The total number of midwives in the region>
+Mid_Wife_Population_Ratio<The ratio of midwives to the population in the region>
+HEW<The total number of Health Extension Workers in the region>
+HEW_Population_Ratio<The ratio of Health Extension Workers to the population in the region>",csv/203-csv/265.tsv
+"The table contains information about commemorative coins issued by Estonia, including the year of issue, model or occasion, denomination, metal composition, and physical dimensions.","Year<The year the commemorative coin was issued> 
+Model<The occasion or event being commemorated by the coin> 
+Denomination<The value of the coin in krooni> 
+Metal_composition<The material used to make the coin> 
+Dimensions<The size and weight of the coin, including diameter and mass>",csv/204-csv/464.tsv
+"The table shows the medal count for different nations at the 1970 Summer Universiade, with rankings and total medals won.","Rank<The ranking position of the nation in the medal count> 
+Nation<The name of the country participating in the event> 
+Gold<The number of gold medals won by the nation> 
+Silver<The number of silver medals won by the nation> 
+Bronze<The number of bronze medals won by the nation> 
+Total<The total number of medals won by the nation, including gold, silver, and bronze>",csv/204-csv/977.tsv
+"The table contains results from the 1999 Dutch TT, including the position of riders, their names, the manufacturers of their motorcycles, their time retired or difference in time from the leader, and the points they scored. There are three rows of data, representing three different riders.","Pos<The position of the rider in the competition> 
+Rider<The name of the rider participating in the competition> 
+Manufacturer<The manufacturer of the motorcycle used by the rider> 
+Time_Retired<The time difference from the leader or the reason for retirement> 
+Points<The points scored by the rider in the competition>",csv/204-csv/892.tsv
+"The table contains information about the United States House of Representatives elections in 2002, specifically for three districts in Maryland. It lists the district, incumbent representative, their party affiliation, the year they were first elected, the result of the election (whether the incumbent was re-elected or retired), and the candidates who ran along with their respective percentages of votes.","District<The name of the congressional district in Maryland> 
+Incumbent<The name of the representative who held the seat prior to the 2002 election> 
+Party<The political party affiliation of the incumbent representative> 
+First_nelected<The year the incumbent representative was first elected to office> 
+Result<The outcome of the election, including whether the incumbent was re-elected or retired and if there was a gain for another party> 
+Candidates<The names of the candidates who ran in the election along with their vote percentages>",csv/203-csv/423.tsv
+"The table contains results from the 2002 Asian Athletics Championships, specifically the Men's 100 meters event. It lists the rank, heat number, name of the athlete, their nationality, the time they achieved, and any notable notes about their performance.","Rank<The position or ranking of the athlete in the competition> 
+Heat<The specific heat or round in which the athlete competed> 
+Name<The full name of the participating athlete> 
+Nationality<The country that the athlete represents> 
+Time<The time achieved by the athlete in seconds> 
+Notes<Additional information or notes about the athlete's performance, such as personal best (PB), season best (SB), or qualification (Q)>",csv/204-csv/259.tsv
+"The table contains information about the singer Dino's songs, including the year they were released, the song title, the album name, the position on a chart, and the name of the chart. The data spans from 1987 to 1993 and includes three songs that appeared on the Billboard Hot 100 chart.",Year<The year the song was released> Song<The title of the song> Album<The name of the album the song is from> Position<The position the song reached on a music chart> Chart<The name of the music chart the song appeared on>,csv/203-csv/124.tsv
+"The table provides information about different types of Kodachrome film, including their characteristics and the dates they were available. The films listed are all 35 mm and designed for daylight use, with varying ISO speeds (200, 25, and 64) and durations of availability ranging from 1974 to 2009.","Film<Kodachrome film type> Film_1<Description of the Kodachrome film, including its intended use and characteristics> Date<The years the Kodachrome film was available>",csv/200-csv/24.tsv
+"The table contains information about the ICW World Heavyweight Championship, including the wrestlers who have held the title, the number of reigns they had, the dates they won the title, and the places where they won it. There are also notes on some of the wins, such as how the first champion was crowned.","Wrestler_<The name of the wrestler who held the championship>
+Reigns_<The number of times the wrestler has won the championship>
+Date_<The date when the wrestler won the championship>
+Place_<The location where the wrestler won the championship>
+Notes_<Additional information or comments about the wrestler's win, such as how they became champion>",csv/203-csv/841.tsv
+"The table contains information about Kristýna Plíšková's wins in tennis tournaments, including the outcome, number, date, tournament name, surface type, partner, opponents, and score.","Outcome<The result of the match, indicating whether Kristýna Plíšková was a winner>
+No<A unique identifier or ranking for each win>
+Date<The date of the match>
+Tournament<The name and location of the tennis tournament>
+Surface<The type of surface on which the match was played, such as hard, carpet, or clay>
+Partner<The partner with whom Kristýna Plíšková competed in the match>
+Opponents<The names of the opposing players in the match>
+Score<The final score of the match, including sets and games won>",csv/204-csv/331.tsv
+"The table contains information about the episodes of the TV show ""Little People, Big World"", including the season number, total number of episodes, and the premiere and finale dates for each season.",Season<The season number of the TV show> Episodes<The total number of episodes in the season> Season_Premiere<The date when the season premiered> Season_Finale<The date when the season ended>,csv/203-csv/714.tsv
+"The table contains results from the 2006 IAAF World Indoor Championships, specifically the Men's high jump event. It lists the rank, athlete name, nationality, and performance at different heights (2.15m, 2.20m, 2.24m, and 2.27m) for each athlete, along with their final result and any additional notes.","Rank<The ranking position of the athlete in the competition>
+Athlete<The name of the participating athlete>
+Nationality<The country that the athlete represents>
+c_215<The performance of the athlete at a height of 2.15m, where 'o' indicates a successful jump>
+c_220<The performance of the athlete at a height of 2.20m, where 'o' indicates a successful jump>
+c_224<The performance of the athlete at a height of 2.24m, where 'o' indicates a successful jump>
+c_227<The performance of the athlete at a height of 2.27m, where 'o' indicates a successful jump>
+Result<The final result achieved by the athlete in the competition>
+Notes<Additional notes or remarks about the athlete's performance, such as 'q' for qualification>",csv/204-csv/844.tsv
+"The table lists law clerks of the Supreme Court of the United States, specifically those assigned to Seat 6, along with their tenure and educational background.","Clerk<The name of the law clerk>, Started<The year the clerkship began>, Finished<The year the clerkship ended>, School_year<The law school attended by the clerk along with the year>, Previous_clerkship<Previous clerkship experience, if any>",csv/204-csv/619.tsv
+"The table appears to list various music publications from different countries, along with their accolades and rankings for a specific album, ""Let's Get It On"", across different years. The publications mentioned include Rock de Lux from Spain, NME from the United Kingdom, and Vibe from the United States, each recognizing the album in their own lists of top albums.","Publication<The name of the music publication> Country<The country where the publication is based> Accolade<The specific recognition or list the album was included in> Year<The year the accolade or recognition was given> Rank<The ranking position of the album within the publication's list, if applicable>",csv/203-csv/821.tsv
+"The table lists storms on the Great Lakes, providing information about the ships that were affected, including their type, location, and the number of lives lost.","Ship<The name of the ship that was affected by the storm> 
+Type_of_Vessel<The type of vessel the ship was, in this case, all listed as Steamers> 
+Lake<The Great Lake where the storm occurred> 
+Location<The specific location on the lake where the storm or incident took place> 
+Lives_lost<The number of lives lost during the storm, with ""allhands"" indicating all crew members were lost>",csv/204-csv/797.tsv
+"The table provides information about the Canadian National class N-4 2-8-0 locomotives, including their builders, works numbers, build dates, and assigned numbers by different railway companies. The data spans across three rows, each representing a batch of locomotives built by either MLW (Montreal Locomotive Works) or ALCO (American Locomotive Company), with specific details on the construction years and unique identifiers.","Builder<The manufacturer of the locomotives>
+Works_numbers<The serial numbers assigned to the locomotives by their builders>
+Dates<The year in which the locomotives were built>
+CN_numbers<The identification numbers given to the locomotives by Canadian National>
+GT_numbers<The identification numbers given to the locomotives by Grand Trunk Railway>
+Notes<Additional information or comments about the locomotives, including special notes on their construction>",csv/204-csv/901.tsv
+"The table summarizes the goals scored by players of the 2005 Australia national football team in different tournaments, including friendlies, FIFA Confederations Cup, and FIFA World Cup Qualification matches. The data shows the number of goals each player scored in these tournaments, as well as their total goals.","Player<The name of the football player>
+Friendlies<The number of goals scored by the player in friendly matches>
+FIFA_Confederations_Cup<The number of goals scored by the player in the FIFA Confederations Cup tournament>
+FIFA_World_Cup_Qual<The number of goals scored by the player in the FIFA World Cup Qualification matches>
+Total_Goals<The total number of goals scored by the player across all tournaments>",csv/204-csv/241.tsv
+"The table contains information about the 1939 Masters Tournament, including the place, player name, country of origin, score, score relative to par, and prize money earned by each player.","Place<The ranking position of the player in the tournament> 
+Player<The name of the golfer participating in the tournament> 
+Country<The country of origin of the player> 
+Score<The total number of strokes taken by the player to complete the tournament> 
+To_par<The score relative to par, indicating how many strokes under or over par the player is> 
+Money_$<The amount of prize money earned by the player in dollars>",csv/204-csv/247.tsv
+"The table contains a list of Singapore LRT stations, including their alpha-numeric codes, station names in English, Chinese, and Tamil, as well as their opening dates.","Alpha_numeric_Code <A unique code assigned to each LRT station>
+Station_name_nEnglish <The name of the LRT station in English>
+Station_name_nChinese <The name of the LRT station in Chinese>
+Station_name_nTamil <The name of the LRT station in Tamil>
+Opening <The date when the LRT station was opened>",csv/202-csv/216.tsv
+"The table appears to be a record of contestants from a reality TV show called ""Last Hero 3"", detailing their original tribe, any tribe switches, the merged tribe they joined (if applicable), how they finished in the competition, and the total number of votes cast against them. The contestants have diverse backgrounds, including acting and physics.","Contestant<The name and profession of each contestant>
+Original_Tribe<The initial tribe each contestant was assigned to at the start of the competition>
+Switched_Tribe<The tribe a contestant switched to, if they did so during the game>
+Merged_Tribe<The tribe formed when the original tribes merged>
+Finish<How and when each contestant was eliminated or their final standing in the competition>
+Total_Votes<The total number of votes cast against each contestant throughout the game>",csv/204-csv/827.tsv
+"The table shows the medal count for Equestrian events at the 1960 Summer Olympics, listing the rank, nation, and number of gold, silver, bronze, and total medals won by each country.","Rank<The ranking position of the nation in the Equestrian event> 
+Nation<The name and abbreviation of the participating country> 
+Gold<The number of gold medals won by the nation> 
+Silver<The number of silver medals won by the nation> 
+Bronze<The number of bronze medals won by the nation> 
+Total<The total number of medals won by the nation, including gold, silver, and bronze>",csv/203-csv/351.tsv
+"The table shows the medal count for speed skating at the 1972 Winter Olympics, listing the rank, nation, and number of gold, silver, bronze, and total medals won by each country.","Rank<The position of the country in the medal count> 
+Nation<The name of the country participating in the speed skating event> 
+Gold<The number of gold medals won by the country> 
+Silver<The number of silver medals won by the country> 
+Total<The total number of medals (gold, silver, and bronze) won by the country> 
+Bronze<The number of bronze medals won by the country>",csv/204-csv/216.tsv
+"The table contains a list of periodic comets, including their names, discoverers or namesakes, orbital periods in years, and any spacecraft encounters. There are three comets listed, each with a unique name and set of characteristics.","Comet<The name of the periodic comet>
+Discoverers_or_namesakes<The person or organization that discovered or is associated with the comet>
+Orbital_period_years<The length of time it takes for the comet to complete one orbit around the Sun, measured in years>
+Spacecraft_encounters<Any encounters or interactions between the comet and a spacecraft, although this column appears to be empty for all listed comets>",csv/202-csv/81.tsv
+"The table contains information about the football matches played by Flamurtari Vlorë, including the season, competition, round, opposing club, and scores at home and away.","Season<The year or period during which the football matches took place> 
+Competition<The name of the tournament or league in which the matches were played> 
+Round<The stage or level of progression in the competition> 
+Club<The name of the opposing team that Flamurtari Vlorë played against> 
+Home<The score achieved by Flamurtari Vlorë when playing at their own stadium> 
+Away<The score achieved by Flamurtari Vlorë when playing at the opponent's stadium>",csv/203-csv/776.tsv
+"The table lists various works designed by Eero Saarinen, including buildings and furnishings, along with their locations, design and completion years, and additional information about collaborations or other notable details.","Name<The name of the work or project designed by Eero Saarinen> 
+City<The city where the work or project is located> 
+State_Country<The state or country where the work or project is located> 
+Designed<The year when the design of the work or project was started or conceived> 
+Completed<The year when the work or project was finished or completed> 
+Other_Information<Additional details or notes about the work, such as collaborations with other architects>",csv/204-csv/545.tsv
+"The table provides information about the Alpine skiing events at the 2002 Winter Paralympics, including the type of event, the class of competition, and the medal winners (gold, silver, and bronze) along with their countries.","Event<The type of Alpine skiing event, such as Super-G, Giant slalom, or Slalom>
+Class<The classification of the competition, indicating the type of disability or impairment>
+Gold<The winner of the gold medal in the event, including their name and country>
+Silver<The winner of the silver medal in the event, including their name and country>
+Bronze<The winner of the bronze medal in the event, including their name and country>",csv/203-csv/792.tsv
+"The table lists the seasons of Brøndby IF, a Danish football club, from 1996-97 to 2008-09. It includes information about their league performance, top scorers, Danish Cup results, European competitions, and other achievements.","Season<The year of the season> 
+League_nPos<The position of Brøndby IF in the league> 
+League_nCompetition<The name of the league competition> 
+League_nTop_scorer<The top scorer(s) of Brøndby IF in the league with the number of goals scored> 
+Danish_Cup<The result of Brøndby IF in the Danish Cup competition> 
+Europe<The results and rounds of Brøndby IF in European competitions> 
+Others<Additional achievements or participation of Brøndby IF in other competitions>",csv/203-csv/307.tsv
+"The table contains results from the 2012 World Single Distance Speed Skating Championships, specifically for the Men's team pursuit event. It lists the rank, pair number, country, athletes participating, time achieved, and deficit (time difference behind the leader) for each team.","Rank<The ranking position of the team in the competition> 
+Pair<The pair number assigned to the team during the competition> 
+Country<The nation represented by the team> 
+Athletes<The names of the skaters participating in the team pursuit event> 
+Time<The total time taken by the team to complete the distance> 
+Deficit<The time difference between the team's time and the leading team's time>",csv/204-csv/934.tsv
+"The table contains information about the Haiti national football team's matches, including the date, location, opponent, result, and competition. There are three matches listed, which took place in different locations around the world, including Brazil, Chile, and South Korea.","Date<The date of the match> 
+Location<The location where the match was played> 
+Opponent<The team that Haiti played against> 
+Result<The outcome of the match, including the score> 
+Competition<The type of competition or tournament in which the match was played, denoted by 'F' which likely stands for 'Friendly'>",csv/204-csv/904.tsv
+"The table contains information about the CSI franchise, specifically detailing various seasons of the show. It includes data on the number of episodes per season, time slots, original airing dates for premieres and finales, TV seasons, rankings, and viewer numbers in millions.","Season<The season number of the CSI franchise>
+Episodes<The total number of episodes in each season>
+Time_slot_EST<The time slot when the show aired, including the day of the week and the time in Eastern Standard Time>
+Original_airing_nSeason_premiere<The original air date for the premiere of each season>
+Original_airing_nSeason_finale<The original air date for the finale of each season>
+Original_airing_nTV_season<The television season during which each CSI season originally aired>
+Rank<The ranking of the show in terms of viewership or popularity for that TV season>
+Viewers_nin_millions<The average number of viewers in millions for each season>",csv/203-csv/867.tsv
+"The table contains information about the Hawaii Islanders, a sports team, over several years. It lists their yearly records, finishing positions, managers, and playoff outcomes.","Year<The year of the season> Record<The team's win-loss record for the season> Finish<The team's final position in the league standings> Manager<The name of the team's manager for the season> Playoffs<The outcome of the team's participation in the playoffs, if any>",csv/203-csv/822.tsv
+"The table contains information about Brendan Jones' golf tournament wins, including the date, tournament name, winning score, margin of victory, and runners-up.","No<The number of the tournament win> 
+Date<The date of the tournament> 
+Tournament<The name of the golf tournament> 
+Winning_score<The score achieved by Brendan Jones to win the tournament> 
+Margin_of_victory<The difference in score between Brendan Jones and the runners-up> 
+Runners_up<The names of the golfers who finished as runners-up in the tournament>",csv/203-csv/278.tsv
+"The table provides information about the aircraft used by the Royal Bahamas Defence Force, including their origin, type, and service history. It lists three different aircraft models, their country of origin, and details about their usage.","Aircraft<The name of the aircraft model>
+Origin<The country where the aircraft was manufactured>
+Type<The category or purpose of the aircraft>
+In_service<The number of aircraft currently in active service>
+Notes<Additional information about the aircraft's service history with the Royal Bahamas Defence Force>",csv/203-csv/103.tsv
+"The table contains information about the 1984 IMSA GT Championship season, including the round number, circuit name, winning teams and drivers for different categories (GTP, GTO, GTU), and a link to the results.","Rnd<The round number of the championship>
+Circuit<The name of the racing circuit where the event took place>
+GTP_Winning_Team_nGTP_Winning_Drivers<The winning team and drivers in the GTP category>
+GTO_Winning_Team_nGTO_Winning_Drivers<The winning team and drivers in the GTO category>
+GTU_Winning_Team_nGTU_Winning_Drivers<The winning team and drivers in the GTU category>
+Results<A link to view the detailed results of the event>",csv/203-csv/101.tsv
+"The table contains information about the Snooker season 1996/1997, including dates, tournament names, venues, cities, winners, runners-up, and scores. There are three rows of data, each representing a different tournament.","Date<The start date of the tournament> 
+Date_1<The end date of the tournament> 
+NULL_COL<The country or location code where the tournament was held> 
+Rank<The ranking or status of the tournament, with ""WR"" indicating a world-ranking event> 
+Tournament_name<The name of the snooker tournament> 
+Venue<The specific location where the tournament was held> 
+City<The city where the tournament took place> 
+Winner<The winner of the tournament> 
+Runner_up<The runner-up or losing finalist of the tournament> 
+Score<The final score of the tournament, with the winner's score first>",csv/203-csv/140.tsv
+"The table contains information about the music releases of David Rogers, a singer, including the year of release, single title, peak chart positions in US Country and CAN Country, and the corresponding album.","Year<The year when the single was released> 
+Single<The title of the single released by David Rogers> 
+Peak_chart_npositions_nUS_Country<The highest position the single reached on the US Country music charts> 
+Peak_chart_npositions_nCAN_Country<The highest position the single reached on the CAN Country music charts, with '-' indicating no data available> 
+Album<The album on which the single was included, or 'singles only' if it was not part of a full album>",csv/204-csv/919.tsv
+"The table contains information about member associations of the East Asian Football Federation, including their joining year, national men's and women's teams, and top domestic leagues.","Association<The name of the football association>
+Joining_year<The year the association joined the East Asian Football Federation>
+Mens_team<The name of the national men's football team>
+Womens_team<The name of the national women's football team>
+League<The name of the top domestic football league>",csv/203-csv/495.tsv
+"The table provides information about the ""Dress of the Year"" for specific years, including the designers, brief descriptions of the dresses, and details about who selected them and the associated publications.","Year<The year for which the Dress of the Year was awarded>
+Designers<The names of the designers responsible for creating the Dress of the Year>
+Brief_description<Short descriptions of the dresses or outfits that were chosen as the Dress of the Year>
+Selected_by_<The individuals who selected the Dress of the Year>
+Associated_publication<The publications associated with the selection and announcement of the Dress of the Year>",csv/203-csv/205.tsv
+"The table contains data about three high schools in Los Angeles, including Thomas Jefferson High School, Marc and Eva Stern Math and Science School, and Woodrow Wilson High School. The data includes scores or ratings for each school from 2007 to 2011.","School<The name of the high school> 
+c_2007<The score or rating of the school in the year 2007> 
+c_2008<The score or rating of the school in the year 2008> 
+c_2009<The score or rating of the school in the year 2009> 
+c_2010<The score or rating of the school in the year 2010> 
+c_2011<The score or rating of the school in the year 2011>",csv/204-csv/989.tsv
+"The table lists information about Presidents of the United States, specifically their age and duration as the oldest living president. It includes details such as when they became and ceased to be the oldest living president, their age at the start and end dates, and the duration in years and days.","President<The name of the President of the United States>
+Became_Oldest_Living_President<The date when the president became the oldest living president>
+Ceased_to_Be_Oldest_Living_President<The date when the president ceased to be the oldest living president>
+Age_at_Start_Date<The age of the president at the start of their term as the oldest living president>
+Age_at_End_Date<The age of the president at the end of their term as the oldest living president>
+Duration_Years_Days<The duration in years and days that the president was the oldest living president>
+Duration_Days<The total number of days that the president was the oldest living president>",csv/203-csv/260.tsv
+"The table contains information about the winners of the Florida Derby, including the year, winner's name, age, jockey, trainer, owner, distance, time, purse, and grade. The data spans from 1957 to 2014, with varying levels of detail provided for each entry.","Year<The year the Florida Derby took place>
+Winner<The name of the horse that won the Florida Derby>
+Age<The age of the winning horse>
+Jockey<The name of the jockey who rode the winning horse>
+Trainer<The name of the trainer responsible for the winning horse>
+Owner<The owner of the winning horse>
+Distance_nMiles<The distance of the Florida Derby in miles>
+Time<The time it took for the winning horse to complete the race>
+Purse<The total amount of money awarded as prize for the winner>
+Gr<The grade or level of the competition, with 'I' indicating a Grade I event>",csv/204-csv/502.tsv
+"The table appears to contain information about episodes from the 1965 TV series ""I Spy"". It lists various details such as episode numbers, titles, directors, writers, original air dates, and production codes.","No_in_nseries<The overall episode number in the series>
+No_in_nseason<The episode number within a specific season>
+Title<The title of the episode>
+Directed_by<The person who directed the episode>
+Written_by<The person or people who wrote the episode, including both teleplay and story credits>
+Original_air_date<The date when the episode originally aired>
+Prod_ncode<The production code for the episode>",csv/203-csv/315.tsv
+"The table provides information about the film industry, specifically ranking countries by their box office performance. It includes data on the country's rank, name, total box office revenue, year of data, and the percentage of box office revenue from national films.","Rank<The ranking position of the country in terms of box office performance> 
+Country<The name of the country being referred to> 
+Box_Office<The total box office revenue for the country> 
+Year<The year in which the box office data was recorded> 
+Box_office_nc_from_national_films<The percentage of box office revenue that comes from national films, with a '-' indicating no data or not applicable>",csv/203-csv/448.tsv
+"The table contains a list of world records in rowing, including the type of boat, the time achieved, the crew members, the nation they represent, the date the record was set, and the location of the meet where the record was achieved.","Boat<The type of boat used in the rowing competition> 
+Time<The time achieved by the crew in the rowing competition> 
+Crew<The names of the crew members who participated in the rowing competition> 
+Nation<The country that the crew represents in the rowing competition> 
+Date<The year when the world record was set> 
+Meet<The name of the meet or event where the world record was achieved, although it appears to be empty in the provided table> 
+Location<The city and country where the meet or event took place>",csv/203-csv/360.tsv
+"The table contains a list of 2008 New Zealand fuel economy ratings for various car models, including their fuel type, fuel efficiency in miles per US gallon and liters per 100 kilometers, and a New Zealand rating in stars.","Model<The name of the car model> 
+Fuel_Type<The type of fuel used by the car, either diesel or petrol> 
+mpg_US_gallons<The fuel efficiency of the car in miles per US gallon> 
+L_100 km<The fuel efficiency of the car in liters per 100 kilometers> 
+NZ_Rating_nStars<The New Zealand fuel economy rating of the car in stars>",csv/204-csv/815.tsv
+"The table contains information about the top scorers in the 2011 USL Pro season, including their rank, name, nationality, club, and number of goals scored.","Rank<The ranking position of the player in the 2011 USL Pro season>
+Player<The name of the player who participated in the 2011 USL Pro season>
+Nation<The country of origin or nationality of the player>
+Club<The football club that the player represented during the 2011 USL Pro season>
+Goals<The total number of goals scored by the player in the 2011 USL Pro season>",csv/204-csv/705.tsv
+"The table contains a list of places in Pennsylvania, specifically those whose names start with ""Sa"" to ""Si"". It provides information about each place, including its name, the number of counties it is located in, the principal county, and its lower and upper zip codes.","Name_of_place<The name of the location in Pennsylvania> 
+Number_of_counties<The total count of counties where the place is situated> 
+Principal_county<The main or primary county associated with the place> 
+Lower_zip_code<The lowest zip code assigned to the place, if available> 
+Upper_zip_code<The highest zip code assigned to the place, if available>",csv/203-csv/443.tsv
+"The table contains information about galaxies in the IC 342/Maffei Group, including their name, type, celestial coordinates (right ascension and declination), redshift, and apparent magnitude.","Name <The name of the galaxy> 
+Type <The morphological type of the galaxy, such as Im for irregular or SA(s)d for spiral> 
+RA_J2000 <The right ascension of the galaxy in hours, minutes, and seconds, based on the J2000 equinox> 
+Dec_J2000 <The declination of the galaxy in degrees, minutes, and seconds, based on the J2000 equinox> 
+Redshift_km_s <The redshift of the galaxy, which indicates its velocity relative to Earth, in kilometers per second> 
+Apparent_Magnitude <The apparent brightness of the galaxy, with lower values indicating brighter objects>",csv/204-csv/189.tsv
+"The table lists hospitals in North Carolina, providing details such as their name, location, capacity (in terms of hospital beds and operating rooms), trauma designation, affiliation, and any additional notes. The information varies by hospital, with some having specific affiliations or designations.","Name<The full name of the hospital>
+City<The city where the hospital is located>
+Hospital_beds<The number of beds available in the hospital for patient care>
+Operating_rooms<The number of operating rooms equipped for surgeries and other medical procedures>
+Total<The total capacity, which seems to be a sum of hospital beds and operating rooms, though this might slightly vary based on interpretation>
+Trauma_designation<The level or type of trauma care the hospital is designated to provide, with ""-"" indicating no specified designation in the provided data>
+Affiliation<The healthcare system, network, or organization the hospital is affiliated with, if any>
+Notes<Additional information or comments about the hospital>",csv/203-csv/319.tsv
+"The table contains information about the 1960-61 Chelsea F.C. season, including the dates, opponents, venues, results, attendance, and scorers for specific matches.","Date<The date of the match> 
+Opponent<The team that Chelsea F.C. played against> 
+Venue<The location where the match was held, with 'A' indicating an away game> 
+Result<The outcome of the match, including the number of goals scored by each team> 
+Attendance<The number of people who attended the match> 
+Scorers<The players who scored goals for Chelsea F.C. during the match>",csv/204-csv/411.tsv
+"The table contains a list of former members of the United States House of Representatives, with information about their name, years of service, state represented, party affiliation, and lifespan.","Representative <The name of the former member of the United States House of Representatives>
+Years <The years during which the representative served in the House>
+State <The state that the representative represented in the House>
+Party <The political party to which the representative belonged>
+Lifespan <The birth and death years of the representative>",csv/204-csv/677.tsv
+"The table contains information about the United States House of Representatives elections in Colorado, 2008. It lists the districts, incumbents, their status in the 2008 election, and the Democratic and Republican candidates.","District<The number or identifier of the electoral district>
+Incumbent<The current holder of the office at the time of the election>
+c_2008_Status<The status of the incumbent in the 2008 election, indicating whether they were running for re-election or if the seat was open>
+Democratic<The name of the Democratic candidate in the election>
+Republican<The name of the Republican candidate in the election>",csv/203-csv/432.tsv
+"The table lists the 1998 box office number-one films in the United Kingdom, including their ranking, weekend end date, film title, and box office earnings.",num<The ranking of the film in the list> Weekend_End_Date<The date when the weekend ended for the film's box office earnings> Film<The title of the number-one film> Box_Office<The total box office earnings for the film in pounds>,csv/204-csv/377.tsv
+"The table contains rankings and scores from the 2005-06 FIS Ski Jumping World Cup, listing the rank, name, nationality, and scores of ski jumpers in two competitions (c_1st_m and c_2nd_m), along with their total points.","Rank<The position of the ski jumper in the competition> 
+Name<The full name of the ski jumper> 
+Nationality<The country that the ski jumper represents> 
+c_1st_m<The score obtained by the ski jumper in the first competition> 
+c_2nd_m<The score obtained by the ski jumper in the second competition> 
+Points<The total points earned by the ski jumper from both competitions>",csv/203-csv/503.tsv
+"The table contains information about Catherine Deneuve's award nominations, including the year, type of award, film title, and result of the nomination. The table shows that she was nominated for Best Actress and Best Supporting Actress awards in different years for various films.","Year<The year Catherine Deneuve was nominated for an award> Award<The type of award Catherine Deneuve was nominated for> Film<The title of the film for which Catherine Deneuve was nominated> Result<The outcome of Catherine Deneuve's award nomination, indicating whether she won or was nominated>",csv/200-csv/36.tsv
+"The table provides data on toy safety from 1994 to 1999, including the number of injuries and deaths among children under 15, as well as funding for toy safety by the CPSC (Consumer Product Safety Commission) and total toy sales in the US. However, some data points are missing, indicated by ""nan"" or empty cells.","Year<The year for which the toy safety data is recorded> 
+Injuries_US_$000<The number of injuries related to toys in the US, measured in thousands> 
+Deaths_age_<15<The number of deaths among children under 15 due to toy-related accidents> 
+CPSC_toy_safety_funding_nUS$_Millions<The amount of funding allocated by the CPSC for toy safety initiatives, measured in millions of US dollars> 
+Toy_sales_nUS_$_Billions<The total sales of toys in the US, measured in billions of US dollars>",csv/203-csv/66.tsv
+"The table appears to contain information about solar eclipses, with each column representing a specific eclipse event. The rows provide different types of data related to these events, including dates and numerical values that could represent durations, magnitudes, or other characteristics of the eclipses.","May_20_21_n118<The date and possibly a code or identifier for the solar eclipse on May 20-21> 
+March_9_n120<The date and possibly a code or identifier for the solar eclipse on March 9> 
+December_25_26_n122<The date and possibly a code or identifier for the solar eclipse on December 25-26> 
+October_13_14_n124<The date and possibly a code or identifier for the solar eclipse on October 13-14> 
+August_1_2_n126<The date and possibly a code or identifier for the solar eclipse on August 1-2>",csv/204-csv/182.tsv
+"The table shows the progression of the men's 200 meters world record, listing the time achieved, wind conditions, automatic timing, athlete's name, nationality, location of the race, and the date it was set.","Time<The time achieved by the athlete in seconds>
+Wind<The wind conditions during the race, with negative values indicating a headwind>
+Auto<The automatically recorded time, which may differ slightly from the manual time>
+Athlete<The name of the athlete who set the world record>
+Nationality<The country of origin of the athlete>
+Location_of_race<The city and country where the record was set>
+Date<The date when the world record was achieved, in the format year-month-day>",csv/203-csv/433.tsv
+"The table lists defunct National Basketball Association (NBA) teams, providing information about each team's city, years of activity, number of seasons played, win-loss record, winning percentage, and playoff appearances.","Team<The name of the defunct NBA team> 
+City<The city where the defunct NBA team was located> 
+Years_active<The years during which the defunct NBA team was active> 
+Seasons_played<The number of seasons played by the defunct NBA team> 
+Win–loss_record<The win-loss record of the defunct NBA team> 
+Winpercent<The winning percentage of the defunct NBA team> 
+Playoffs_appearances<The number of playoff appearances made by the defunct NBA team>",csv/204-csv/773.tsv
+"The table shows the medal count for figure skating at the Asian Winter Games, with China ranking first, followed by Japan, and then South Korea. The table lists the number of gold, silver, and bronze medals won by each nation, as well as the total number of medals.","Rank<The position of the nation in the medal count> 
+Nation<The country that participated in the figure skating event> 
+Gold<The number of gold medals won by the nation> 
+Silver<The number of silver medals won by the nation> 
+Total<The total number of medals (gold, silver, and bronze) won by the nation> 
+Bronze<The number of bronze medals won by the nation>",csv/204-csv/682.tsv
+"The table shows the medal count for swimming events at the 2005 Mediterranean Games, listing the rank, nation, and number of gold, silver, bronze, and total medals won by each country.","Rank<The overall ranking position of the nation in the swimming event> 
+Nation<The name of the country participating in the swimming event> 
+Gold<The number of gold medals won by the nation in the swimming event> 
+Silver<The number of silver medals won by the nation in the swimming event> 
+Bronze<The number of bronze medals won by the nation in the swimming event> 
+Total<The total number of medals (gold, silver, and bronze) won by the nation in the swimming event>",csv/204-csv/382.tsv
+"The table contains data about the 2012-13 Exeter City F.C. season, specifically the number of appearances made by each player in different competitions, including League, FA Cup, League Cup, and JP Trophy.","Name<The name of the football player> 
+League<The number of league appearances made by the player> 
+FA_Cup<The number of FA Cup appearances made by the player> 
+League_Cup<The number of League Cup appearances made by the player> 
+JP_Trophy<The number of JP Trophy appearances made by the player> 
+Total<The total number of appearances made by the player across all competitions>",csv/204-csv/925.tsv
+"The table contains a list of Big Brother (UK) housemates, including their series number, name, age, hometown, occupation, and status in the competition.","Series<The season or series number of Big Brother UK that the housemate participated in> 
+Name<The full name of the Big Brother UK housemate> 
+Age<The age of the housemate at the time of participation> 
+Hometown<The city or town where the housemate is from> 
+Occupation<The job or profession of the housemate before entering the Big Brother house> 
+Status<The outcome or position of the housemate in the competition, including eviction order or final placement>",csv/204-csv/444.tsv
+"The table contains information about Quebec lieutenants, including their names, districts, and terms of office, as well as the party leaders they served under. There are three entries in the table, each representing a different lieutenant.","Political_lieutenant<The name of the Quebec lieutenant>
+District_nArea<The district or area that the lieutenant represents>
+Took_Office<The year the lieutenant took office>
+Left_Office<The year the lieutenant left office>
+Party_leader<The leader of the party that the lieutenant served under>",csv/203-csv/831.tsv
+"The table contains information about the 1920-21 Newport County A.F.C. season, including the dates, opponents, venues, results, scorers, and attendance for several matches.","Date<The date of the match> 
+Opponents<The team that Newport County A.F.C. played against> 
+Venue<The location where the match was held, with 'H' indicating home and 'A' indicating away> 
+Result<The outcome of the match, including the number of goals scored by each team> 
+Scorers<The players who scored goals for Newport County A.F.C. in the match> 
+Attendance<The number of people who attended the match>",csv/204-csv/857.tsv
+"The table contains results from the 1997 World Championships in Athletics, specifically for the Women's 5000 meters event. It lists athletes' performances, including their heat number, rank, name, result time, and any notable notes about their performance.","Heat<The number of the heat in which the athlete competed>
+Rank<The athlete's ranking within their heat>
+Name<The full name of the athlete, including their country of representation>
+Result<The athlete's completion time for the 5000 meters event>
+Notes<Any additional notes or achievements related to the athlete's performance, such as qualifying for the next round (Q) or setting a seasonal best (SB)>",csv/203-csv/693.tsv
+"The table contains information about individuals who have been part of the Space and Upper Atmosphere Research Commission, including their name, term start and end dates, alma mater, fields of expertise, and educational background.","Number<Unique identifier for each individual> 
+Name<The full name of the individual> 
+Term_Started<The year when the individual's term started> 
+Term_Ended<The year when the individual's term ended> 
+Alma_Mater<The institution where the individual received their education> 
+Fields<The area of expertise or field of study for the individual> 
+Educational_Background<The highest level of education achieved by the individual>",csv/204-csv/720.tsv
+"The table contains information about the 2005-06 Sunderland A.F.C. season, including the dates, opponents, venues, results, attendance, and scorers for several matches.","Date<The date of the match> 
+Opponent<The team that Sunderland played against> 
+Venue<The location where the match was held> 
+Result<The outcome of the match, including the number of goals scored by each team> 
+Attendance<The number of people who attended the match> 
+Scorers<The players who scored goals for Sunderland during the match>",csv/203-csv/143.tsv
+"The table contains information about the Colorado Rapids Women's team performance in different years, including their division, league, regular season standings, and playoff results.","Year<The year of the team's participation> 
+Division<The level of competition the team was in, with 1 being the highest> 
+League<The name of the league the team played in, which is USL W-League in all cases> 
+Reg_Season<The team's regular season performance, including their ranking and conference> 
+Playoffs<The outcome of the team's playoff participation, or if they did not qualify>",csv/203-csv/428.tsv
+"The table contains results from the Women's 1 metre springboard diving event at the 2011 World Aquatics Championships, listing divers' ranks, names, nationalities, and scores from both preliminary and final rounds. However, only a few participants are shown in this snippet, with some not advancing to the finals as indicated by ""nan"" (not a number) values.","Rank<The overall rank of the diver in the competition> 
+Diver<The name of the diver participating in the event> 
+Nationality<The country the diver represents> 
+Preliminary_nPoints<The total points scored by the diver in the preliminary round> 
+Preliminary_nRank<The rank of the diver after the preliminary round> 
+Final_nPoints<The total points scored by the diver in the final round, if they advanced> 
+Final_nRank<The final rank of the diver after all rounds are completed, if they advanced to the finals>",csv/204-csv/316.tsv
+"The table contains information about Israeli athletes who participated in the 1972 Summer Olympics, including their names, sports, events, placings, and performances.","Name<The name of the Israeli athlete participating in the Olympics> 
+Sport<The sport in which the athlete competed> 
+Event<The specific event within the sport that the athlete participated in> 
+Placing<The athlete's final position or ranking in the event> 
+Performance<The athlete's result or score in the event, including times, distances, or other relevant metrics>",csv/203-csv/0.tsv
+"The table contains a list of episodes from series 10 of London's Burning, including the episode number, director, writer, and original air date.",num<The episode number in the series> Directed_By<The person who directed the episode> Written_By<The person who wrote the episode> Original_Air_Date<The date when the episode originally aired>,csv/204-csv/233.tsv
+"The table contains a list of Legion of Super-Heroes members, including their character name, real name, home world, membership notes, and powers. The membership notes provide information on when each character first appeared and joined the Legion, while the powers column describes each character's unique abilities.","Character<The name of the Legion of Super-Heroes member>
+Real_name<The actual name of the Legion of Super-Heroes member>
+Home_world<The planet or world where the Legion of Super-Heroes member is from>
+Membership_notes<Notes on when the character first appeared and joined the Legion of Super-Heroes>
+Powers<The unique abilities or powers possessed by each Legion of Super-Heroes member>",csv/203-csv/32.tsv
+"The table provides sales data for three Škoda Auto models (Octavia, Yeti, and Felicia) over a period of 23 years, from 1991 to 2013. The data shows the number of units sold for each model in each year.","Model<The name of the Škoda Auto model>
+c_1991<The number of units sold in 1991>
+c_1995<The number of units sold in 1995>
+c_1996<The number of units sold in 1996>
+c_1997<The number of units sold in 1997>
+c_1998<The number of units sold in 1998>
+c_1999<The number of units sold in 1999>
+c_2000<The number of units sold in 2000>
+c_2001<The number of units sold in 2001>
+c_2002<The number of units sold in 2002>
+c_2003<The number of units sold in 2003>
+c_2004<The number of units sold in 2004>
+c_2005<The number of units sold in 2005>
+c_2006<The number of units sold in 2006>
+c_2007<The number of units sold in 2007>
+c_2008<The number of units sold in 2008>
+c_2009<The number of units sold in 2009>
+c_2010<The number of units sold in 2010>
+c_2011<The number of units sold in 2011>
+c_2012<The number of units sold in 2012>
+c_2013<The number of units sold in 2013>",csv/204-csv/21.tsv
+"The table contains information about the 1998 Arizona Cardinals season, including the week number, date, TV and time, opponent, result, and attendance for each game.","Week<The week number of the season> 
+Date<The date of the match> 
+TV_Time<The TV channel and time of the match> 
+Opponent<The team that the Arizona Cardinals played against> 
+Result<The outcome of the match, with ""W"" indicating a win and ""L"" indicating a loss, along with the score> 
+Attendance<The number of people who attended the match>",csv/203-csv/21.tsv
+"The table contains information about the 1977 Dallas Cowboys season, including the week number, date, result, record, opponent, points scored for and against, first downs, and attendance for each game.","Week<The week number of the season> 
+Date<The date of the match> 
+Result<The outcome of the game, either Win or Loss> 
+Record<The team's win-loss record at that point in the season> 
+Opponent<The team that the Dallas Cowboys played against> 
+Points_For<The number of points scored by the Dallas Cowboys> 
+Points_Against<The number of points scored by the opposing team> 
+First_Downs<The number of first downs achieved by the Dallas Cowboys> 
+Attendance<The number of people who attended the game>",csv/203-csv/318.tsv
+"The table provides information about minor major seventh chords, listing the chord name, root note, minor third, perfect fifth, and major seventh for each chord. It includes three examples of minor major seventh chords",Chord<The name of the minor major seventh chord> Root<The root note of the chord> Minor_Third<The minor third note of the chord> Perfect_Fifth<The perfect fifth note of the chord> Major_Seventh<The major seventh note of the chord>,csv/204-csv/653.tsv
+"The table appears to contain information about music releases, specifically songs and albums by various artists, along with their performance on Billboard charts. The data includes the year of release, artist name, album title, song title, and rankings on the Billboard Hot 100 and Billboard Hot R&B/Hip-Hop charts.","Chart_Year<The year the song or album was released>
+Artist<The name of the artist who released the song or album>
+Album<The title of the album that the song belongs to>
+Song<The title of the song>
+Billboard_Hot_100<The ranking of the song on the Billboard Hot 100 chart>
+Billboard_Hot_RB_Hip_Hop<The ranking of the song on the Billboard Hot R&B/Hip-Hop chart>
+NULL_COL<An empty column with no data, possibly reserved for future use or additional information>",csv/204-csv/895.tsv
+"The table contains information about the Ballon d'Or 1965, listing players who received votes, along with their rank, name, club, nationality, and points received.","Rank<The position or ranking of the player in the Ballon d'Or 1965> 
+Name<The full name of the football player> 
+Club<The football club the player was associated with at the time> 
+Nationality<The country the player represents> 
+Points<The total number of points the player received in the voting for the Ballon d'Or 1965>",csv/203-csv/578.tsv
+"The table contains information about songs from Disney movies, including the song title, performer, film it's from, and length of the song. There are 3 rows of data, each representing a different song.",num<The numerical identifier for the song> Title<The name of the song> Performers<The artist or artists who performed the song> Film<The Disney movie that the song is featured in> Length<The duration of the song in minutes and seconds>,csv/203-csv/85.tsv
+"The table contains information about Ralph Jones' coaching record at the University of Illinois, including the school, season, overall record, conference record, place finished, and postseason results.","School<The name of the university where Ralph Jones coached> Season<The specific year or years of the coaching season> Record<The overall win-loss record for that season> Conference_Record<The win-loss record within the conference> Place<The finishing position in the conference standings> Postseason<Any postseason games or tournaments played, if applicable>",csv/204-csv/640.tsv
+"The table contains information about teams participating in the Super League XVIV, including their names, stadiums, capacities, and locations.","Team<The name of the rugby league football team>
+Stadium<The name of the stadium where the team plays>
+Capacity<The maximum number of spectators that the stadium can hold>
+City_Area<The city or area where the team is based>",csv/204-csv/440.tsv
+"The table lists international cricket centuries scored at Eden Gardens, including details such as the score, player, team, balls faced, innings, opposing team, date, and result.","No<The serial number of the century scored> 
+Score<The total runs scored by the player in that innings> 
+Player<The name of the cricketer who scored the century> 
+Team<The country or team the player represents> 
+Balls<The number of balls faced by the player to achieve the score> 
+Inns<The innings in which the century was scored, either 1 or 2> 
+Opposing_team<The team against which the century was scored> 
+Date<The date on which the match took place> 
+Result<The outcome of the match for the player's team, either Won or Lost>",csv/204-csv/167.tsv
+"The table appears to contain information about music releases by an artist named Sinnamon, including the year of release, song title, record label, and chart performance on two specific Billboard charts","Year<The year the song was released> 
+Name<The title of the song> 
+Label<The record label that released the song> 
+Hot_Black_Singles<The chart position of the song on the Hot Black Singles Billboard chart> 
+Club_Play_Singles<The chart position of the song on the Club Play Singles Billboard chart>",csv/203-csv/480.tsv
+"The table contains information about Melissa Morrison-Howard's athletic performances, specifically her positions and events in various competitions held in different venues around the world from 1997 to 2003.","Year<The year the competition took place> 
+Competition<The name of the athletic competition> 
+Venue<The location where the competition was held> 
+Position<The position or rank Melissa Morrison-Howard achieved in the competition> 
+Event<The specific athletic event she participated in>",csv/203-csv/259.tsv
+"The table appears to list the top transfers made by Sandro Rosell, with details including the rank of the transfer, the player's name, the team the player was transferred from, the transfer fee in millions of euros, and the year the transfer took place.",Rank<The ranking of the transfer> Player<The name of the player being transferred> c_From<The team the player was transferred from> Transfer_Fee_n€_millions<The transfer fee paid in millions of euros> Year<The year the transfer occurred>,csv/203-csv/748.tsv
+"The table provides information about the performance of Brose Baskets, a basketball team, across different seasons. It includes details such as the season, tier, league, position, postseason results, German Cup outcomes, and participation in European competitions.","Season<The year or period of the basketball season> 
+Tier<The level or division of the league the team played in> 
+League<The name of the league where Brose Baskets competed> 
+Pos<The final position or ranking of the team within their league> 
+Postseason<The outcome or stage reached by the team during the postseason playoffs> 
+German_Cup<The result or participation status of Brose Baskets in the German Cup competition> 
+European_competitions<Details about the team's participation and performance in European basketball competitions>",csv/203-csv/725.tsv
+"The table provides information about the Koltsovo Airport's passenger and cargo traffic, as well as aircraft landings, over several years. It includes data on total passengers, domestic and international flights, cargo tonnes, and aircraft landings.","Year<The year for which the airport data is recorded> 
+Total_npassengers<The total number of passengers at the airport> 
+Passenger_nChange<The percentage change in the number of passengers compared to the previous year> 
+Domestic<The number of domestic passengers> 
+International_ntotal<The total number of international passengers> 
+International_nnon_CIS<The number of international passengers from non-CIS countries> 
+CIS<The number of international passengers from CIS countries> 
+Aircraft_nLandings<The number of aircraft landings at the airport> 
+Cargo_ntonnes<The amount of cargo handled by the airport in tonnes>",csv/203-csv/111.tsv
+"The table contains information about the 1993 German motorcycle Grand Prix, including the position of riders, their names, manufacturers, time retired or finished, and points earned. The data shows that some riders retired from the race, while others completed it with a certain time difference from the leader.","Pos<The position of the rider in the race> 
+Rider<The name of the motorcycle rider> 
+Manufactuer<The manufacturer of the motorcycle used by the rider> 
+Time_Retired<The time at which the rider retired or finished the race, with ""Retirement"" indicating that the rider did not complete the race> 
+Points<The points earned by the rider in the race, with ""nan"" indicating that no points were awarded or available>",csv/204-csv/303.tsv
+"The table contains information about the 1996 Australian Sports Sedan Championship, including the position of each driver, their name, car number, type of car, entrant, and points scored at different locations (Lak, Ora, San, Phi) with a total score.","Position<The final ranking of the driver in the championship>
+Driver<The name of the driver participating in the championship>
+No<The unique number assigned to the driver's car>
+Car<The type and model of the car driven by the participant>
+Entrant<The person or team responsible for entering the car into the competition>
+Lak<Points scored at the Lak location>
+Ora<Points scored at the Ora location>
+San<Points scored at the San location>
+Phi<Points scored at the Phi location>
+Total<The total points scored by the driver across all locations>",csv/204-csv/955.tsv
+"The table contains data from the 1962 California gubernatorial election, showing the percentage of votes and total number of votes for each candidate (Brown, Nixon, and Wyckoff) in different counties.","County<The name of the county in California> 
+Brown<The percentage of votes received by Brown in the election> 
+Votes<The total number of votes received by Brown in the election> 
+Nixon<The percentage of votes received by Nixon in the election> 
+Votes_1<The total number of votes received by Nixon in the election> 
+Wyckoff<The percentage of votes received by Wyckoff in the election> 
+Votes_2<The total number of votes received by Wyckoff in the election>",csv/203-csv/520.tsv
+"The table contains information about Marcos Pizzelli's goals, including the goal number, date, venue, opponent, score, result, and competition. There are three entries in the table, each representing a different match.","Goal<The number of the goal scored by Marcos Pizzelli> 
+Date<The date of the match when the goal was scored> 
+Venue<The location where the match took place> 
+Opponent<The team that Marcos Pizzelli's team played against> 
+Score<The score at the time the goal was scored> 
+Result<The final result of the match> 
+Competition<The type of competition or tournament in which the match was played>",csv/203-csv/722.tsv
+"The table contains a list of districts in Maharashtra, India, along with their respective details such as code, formation date, headquarters, administrative division, area, population, density, urban percentage, literacy rate, sex ratio, and number of tehsils.","No<The serial number of the district>
+Name<The name of the district>
+Code<The unique code assigned to the district>
+Formed<The date when the district was formed>
+Headquarters<The city or town that serves as the administrative headquarters of the district>
+Administrative_nDivision<The administrative division under which the district falls>
+Area_km2<The total area of the district in square kilometers>
+Population_n2001_census<The population of the district according to the 2001 census>
+percent_of_State_nPopulation<The percentage of the state's population that resides in the district>
+Density_nper_km2<The population density of the district per square kilometer>
+Urban_percent<The percentage of the district's population that lives in urban areas>
+Literacy_percent<The literacy rate of the district as a percentage>
+Sex_Ratio<The sex ratio of the district, representing the number of females per 1000 males>
+Tehsils<The number of tehsils or sub-districts within the district>
+Source<The source of the information provided for the district>",csv/202-csv/260.tsv
+"The table contains information about the 1996 All-Ireland Senior Hurling Championship, listing players, their counties, scores, and opponents. It appears to be a ranking of top-scoring players in the championship.","Rank<The position or ranking of the player in the championship> 
+Player<The name of the player participating in the championship> 
+County<The county that the player represents in the championship> 
+Tally<The score achieved by the player, represented as goals and points (e.g., 2-2 for 2 goals and 2 points)> 
+Total<The total score or points accumulated by the player> 
+Opposition<The opposing team or county that the player's team faced in the championship>",csv/204-csv/505.tsv
+"The table shows the ranking and medal count for different nations in the Swatch FIVB World Tour 2007. It lists the rank, nation, and number of gold, silver, and bronze medals won by each country, as well as the total number of medals.","Rank<The position of the nation in the overall ranking> Nation<The name of the country participating in the tournament> Gold<The number of gold medals won by the nation> Silver<The number of silver medals won by the nation> Bronze<The number of bronze medals won by the nation> Total<The total number of medals (gold, silver, and bronze) won by the nation>",csv/204-csv/509.tsv
+"The table contains information about the 1972 Minnesota Vikings season, including the week number, date, opponent, final score, team record, venue, and attendance for select games.","Week<The week number of the game> 
+Date<The date of the match> 
+Opponent<The team that the Minnesota Vikings played against> 
+Results_nFinal_score<The final score of the game, including win or loss> 
+Results_nTeam_record<The team's record after the game, in terms of wins and losses> 
+Venue<The location where the game was played> 
+Attendance<The number of people who attended the game>",csv/204-csv/404.tsv
+"The table appears to be a filmography of Daniel Tovar, listing his works in various formats such as feature films and telenovelas, along with the year of release, title, role played, and related links.","Year<The year of release for each title> Title<The name of the movie or show> Rol<The role played by Daniel Tovar in the production> Format<The type of media, such as feature film or telenovela> Related_Links<Links to external sources related to the title, such as trailers or official websites>",csv/203-csv/23.tsv
+"The table contains information about episodes from the 1967 TV series ""Fantastic Four"". Each episode has a unique number, production number, title, and summary of the plot. The air dates of the episodes are also provided.",Eps_num<The episode number of the Fantastic Four TV series> Prod_num<The production number of the episode> Title<The title of the episode> Summary<A brief description of the episode's plot> Air_Date<The date when the episode was aired>,csv/203-csv/740.tsv
+"The table appears to contain information about music releases, specifically singles or EPs, with details on the title, tracks, record label, year of release, and associated album. There are three entries in the table, each representing a different music release.","Single_EP<The title of the single or EP> Tracks<The name of the track or tracks included in the release> Label<The record label that released the music> Year<The year the music was released> Album<The album associated with the release, if any>",csv/204-csv/817.tsv
+"The table contains information about Hélio Castroneves' performance in various racing events, specifically the Indianapolis 500. It lists the year of the event, the type of chassis and engine used, the starting position, finishing position, and the team he was part of.","Year<The year of the racing event> 
+Chassis<The type of chassis used by Hélio Castroneves in the racing event> 
+Engine<The type of engine used by Hélio Castroneves in the racing event> 
+Start<The starting position of Hélio Castroneves in the racing event> 
+Finish<The finishing position of Hélio Castroneves in the racing event> 
+Team<The team that Hélio Castroneves was part of during the racing event>",csv/203-csv/493.tsv
+"The table lists various Indian timber trees, providing information about their common names, binomial nomenclatures, colors, densities, locations where they can be found, and characteristics including usage and status.","Common_name <The common or local name by which the tree is known>
+Binomial_nomenclature <The scientific name of the tree species>
+Colour <The color of the wood from the tree>
+Density_¹ <The density of the wood measured in kilograms per cubic meter>
+Location <The geographical regions or states where the tree can be found>
+Characteristics_Usage_and_Status <A description of the wood's characteristics, its uses, and conservation status>",csv/203-csv/738.tsv
+"The table provides information about the districts on the island of Saint Helena, including their areas in square kilometers and square miles, as well as their population in 1998 and 2008. The table also includes a column for the population density per square kilometer in 2008.","District_nbalance_n[clarification_needed]<The name or identifier of each district on Saint Helena>
+Area_nkm2<The area of each district in square kilometers>
+Area_nsq_mi<The area of each district in square miles>
+Pop_n1998<The population of each district in the year 1998>
+Pop_n2008<The population of each district in the year 2008>
+Pop_km²_n2008<The population density per square kilometer for each district in the year 2008>",csv/203-csv/159.tsv
+"The table contains information about Tina Weirather's performance in downhill skiing competitions, including the season, date, location, discipline, and place finished. The data spans from 2011 to 2012, with three entries for different competitions.","Season<The year of the competition>
+Date<The specific date of the competition>
+Location<The venue where the competition took place>
+Discipline<The type of skiing event, in this case, all are Downhill>
+Place<The ranking or position achieved by Tina Weirather in each competition>",csv/204-csv/921.tsv
+"The table contains information about the 2010 Formula BMW Europe season, including the teams, drivers, and their participation details.","Team<The name of the racing team participating in the season> 
+No<The car number assigned to the driver> 
+Driver<The name of the driver participating in the season> 
+Class<The class or category of the driver, with 'R' indicating a rookie> 
+Rounds<The rounds or events in which the driver participated, with 'All' indicating full participation and '1-6' indicating partial participation>",csv/204-csv/305.tsv
+"The table contains information about episodes of the U.S. TV series ""Farmer Wants a Wife"", including episode numbers, titles, air dates, timeslots, ratings, shares, demographic ratings, viewership, and weekly ranks.","num<The episode number of the TV series>
+Episode<The title of each episode>
+Air_Date<The date when each episode was aired>
+Timeslot<The time slot when each episode was broadcasted>
+Rating<The overall rating received by each episode>
+Share<The share of viewers watching each episode compared to other channels at the same time>
+c_18_49<The demographic rating for viewers aged 18-49, including ranking>
+Viewers<The number of viewers who watched each episode, including ranking>
+Weekly_Rank<The weekly rank of the TV series based on its viewership and ratings>",csv/204-csv/998.tsv
+"The table contains information about Hannes Hopley's performance in various athletic competitions, including the All-Africa Games and Commonwealth Games, from 2003 to 2007. It lists the year, competition, venue, position, event, and notes for each of his performances.","Year<The year the competition took place> 
+Competition<The name of the athletic competition> 
+Venue<The location where the competition was held> 
+Position<The ranking or position achieved by Hannes Hopley in the competition> 
+Event<The specific athletic event in which Hannes Hopley participated> 
+Notes<Additional information, typically the distance or measurement achieved by Hannes Hopley in the event>",csv/204-csv/483.tsv
+"The table contains information about representatives from Bexar County, Texas, including their name, party affiliation, hometown city, and district number. There are three representatives listed, all from San Antonio, with two being Democrats and one being a Republican.",Representative<The name of the representative> Party<The political party affiliation of the representative> Home_Town_City<The hometown city of the representative> District<The district number represented by the representative>,csv/203-csv/155.tsv
+"The table provides information about the CD Cudillero football team's performance across different seasons, including the season year, level of competition, division, and final place achieved.","Season<The year or range of years for each football season> 
+Level<The level of competition, with lower numbers indicating higher levels> 
+Division<The specific division or league in which the team competed> 
+Place<The team's final position or ranking within their division at the end of each season>",csv/203-csv/632.tsv
+"The table contains information about songs from the movie ""Shree 420"", including their title, singers, lyricist, and length. There are three songs listed in the table.","num<The song number or identifier> Title<Song title from the movie ""Shree 420""> Singers<The names of the singers who performed the song> Lyricist<The person who wrote the lyrics for the song> Length<The duration of the song in minutes and seconds>",csv/203-csv/816.tsv
+"The table contains information about the Baltimore Americans, a sports team, and their performance in various seasons. The data includes the year, division, league, regular season ranking, playoff results, and national cup status.","Year<The year of the season> 
+Division<The division the team played in, with N/A indicating no division or unknown> 
+League<The league the team participated in, specifically the American Soccer League (ASL)> 
+Reg_Season<The team's ranking in the regular season> 
+Playoffs<The team's performance in the playoffs, including whether they were champions or did not participate> 
+National_Cup<The team's status in the national cup competition, with ? indicating unknown or no information>",csv/203-csv/284.tsv
+"The table contains information about the 2007-08 Washington Huskies men's basketball team, including player details such as name, height, weight, position, class, hometown, and previous teams.","num<The jersey number of the player> 
+Name<The full name of the player> 
+Height<The height of the player in feet and inches> 
+Weight_lbs<The weight of the player in pounds> 
+Position<The position played by the player, such as Forward (F) or Center (C)> 
+Class<The class or year of the player, such as Junior (Jr.) or Redshirt Sophomore (RS So.)> 
+Hometown<The hometown or city of origin for the player> 
+Previous_Teams<The previous school or team that the player was part of before joining the Washington Huskies>",csv/204-csv/83.tsv
+"The table contains information about the Olympic Oath, specifically listing the Olympics event, the athlete who took the oath, the judge or official involved, the coach (if applicable), and the language used during the oath. There are three entries in the table, each representing a different Olympic event.","Olympics<The name of the Olympic event>
+Athlete<The name of the athlete who took the Olympic Oath>
+Judge_Official<The name of the judge or official involved in the Olympic Oath ceremony>
+Coach<The name of the coach (if applicable), with a dash indicating no coach was listed>
+Language<The language used during the Olympic Oath ceremony, which may include multiple languages if spoken by different individuals>",csv/203-csv/772.tsv
+"The table contains information about Radhika Pandit's film career, listing her movies from 2008 to 2011, along with her roles, languages, and notable awards or nominations.","Year<The year the film was released> 
+Film<The title of the movie> 
+Role<The character played by Radhika Pandit in the film> 
+Language<The language in which the movie was made> 
+Notes<Awards or nominations received by Radhika Pandit for her performance in the film>",csv/203-csv/463.tsv
+"The table lists various thread standards, including their nominal size, outer diameter, threads per inch, pitch, inner diameter, and cable diameter. Each row represents a specific thread standard, such as PG9, PG21, and PG42, with corresponding measurements in both millimeters and inches.","Thread_nnominal_size<The nominal size of the thread standard>
+Outer_diameter_n[mm_in]<The outer diameter of the thread in both millimeters and inches>
+Threads_per_inch_nTPI<The number of threads per inch>
+Pitch_n[in_mm]<The pitch of the thread in both inches and millimeters>
+Inner_diameter_n[mm_in]<The inner diameter of the thread in both millimeters and inches>
+Cable_diameter_n[mm_in]<The recommended cable diameter range in both millimeters and inches>",csv/204-csv/142.tsv
+"The table contains a list of cities and towns in Romania, providing information about their population in 2011 and 2002, altitude in meters, and the year they were granted status or first attested. However, some data is missing, indicated by ""nan"" for altitude and empty cells for the year status was granted.","City<The name of the city or town in Romania> 
+County<The county where the city or town is located> 
+Population_2011<The population of the city or town according to the 2011 census> 
+Population_2002<The population of the city or town according to the 2002 census> 
+Altitude_m<The altitude of the city or town in meters, with ""nan"" indicating missing data> 
+Year_status_ngranted*_or_nfirst_attested†<The year the city or town was granted status or first attested, with empty cells indicating missing data>",csv/204-csv/454.tsv
+"The table contains information about Pieter de Villiers' athletic career, specifically his performances in various track and field competitions. The data includes the year of the competition, the name of the competition, the venue where it took place, his position or ranking in the event, the specific event he participated in, and additional notes which appear to be his performance times.","Year<The year the athletic competition took place> 
+Competition<The name of the athletic competition or championships> 
+Venue<The location where the athletic competition was held> 
+Position<The athlete's ranking or position in the event> 
+Event<The specific track and field event Pieter de Villiers participated in> 
+Notes<Additional information, likely the performance time achieved by Pieter de Villiers in the event>",csv/203-csv/487.tsv
+"The table describes the properties of decimal floating point formats, including decimal32, decimal64, decimal128, and a variable format decimal32k. It outlines the minimum exponent values, combination field sizes, and coefficient sizes for each format.","decimal32<The smallest decimal32 floating point format> 
+decimal64<The decimal64 floating point format with larger range and precision than decimal32> 
+decimal128<The largest decimal floating point format among the three with the highest range and precision> 
+decimal32k<A variable decimal floating point format with adjustable properties based on a formula> 
+Format<Description of each property for the corresponding decimal floating point formats, including minimum normalized values, combination field sizes, and coefficient sizes>",csv/204-csv/326.tsv
+"The table contains a list of episodes from the TV show ""The Famous Jett Jackson"", including their series number, season number, episode title, premiere date, and production code. There are 3 episodes listed in total, with premiere dates ranging from 1998 to 1999.",Series_Number<The overall number of the episode in the series> Season_Number<The season number that the episode belongs to> Episode_Title<The title of the episode> Premiere_Date<The date when the episode was first aired> Production_Code<A unique code assigned to the episode for production purposes>,csv/203-csv/768.tsv
+"The table provides information about the Orange Line of the Los Angeles Metro, including the names of stations, available connections such as other metro lines and bus services, the city or neighborhood where each station is located, parking availability, and the date when each station was opened.","Stations<The name of each station on the Orange Line>
+Connections<Available connections at each station, including other metro lines and bus services>
+City_Neighborhood<The city or neighborhood where each station is located>
+Parking<The number of parking spaces available at each station>
+Date_Opened<The date when each station was opened>",csv/204-csv/289.tsv
+"The table contains opinion polling data for the 2008 United States presidential election in Iowa, including information about the poll source, sample size, margin of error, date, and results for Democratic and Republican candidates.","Poll_Source <The organization or entity that conducted the poll>
+Sample_Size <The number of participants in the poll>
+Margin_of_Error <The potential difference between the poll results and the actual election outcome>
+Date <The time period during which the poll was conducted>
+Democrat <The name of the Democratic candidate being polled>
+percent <The percentage of support for the Democratic candidate>
+Republican <The name of the Republican candidate being polled>
+percent_1 <The percentage of support for the Republican candidate>",csv/203-csv/662.tsv
+"The table appears to contain information about episodes of a TV show, specifically ""My Brother and Me"". Each row represents an episode, with details such as the series number, season number, title, notes, and original air date. The notes column provides a brief summary of each episode's plot.",Series_num<The episode's series number> Season_num<The episode's season number> Title<The title of the episode> Notes<A brief summary of the episode's plot> Original_air_date<The original air date of the episode>,csv/204-csv/803.tsv
+"The table contains information about the performance of CF Palencia, a football team, across different seasons. It lists the season, tier, division, and place achieved by the team in each season.",Season<The year or period of the football competition> Tier<The level or ranking of the league or division> Division<The specific league or division that CF Palencia participated in> Place<The final position or rank achieved by CF Palencia in the division>,csv/203-csv/553.tsv
+"The table contains information about players selected in the 1989 NHL Entry Draft, including their pick number, name, position, nationality, the NHL team that drafted them, and their college or junior club team at the time of the draft.","Pick_num<The numerical order in which a player was selected in the draft> 
+Player<The name of the player selected in the draft> 
+Position<The position the player plays on the ice, such as goalie, left wing, or right wing> 
+Nationality<The country of origin for the player> 
+NHL_team<The National Hockey League team that selected the player in the draft> 
+College_junior_club_team<The name of the college or junior club team the player was part of before being drafted into the NHL>",csv/203-csv/617.tsv
+"The table contains information about contestants in the Reina Nacional de Belleza Miss República Dominicana 2007 beauty pageant, including their represented region, name, age, height, and hometown.",Represented<The region or province that the contestant is representing> Contestant<The full name of the contestant> Age<The age of the contestant at the time of the competition> Height<The height of the contestant in meters> Hometown<The city or town where the contestant is from>,csv/203-csv/849.tsv
+"The table contains information about the 2010 Woodlands Wellington FC season, specifically listing players who joined the team, their positions, and details about their transfer.","Position<The football position of the player> 
+Player<The name of the player who joined the team> 
+Transferred_c_From<The previous team or status of the player before joining Woodlands Wellington FC> 
+Date<The date when the player joined the team>",csv/204-csv/290.tsv
+"The table contains information about the women's 400-meter individual medley swimming event at the 1995 Pan American Games, including the rank, name, nationality, and time of each participant. However, some ranks are missing (represented as ""nan"") and the times seem to be unusually high, suggesting they might not be in seconds but rather in a different unit or possibly an error in the data.","Rank<The position or ranking of the athlete in the event> 
+Name<The name of the participating athlete> 
+Nationality<The country that the athlete represents> 
+Time<The time taken by the athlete to complete the 400-meter individual medley, potentially in an unusual unit or with data errors>",csv/204-csv/203.tsv
+"The table provides information about characters from the TV series ""Silent Witness"", including the actors who played them, the series they appeared in, and additional notes about their storylines and backgrounds.","Character<The name of the character in the TV series> Actor<The actor who played the character> Series<The series or seasons in which the character appeared> Notes<Additional information about the character's storyline, background, or departure from the show>",csv/200-csv/34.tsv
+"The table contains information about specific stages of the 1931 Tour de France, including the stage number, date, route, terrain type, length, winner, and race leader.","Stage<The stage number in the Tour de France> 
+Date<The date on which the stage took place> 
+Route<The starting and ending points of the stage> 
+Terrain<The type of terrain featured in the stage, such as plain or mountainous> 
+Length<The distance of the stage in kilometers and miles> 
+Winner<The cyclist who won the stage> 
+Race_leader<The cyclist who was leading the overall race after the stage>",csv/204-csv/406.tsv
+"The table summarizes the Eagles-Giants rivalry, listing specific matches between the Philadelphia Eagles and the New York Giants, including the year, date, winner, result, loser, and location of each game.","Year<The year in which the match took place> 
+Date<The date of the match> 
+Winner<The team that won the match> 
+Result<The score or outcome of the match> 
+Loser<The team that lost the match> 
+Location<The venue or stadium where the match was held>",csv/204-csv/393.tsv
+"The table provides information about the biodiversity of three countries in Central America, including Belize, Costa Rica, and Nicaragua. It lists the number of different species found in each country, such as amphibians, birds, mammals, reptiles, vascular plants, and total terrestrial vertebrates, as well as a measure of overall biodiversity.","Country<The name of the country in Central America> 
+Amphibians<The number of amphibian species found in the country> 
+Birds<The number of bird species found in the country> 
+Mammals<The number of mammal species found in the country> 
+Reptile<The number of reptile species found in the country> 
+Total_terrestrial_vertebrates<The total number of terrestrial vertebrate species, including amphibians, birds, mammals, and reptiles, found in the country> 
+Vascular_plants<The number of vascular plant species found in the country> 
+Biodiversity<The overall measure of biodiversity in the country, likely calculated based on the variety of different species present>",csv/201-csv/8.tsv
+"The table lists recipients of the Guardian of Zion Award from different years, including their nationality and profession. The award seems to be given to individuals who have made significant contributions in their fields, with some being notable authors, historians, or Nobel Peace Prize winners.","Year<The year the Guardian of Zion Award was given>
+Recipient<The name of the individual or individuals who received the award>
+Nationality<The country of origin or citizenship of the recipient>
+Profession<The occupation or field of expertise of the recipient>
+Speech<This column appears to be empty, possibly intended for notes on the acceptance speech or remarks made by the recipient>",csv/203-csv/458.tsv
+"The table lists information about the United States Ambassadors to Grenada, including their names, titles, presentation and termination dates of their credentials, and the presidents who appointed them.","Representative <The name of the United States Ambassador to Grenada>
+Title <The official title of the ambassador, which in all cases listed is Ambassador Extraordinary and Plenipotentiary>
+Presentation_nof_Credentials <The date when the ambassador presented their credentials>
+Termination_nof_Mission <The date when the ambassador's mission or term ended>
+Appointed_by <The president of the United States who appointed the ambassador>",csv/203-csv/188.tsv
+"The table contains information about Eagle-class patrol craft, including their designation, keel laid date, launch date, commissioning date, and fate. There are three patrol crafts listed, with specific dates for each event and varying fates such as being sold or expended as a target.","Designation<The unique identifier for the patrol craft>
+Keel_Laid<The date when the construction of the patrol craft began>
+Launched<The date when the patrol craft was launched into water>
+Commissioned<The date when the patrol craft was officially put into service>
+Fate<The final disposition or outcome of the patrol craft>",csv/203-csv/369.tsv
+"The table contains information about Toni Gonzaga's music releases, including the release date, album title, record company, song title, and certification. There are three entries in the table, each representing a different music release.","Release_date<The date when the album or song was released>
+Album_Title<The title of the album that the song is part of>
+Record_Company<The company that produced and distributed the album or song>
+Song_Title<The title of the specific song>
+Certification<The certification level of the song or album, such as Platinum or Gold, as awarded by PARI>",csv/203-csv/579.tsv
+"The table contains information about the women's 3-meter springboard diving event at the 1984 Summer Olympics, including the rank, name of the diver, preliminary points and rank, and final points.","Rank<The overall ranking of the diver in the competition> 
+Diver<The name of the diver participating in the event> 
+Preliminary_nPoints<The total points scored by the diver in the preliminary round> 
+Preliminary_nRank<The ranking of the diver after the preliminary round> 
+Final_nPoints<The total points scored by the diver in the final round>",csv/203-csv/373.tsv
+"The table contains information about John D. Loudermilk's music releases, including the year of release, single title, chart positions on US Country and US charts, and the corresponding album.","Year<The year a single was released> 
+Single<The title of the single released by John D. Loudermilk> 
+Chart_Positions_nUS_Country<The position the single reached on the US Country music chart> 
+Chart_Positions_nUS<The position the single reached on the general US music chart> 
+Album<The album on which the single was included, or a note if it was released as a single only>",csv/203-csv/619.tsv
+"The table lists numbered routes in Massachusetts, providing information about their names, route numbers, lengths, locations, and additional notes. It includes details about specific highways, such as the Grand Army of the Republic Highway, Wilbur Cross Highway, and East Boston Expressway, covering aspects like their designations, spans, and notable features.","Name<The name of the highway or route>
+Route_numbers<The designated route number for the highway>
+Length_mi<The length of the highway in miles>
+Location<The geographical location or endpoint of the highway>
+Notes<Additional information or notes about the highway, including its designation, history, or notable features>",csv/203-csv/100.tsv
+"The table provides information about immigration to France, specifically the number of naturalizations by origin from 2000 to 2009. It breaks down the data into different regions of origin, including Africa, Maghreb, and Other Asia, and also provides the percentage of total naturalizations in 2009.","Naturalisations_by_origin<The region or area of origin for immigrants who were naturalized in France> 
+c_2000<The number of naturalizations from each region in the year 2000> 
+c_2005<The number of naturalizations from each region in the year 2005> 
+c_2009<The number of naturalizations from each region in the year 2009> 
+percent_Total_2009<The percentage of total naturalizations in 2009 for each region>",csv/203-csv/666.tsv
+"The table provides information about languages spoken in South Asia, specifically detailing population figures from the 1991 and 2001 censuses. It lists three languages (Bodo, Assamese, Khandeshi) with their respective population counts and percentages for those years.","Language<The name of the language>
+c_2001_census[1]_ntotal_population_1_00459_million<The total population speaking the language according to the 2001 census>
+c_1991_censusIndian_Census_[2]_ntotal_population_83814_million<The percentage or proportion of the population speaking the language in 1991, though the column name suggests a total population figure but the values indicate otherwise>
+c_1991_censusIndian_Census_[2]_ntotal_population_83814_million_1<This appears to be another measure related to the 1991 census, possibly an alternative or more specific count of speakers for each language>
+NULL_COL<This column seems to contain miscellaneous or additional data that doesn't fit into the other categories, with some entries being percentages and others being in millions>",csv/203-csv/167.tsv
+"The table contains information about the 1949-50 Huddersfield Town F.C. season, listing players' names, their respective nations, positions on the field, and their performance statistics in terms of appearances and goals scored in both league matches and FA Cup matches.","Name<The name of the player> 
+Nation<The country that the player represents> 
+Position<The position of the player on the field, such as goalkeeper (GK), defender (DF), or midfielder (MF)> 
+League_Apps<The number of appearances made by the player in league matches> 
+League_Goals<The number of goals scored by the player in league matches> 
+FA_Cup_Apps<The number of appearances made by the player in FA Cup matches> 
+FA_Cup_Goals<The number of goals scored by the player in FA Cup matches> 
+Total_Apps<The total number of appearances made by the player across all competitions> 
+Total_Goals<The total number of goals scored by the player across all competitions>",csv/203-csv/602.tsv
+"The table appears to be a schedule or record of matches for the 2006 Yokohama F. Marinos season, with columns listing the match identifier, date, venue, opponents, and score.","Match<The identifier or name of the match, such as semifinals or group stage>
+Date<The date of the match, listed as 2006 for all matches but exact dates are missing>
+Venue<The location where the match took place, with actual venues not specified>
+Opponents<The teams that Yokohama F. Marinos played against, with specific team names not provided>
+Score<The result or score of the match, which is not filled in for any of the matches>",csv/204-csv/254.tsv
+"The table lists radio station callsigns in Tasmania, providing information about their area of service, frequency, band, fate (including any changes or moves), current frequency, and purpose.","Callsign<The unique identifier for each radio station> 
+Area_served<The geographic location or city where the radio station serves> 
+Frequency<The original frequency at which the radio station broadcasted> 
+Band<The type of band used by the radio station, either AM or FM> 
+Fate<The current status or any changes that occurred to the radio station, such as moves or call sign changes> 
+Freq_currently<The current frequency of the radio station, if it has changed or is still broadcasting> 
+Purpose<The type of service provided by the radio station, either commercial or community-based>",csv/203-csv/604.tsv
+"The table lists the broadcasters for the Kentucky Derby from 1954 to 1959, including the year, network, race caller, color commentator, reporters, and trophy presentation.","Year<The year the Kentucky Derby took place> 
+Network<The television network that broadcasted the Kentucky Derby> 
+Race_caller<The person who provided play-by-play commentary for the Kentucky Derby> 
+Color_commentator<The person who provided additional commentary and analysis for the Kentucky Derby> 
+Reporters<The individuals responsible for reporting on the Kentucky Derby, although none are listed in this table> 
+Trophy_Presentation<The person who presented the trophy to the winner of the Kentucky Derby>",csv/204-csv/478.tsv
+"The table contains information about Tamera Mowry's acting career, listing her roles in various TV shows and episodes between 1991 and 2009.","Year<The year Tamera Mowry appeared in a particular show or episode> Title<The title of the TV show or movie Tamera Mowry was involved in> Role<The character or role played by Tamera Mowry in the show or episode> Notes<Additional information about Tamera Mowry's involvement, such as the number of episodes she appeared in>",csv/203-csv/785.tsv
+"The table appears to summarize the Wiseman hypothesis, which relates to the structure and content of biblical tablets. Each row represents a different tablet, with columns describing the genealogy, narrative, and colophon (a statement or section at the end of a text) contained within each tablet.","Tablet<The number or identifier of the tablet> Genealogy<The ancestral or lineage information described in the tablet> Narrative<The story or account presented in the tablet> Colophon<The concluding statement or section at the end of the tablet, often providing context or summary>",csv/203-csv/310.tsv
+"The table lists the awards and nominations received by Charlie Sheen, including the year, result, award name, and film or TV show associated with each award.","Year<The year the award was given or nomination was made> Result<The outcome of the award, either Won or Nominated> Award<The name of the award or honor> Film<The title of the movie or TV show for which Charlie Sheen received the award or nomination>",csv/203-csv/709.tsv
+"The table contains information about the 2001 Batang Red Bull Thunder season, including the dates of matches, opponents, scores, top scorers and their total points, and venues. However, the top scorer and total points columns are empty in the provided data.","DATE<The date of the match>
+OPPONENT<The team that Batang Red Bull Thunder played against>
+SCORE<The result of the match, including the score of both teams>
+TOP_SCORER_Total_points<The player who scored the most points and their total points in the match, although this information is not provided in the given table>
+VENUE<The location where the match took place>",csv/204-csv/97.tsv
+"The table contains a list of experiments from the Lilo & Stitch series, including their numbers, nicknames, and the episodes they appeared in. There are three experiments listed, all of which appeared in the episode ""Leroy & Stitch"". The Pod_Color and Short_Description columns are empty for all experiments.","Num<The experiment number> Pod_Color<The color of the experiment's pod, currently empty> Nickname<The nickname or name given to the experiment> Short_Description<A brief description of the experiment, currently empty> Episode<The episode in which the experiment appeared>",csv/204-csv/5.tsv
+"The table compares the specifications of different editions of Windows Server 2012, including Foundation, Essentials, Standard, and Datacenter. It highlights the features and limitations of each edition in terms of virtualization rights, print and document services, and DHCP role.","Specifications<The feature or service being compared across different editions of Windows Server 2012>
+Foundation<The base edition of Windows Server 2012 with limited features and capabilities>
+Essentials<The edition of Windows Server 2012 that offers a balance between features and cost, suitable for small businesses>
+Standard<The standard edition of Windows Server 2012 that provides a range of features and virtualization rights, suitable for medium-sized organizations>
+Datacenter<The top-of-the-line edition of Windows Server 2012 that offers unlimited virtualization rights and advanced features, suitable for large enterprises>",csv/204-csv/134.tsv
+"The table contains information about the 1971 Monaco Grand Prix, including the position, driver number, driver name, constructor, number of laps completed, reason for retirement or completion time, starting grid position, and points earned for each driver.","Pos<The final position of the driver in the race> 
+No<The driver's number> 
+Driver<The name of the driver participating in the race> 
+Constructor<The constructor of the car driven by the driver> 
+Laps<The number of laps completed by the driver> 
+Time_Retired<The reason for retirement or the completion time of the driver> 
+Grid<The starting grid position of the driver> 
+Points<The points earned by the driver in the race>",csv/204-csv/953.tsv
+"The table contains information about the 2008 Clásica de San Sebastián, a cycling event, including the rank, cyclist name, team, time, and UCI ProTour points earned by each cyclist.","Rank<The position of the cyclist in the competition> 
+Cyclist<The name of the cyclist participating in the event, including their country of origin> 
+Team<The name of the cycling team that the cyclist represents> 
+Time<The time taken by the cyclist to complete the event, with ""s.t."" indicating same time as the leader and ""+"" indicating a time difference> 
+UCI_ProTour_nPoints<The number of UCI ProTour points earned by the cyclist in the competition>",csv/203-csv/733.tsv
+"The table contains information about Russell Howard's Good News, including episode numbers, air dates, viewer numbers, and rankings on BBC Three and multichannels. There are 3 episodes listed with varying degrees of data availability.",Episode_no<The episode number of Russell Howard's Good News> Airdate<The date when the episode was aired> Viewers<The number of viewers for the episode> BBC_Three_weekly_ranking<The ranking of the episode on BBC Three's weekly chart> Multichannels_rank<The ranking of the episode across all multichannels>,csv/204-csv/456.tsv
+"The table contains information about the premiers and runners-up of the AFL Cairns competition for specific years, along with their respective scores.","Year<The year in which the AFL Cairns competition took place>
+Premiers<The team that won the AFL Cairns competition in a given year>
+Score<The score achieved by the winning team (premiers) in the competition>
+Runners_Up<The team that came second in the AFL Cairns competition for a given year>
+Score_1<The score achieved by the runner-up team in the competition>",csv/203-csv/80.tsv
+"The table shows the athletics medal count at the 2002 Asian Games, listing the rank, nation, and number of gold, silver, bronze, and total medals won by each country.","Rank<The ranking position of the nation in terms of total medals won> 
+Nation<The name of the participating country> 
+Gold<The number of gold medals won by the nation> 
+Silver<The number of silver medals won by the nation> 
+Total<The total number of medals (gold, silver, and bronze) won by the nation> 
+Bronze<The number of bronze medals won by the nation>",csv/204-csv/347.tsv
+"The table contains information about the 2008 Superleague Formula season, including round numbers, race locations, dates, pole positions, fastest laps, winning clubs and teams, and reports.","Round<The round number of the competition> 
+Round_1<The specific round identifier, possibly indicating the first part or segment of a round> 
+Race<The location where the race took place> 
+Date<The date when the race occurred> 
+Pole_Position<The team or club that achieved the pole position in the race> 
+Fastest_Lap<The team or club that recorded the fastest lap during the race> 
+Winning_Club<The club that won the race> 
+Winning_Team<The specific team within a winning club that participated and won the race> 
+Report<Reference to additional information or a detailed report about the race>",csv/203-csv/514.tsv
+"The table lists the tallest freestanding structures in the world, including their name, country, town, height, structural type, and the years they held the record for being the tallest. The structures include skyscrapers, towers, and a mausoleum, with heights ranging from 146 to 540 meters.","Name<The name of the freestanding structure> 
+Country<The country where the freestanding structure is located> 
+Town<The town or city where the freestanding structure is located> 
+Height_nmetres_ft<The height of the freestanding structure in both meters and feet> 
+Structural_type<The type of structure, such as skyscraper, tower, or mausoleum> 
+Held_record<The years the structure held the record for being the tallest freestanding structure> 
+Notes<Additional notes or comments about the freestanding structure, including any changes to its height over time>",csv/203-csv/39.tsv
+"The table contains information about the 1981 Iowa Hawkeyes football team's schedule and results, including dates, opponents, rankings, locations, TV broadcasts, outcomes, and attendance figures.","Date<The date of the match> 
+Opponentnum<The name of the opposing team> 
+Ranknum<The ranking of the Iowa Hawkeyes team at the time of the match> 
+Site<The location where the match was played, including stadium and city> 
+TV<The television network that broadcast the match, if any> 
+Result<The outcome of the match, including win or loss and score> 
+Attendance<The number of people who attended the match>",csv/203-csv/708.tsv
+"The table contains information about celebrities who participated in season 1 of ""The Farm Spain"", including their name, residence, occupation or claim to fame, age, and status in the competition.",Celebrity<The name of the celebrity participant> Residence<The city or location where the celebrity resides> Famous_for_Occupation<The occupation or reason why the celebrity is famous> Age<The age of the celebrity at the time of participation> Status<The outcome or position of the celebrity in the competition>,csv/204-csv/380.tsv
+"The table contains information about the performance of Charles Henderson High School's team over different years, including their win and loss records, and their participation in playoffs.",Year<The year in which the team's performance is being recorded> Team_Record_nW<The number of wins achieved by the team in that year> Team_Record_nL<The number of losses incurred by the team in that year> Playoffs<The outcome or status of the team's participation in playoffs for that year>,csv/204-csv/118.tsv
+"The table appears to be a standings table for the 2000 Úrvalsdeild, which is the top division of Icelandic football. It shows the performance of various teams in the league, including their position, number of games played, wins, draws, losses, goals scored and conceded, goal difference, and points earned.","Pos<The position of the team in the league standings> 
+Team<The name of the football team> 
+Played<The total number of games played by the team> 
+Won<The number of games won by the team> 
+Draw<The number of games drawn by the team> 
+Lost<The number of games lost by the team> 
+Goals_For<The total number of goals scored by the team> 
+Goals_Against<The total number of goals conceded by the team> 
+Goal_Difference<The difference between the number of goals scored and conceded by the team> 
+Points<The total number of points earned by the team, based on wins, draws, and losses> 
+Notes<Additional notes or comments about the team's performance, such as relegation or qualification for a European competition>",csv/203-csv/53.tsv
+"The table appears to be a schedule or record of matches for the 2008 F.C. Tokyo season, listing various attributes of each match such as the match identifier, date, venue, opponents, and score. However, most of the specific details in the table are missing or represented by placeholders.","Match<The unique identifier or designation for each match>
+Date<The date on which the match took place>
+Venue<The location or stadium where the match was held>
+Opponents<The team or teams that F.C. Tokyo played against in the match>
+Score<The result or score of the match>",csv/204-csv/896.tsv
+"The table contains information about Salvatore Bettiol's performance in various marathon competitions, including the year, competition name, venue, position, event, and notes on his finish time.","Year<The year in which the competition took place> 
+Competition<The name of the competition or event> 
+Venue<The location where the competition was held> 
+Position<The position or rank achieved by Salvatore Bettiol in the competition> 
+Event<The type of event or race, which is consistently a marathon in this table> 
+Notes<Additional information, specifically the finish time for each marathon event>",csv/204-csv/92.tsv
+"The table contains information about the performance of squash players in the World Open tournament, including their ranking, name, number of titles won, runner-up finishes, and total final appearances.","Rank<The ranking position of the player> 
+Player_Name<The name of the squash player> 
+No_of_Titles<The number of World Open titles won by the player> 
+Runner_up<The number of times the player was a runner-up in the tournament> 
+Final_Appearances<The total number of times the player appeared in the final match of the tournament>",csv/203-csv/86.tsv
+"The table contains information about the 1990 IndyCar season, including the date, round number, race name, circuit, city location, pole position winner, winning driver, and winning team for each race. There are three rows of data, representing different races in the season.","Date<The sequence number of the race>
+Rnd<The round number of the race in the 1990 IndyCar season>
+Race_Name<The name of the specific IndyCar race>
+Circuit<The racing circuit or track where the IndyCar race took place>
+City_Location<The city and state where the IndyCar race was held>
+Pole_position<The driver who achieved the pole position for the IndyCar race>
+Winning_driver<The driver who won the IndyCar race>
+Winning_team<The team of the winning driver in the IndyCar race>
+Report<The link or reference to a detailed report of the IndyCar race>",csv/203-csv/181.tsv
+"The table contains information about the 2001 St. Louis Rams season, including the week number, date, opponent, result, record, TV and time information, and attendance for each game.","Week<The week number of the season> 
+Date<The date of the match> 
+Opponent<The team that the St. Louis Rams played against> 
+Result<The outcome of the game, including win or loss and score> 
+Record<The team's win-loss record after each game> 
+TV_Time<The TV network and time of the game broadcast> 
+Attendance<The number of people who attended the game>",csv/203-csv/48.tsv
+"The table contains information about Primeval Beech Forests of the Carpathians and the Ancient Beech Forests of Germany, including their locations, types of nature reserves, and areas of preserved and buffer zones.",num<Unique identifier for each forest location> Massif<Name of the mountain massif where the forest is located> Region<Geographical region where the forest is situated> Type_of_nature_reserve<Type of protected area or reserve> Preserved_area<Area of the forest that is preserved and protected> Buffer_zone<Area surrounding the preserved forest that acts as a buffer to protect it>,csv/204-csv/2.tsv
+"The table contains information about the United States Senate elections in 2018, including the state, incumbent senator, their party affiliation, electoral history, most recent election results, and intentions for the 2018 election, as well as a list of candidates.","State_nlinked_to_nsummaries_below<The state where the senate election took place> 
+Incumbent_nSenator<The name of the incumbent senator> 
+Incumbent_nParty<The party affiliation of the incumbent senator> 
+Incumbent_nElectoral_nhistory<The electoral history of the incumbent senator, including their past election results> 
+Most_recent_election_results<The results of the most recent election for the incumbent senator> 
+c_2018_intent<The intention of the incumbent senator for the 2018 election, such as retiring or running for re-election> 
+Candidates<The list of candidates running in the 2018 senate election>",csv/204-csv/943.tsv
+"The table contains information about players selected in the 1981 NHL Entry Draft, including their pick number, name, position, nationality, the NHL team that drafted them, and their college or junior club team at the time of the draft.","Pick_num<The numerical order in which a player was selected in the draft> 
+Player<The name of the player selected in the draft> 
+Position<The position the player plays on the ice, such as Defence or Left Wing> 
+Nationality<The country of origin for the player> 
+NHL_team<The National Hockey League team that selected the player in the draft> 
+College_junior_club_team<The college or junior club team the player was part of before being drafted into the NHL>",csv/203-csv/566.tsv
+"The table contains information about the 2009 Fujitsu V8 Supercar Series, including the round number, event name, circuit, location, date, and winner of each event.","Rd<The round number of the event> 
+Event<The name of the event> 
+Circuit<The racing circuit where the event took place> 
+Location<The city and state where the event was held> 
+Date<The dates when the event occurred> 
+Winner<The winner of the event>",csv/204-csv/714.tsv
+"The table provides information about football matches played by Belgian teams during the 2007-08 season, including the date, team, competition, round, leg, opponent, location, and score.","Date<The date of the match> 
+Team<The name of the Belgian football team playing in the match> 
+Competition<The type of football competition, such as Champions League or UEFA Cup> 
+Round<The stage or round of the competition> 
+Leg<The specific leg of a multi-leg match, including whether it's played at home or away> 
+Opponent<The name of the opposing team in the match> 
+Location<The venue where the match was played> 
+Score<The result of the match, with the score of the Belgian team first>",csv/203-csv/582.tsv
+"The table contains information about the Lieutenant Governors of Indiana, including their name, term of office, party affiliation, and the Governor they served under. There are six columns in total, with three entries provided as examples.",num<The numerical identifier for each Lieutenant Governor> Name<The full name of the Lieutenant Governor> Took_office<The date when the Lieutenant Governor took office> Left_office<The date when the Lieutenant Governor left office> Party<The political party affiliation of the Lieutenant Governor> Governor<The name of the Governor that the Lieutenant Governor served under> Notes<Any additional notes or comments about the Lieutenant Governor's term>,csv/203-csv/194.tsv
