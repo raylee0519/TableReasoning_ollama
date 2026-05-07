@@ -1,6 +1,7 @@
 # Table Reasoning Evaluation using LLaMA3.3 70B
 
-This repository enables evaluation of Table Reasoning models on the WikiTableQuestions (WikiTQ) dataset using `llama3.3-70b-instruct` deployed via Ollama.
+This repository enables the evaluation of Table Reasoning models on the WikiTableQuestions (WikiTQ) dataset. 
+Powered by Ollama, it provides a flexible environment where users can easily swap and test various LLMs (default: llama3.3-70b-instruct).
 
 ## ✅ Supported Table QA Systems
 
