@@ -3,15 +3,15 @@ import os
 import time
 import tiktoken
 import timeout_decorator
-from transformers import AutoTokenizer, AutoModelForCausalLM
 from typing import Optional, Union
-            
+
 class Model:
     def __init__(self, model_name: str, provider: str = 'openai'):
         self.model_name = model_name
         self.provider = provider  # 'openai' or 'huggingface'
 
         if provider == 'huggingface':
+            from transformers import AutoTokenizer, AutoModelForCausalLM
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
             self.model = AutoModelForCausalLM.from_pretrained(model_name)
         

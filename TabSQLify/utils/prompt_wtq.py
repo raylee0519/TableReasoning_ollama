@@ -932,23 +932,23 @@ SQL: select date, attendance from T order by attendance desc
 
 # ---------------------------------------------------------------
 
-from transformers import AutoTokenizer
+import tiktoken
 import requests
 
 # LLaMA3.3에 맞는 토크나이저 (Hugging Face 모델 기준)
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.3-70B-Instruct")
+tokenizer = tiktoken.get_encoding("cl100k_base")
 
 def truncate_tokens(prompt: str, max_length: int) -> str:
-    """Truncates a text string based on max number of tokens using HF tokenizer."""
-    input_ids = tokenizer(prompt).input_ids
+    """Truncates a text string based on max number of tokens (approximate, via tiktoken)."""
+    input_ids = tokenizer.encode(prompt)
     num_tokens = len(input_ids)
 
     if num_tokens > max_length:
         print(f"truncated --> {num_tokens} tokens")
-        prompt = tokenizer.decode(input_ids[:max_length], skip_special_tokens=True)
+        prompt = tokenizer.decode(input_ids[:max_length])
     return prompt
 
-def get_completion(prompt: str, model: str = "llama3.3", temperature: float = 0.0, n: int = 1) -> str:
+def get_completion(prompt: str, model: str = "llama3.2:1b", temperature: float = 0.0, n: int = 1) -> str:
     """
     Calls Ollama's LLaMA3 model via REST API.
     Assumes Ollama server is running at localhost:11434
