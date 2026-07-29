@@ -1,0 +1,32 @@
+name: Validate baseline requirements
+
+on:
+  push:
+    paths:
+      - "**/requirements.txt"
+      - ".github/workflows/requirements-check.yml"
+  pull_request:
+    paths:
+      - "**/requirements.txt"
+      - ".github/workflows/requirements-check.yml"
+
+jobs:
+  pip-install-check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        baseline: [TabSQLify, tablellm]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ${{ matrix.baseline }}/requirements.txt
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r "${{ matrix.baseline }}/requirements.txt"
