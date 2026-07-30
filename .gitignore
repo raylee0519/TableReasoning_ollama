@@ -4,8 +4,9 @@ __pycache__/
 *.pyc
 
 # Generated run output from the Airflow-wired baselines (TabSQLify, tablellm,
-# ReAcTable) -- not source, regenerates on every run, checkpoint files.
+# ReAcTable, NormTab) -- not source, regenerates on every run, checkpoint files.
 TabSQLify/outputs/
 tablellm/output/
 tablellm/cache/
 ReAcTable/result/*.jsonl
+NormTab/outputs/

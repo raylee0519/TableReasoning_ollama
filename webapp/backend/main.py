@@ -59,6 +59,15 @@ BASELINES = {
         ),
         "total": 4344,
     },
+    "normtab": {
+        "label": "NormTab",
+        "dag_id": "table_reasoning_normtab",
+        "task_id": "run_normtab_eval",
+        "progress_kind": "line_count",
+        "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
+        "results_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
+        "total": 4339,
+    },
 }
 
 app = FastAPI(title="Table Reasoning Benchmark Runner")

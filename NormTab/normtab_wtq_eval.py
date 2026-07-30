@@ -18,15 +18,15 @@ def clean_response(raw: str) -> str:
     return re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL | re.IGNORECASE).strip()
 
 
-def get_ans_sql(prompt):
-    response = None
-    while response is None:
+def get_ans_sql(prompt, max_retries=3):
+    for attempt in range(max_retries):
         try:
-            response = get_completion(prompt, temperature=0.7, max_tokens = 10000)
-        except:
-            time.sleep(2)
-            pass
-    return response
+            return get_completion(prompt, temperature=0.7, max_tokens=10000)
+        except Exception as e:
+            print(f"[ERROR] get_ans_sql attempt {attempt + 1}/{max_retries} failed: {e}")
+            if attempt < max_retries - 1:
+                time.sleep(2)
+    return None
 
 def extract_sql(raw: str) -> str:
     # ```sql ... ``` 블록 찾기
@@ -51,7 +51,11 @@ def extract_sql(raw: str) -> str:
 # ---------------------------------------------------------------
 if __name__ == "__main__":
 
-    norm_table_path = "outputs_GPT4/normTab_targeted_wtq_gpt4.csv" # Table Path
+    # Our own Ollama-normalized tables (run_normtab_wtq.py's output), not the
+    # original paper's outputs_GPT4/ reference file -- otherwise this would
+    # be scoring an Ollama QA model against GPT-4-normalized tables instead
+    # of evaluating our own end-to-end pipeline.
+    norm_table_path = "outputs/normTab_targeted_wtq_llama3.2:1b.csv"
 
     # -----------------------------------------------------------------------------------------------------------
     tab_group_path = "datasets/table_group_wtq.json"
@@ -74,14 +78,34 @@ if __name__ == "__main__":
     end = number_of_tables
     # --------------------------------------------------------------
 
-    fw = open(f'outputs/normTab_eval_targeted_wtq.jsonl', 'a')
-    # fw.write(json.dumps(tmp) + '\n')
+    jsonl_path = 'outputs/normTab_eval_targeted_wtq.jsonl'
+    csv_path = 'outputs/normTab_eval_targeted_wtq.csv'
+
+    # Questions already answered in a prior run -- skip them so a retry
+    # resumes instead of re-asking (and duplicating rows for) everything.
+    done_question_ids = set()
+    if os.path.exists(jsonl_path):
+        with open(jsonl_path, encoding='utf-8') as done_f:
+            for line in done_f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    done_question_ids.add(json.loads(line)['key'])
+                except json.JSONDecodeError:
+                    continue
+    print(f"Already answered: {len(done_question_ids)} questions")
+
+    fw = open(jsonl_path, 'a')
     # ---------------------------------------------------------------
-    f = open('outputs/normTab_eval_targeted_wtq.csv', 'a')
+    write_header = not (os.path.exists(csv_path) and os.path.getsize(csv_path) > 0)
+    f = open(csv_path, 'a')
 
     writer = csv.writer(f)
     header = ['id', 'question', 'answer', 'prediction', 'sql', 'response']
-    writer.writerow(header)
+    if write_header:
+        writer.writerow(header)
+        f.flush()
     # ---------------------------------------------------------------
     counter = start - 1
 
@@ -153,6 +177,8 @@ if __name__ == "__main__":
                     if i in table_ids:
                         dic = json.loads(l)
                         ids = dic['ids']
+                        if ids in done_question_ids:
+                            continue
                         title = dic['title']
                         table = dic['table_text']
                         question = dic['statement']
@@ -235,9 +261,11 @@ if __name__ == "__main__":
                         tmp = {'key': ids, 'question': question, 'prediction': output_ans,
                                'answer': answer}
                         fw.write(json.dumps(tmp) + '\n')
+                        fw.flush()
                         # #
                         data = [ids, question, answer, output_ans.strip(), answer_sql, prediction.to_markdown(index=False)]
                         writer.writerow(data)
+                        f.flush()
                         # # ---------------------------------------------------------------------------------------------------------
 
             print("***********************************************************\n")

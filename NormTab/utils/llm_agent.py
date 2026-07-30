@@ -15,7 +15,7 @@ client = OpenAI(
 # model="gpt-3.5-turbo-0125"
 # model="gpt-4-turbo"
 
-def get_completion(prompt, model="qwen3:30b", temperature=0.7, n=1, max_tokens = 6000):
+def get_completion(prompt, model="llama3.2:1b", temperature=0.7, n=1, max_tokens = 6000):
     messages = [{"role": "user", "content": prompt}]
     response = client.chat.completions.create(
         model=model,
