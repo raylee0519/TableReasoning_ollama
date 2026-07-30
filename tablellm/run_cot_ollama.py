@@ -13,9 +13,9 @@ from utils.table import transpose, sort_dataframe
 from run_helper import load_dataset, get_cot_prompt, query, check_transpose, check_sort, read_json_file
 
 def main(
-        model:Optional[str] = "gpt-3.5-turbo-0613", # base model of the agent (for short prompt to save money)
-        long_model:Optional[str] = "gpt-3.5-turbo-16k-0613", # long model of the agent (only used for long prompt)
-        provider: str = "openai", # openai, huggingface, vllm
+        model:Optional[str] = "llama3.2:1b", # base model of the agent (for short prompt to save money)
+        long_model:Optional[str] = "llama3.2:1b", # long model of the agent (only used for long prompt)
+        provider: str = "openai_ollama", # openai, huggingface, vllm
         dataset:str = "wtq", # wtq or tabfact
         perturbation: str = "none", # none, transpose, shuffle, transpose_shuffle
         norm: bool = True, # whether to NORM the table
