@@ -30,6 +30,7 @@ with DAG(
     start_date=datetime(2026, 7, 29),
     schedule=None,
     catchup=False,
+    max_active_runs=1,
     tags=["table-reasoning", "tablellm"],
 ) as dag:
 

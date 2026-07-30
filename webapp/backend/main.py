@@ -162,7 +162,13 @@ def _count_progress(baseline: dict) -> int:
     return 0
 
 
-def _latest_run_id(dag_id: str) -> str | None:
+TERMINAL_TASK_STATES = {"success", "failed", "skipped", "upstream_failed", "removed", None}
+
+
+def _latest_task_state(dag_id: str, task_id: str) -> str:
+    """Fast path for the frequently-polled progress display: just the
+    single newest run's state. Only 2 Airflow API calls, so this stays
+    quick even if Airflow's webserver is a bit slow to respond."""
     runs_resp = requests.get(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
         auth=AIRFLOW_AUTH,
@@ -170,43 +176,83 @@ def _latest_run_id(dag_id: str) -> str | None:
         timeout=10,
     )
     if runs_resp.status_code != 200:
-        return None
+        return "unknown"
     runs = runs_resp.json().get("dag_runs", [])
-    return runs[0]["dag_run_id"] if runs else None
-
-
-def _latest_task_state(dag_id: str, task_id: str) -> str:
-    run_id = _latest_run_id(dag_id)
-    if run_id is None:
+    if not runs:
         return "no_runs_yet"
 
     ti_resp = requests.get(
-        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{runs[0]['dag_run_id']}/taskInstances/{task_id}",
         auth=AIRFLOW_AUTH,
         timeout=10,
     )
     if ti_resp.status_code != 200:
         return "unknown"
-    return ti_resp.json().get("state", "unknown")
+    return ti_resp.json().get("state") or "unknown"
+
+
+def _active_run_id(dag_id: str, task_id: str, limit: int = 3) -> str | None:
+    """The most recent run where this task is genuinely still active (not
+    finished) — the one actually worth stopping. Only called from /stop
+    (a one-off user action, not polled), so a handful of extra API calls
+    here is fine. `limit` is small since max_active_runs=1 on both DAGs
+    means more than 1-2 non-terminal runs would be unusual."""
+    runs_resp = requests.get(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
+        auth=AIRFLOW_AUTH,
+        params={"order_by": "-execution_date", "limit": limit},
+        timeout=10,
+    )
+    if runs_resp.status_code != 200:
+        return None
+
+    for run in runs_resp.json().get("dag_runs", []):
+        run_id = run["dag_run_id"]
+        ti_resp = requests.get(
+            f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
+            auth=AIRFLOW_AUTH,
+            timeout=10,
+        )
+        state = ti_resp.json().get("state") if ti_resp.status_code == 200 else None
+        if state not in TERMINAL_TASK_STATES:
+            return run_id
+    return None
+
+
+@app.get("/running")
+def get_running_baselines():
+    """Which baseline keys are genuinely active right now — the frontend
+    uses this (not its own widget state, which resets on page reload) to
+    decide what to show/lock/auto-refresh."""
+    running = [
+        key for key, b in BASELINES.items()
+        if _active_run_id(b["dag_id"], b["task_id"]) is not None
+    ]
+    return {"running": running}
 
 
 @app.post("/stop/{baseline_key}")
 def stop_run(baseline_key: str):
-    """Actually stops a running baseline: marks its latest task instance
-    failed (Airflow's heartbeat kills the real process within one cycle),
-    then pauses the DAG so the retry policy doesn't immediately revive it."""
+    """Actually stops a running baseline: finds the run where this task is
+    genuinely still active (not just the newest run — see _active_run_id),
+    marks it failed (Airflow's heartbeat kills the real process within one
+    heartbeat cycle), then pauses the DAG so the retry policy doesn't
+    immediately revive it."""
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
     task_id = baseline["task_id"]
 
-    run_id = _latest_run_id(dag_id)
+    run_id = _active_run_id(dag_id, task_id)
     if run_id is None:
-        raise HTTPException(status_code=404, detail="No runs to stop")
+        raise HTTPException(status_code=404, detail="No active run to stop")
 
     ti_resp = requests.patch(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
         auth=AIRFLOW_AUTH,
-        json={"new_state": "failed"},
+        # dry_run defaults to true on this endpoint — without setting it to
+        # false explicitly, Airflow reports success but never actually
+        # changes the task's state.
+        json={"new_state": "failed", "dry_run": False},
         timeout=10,
     )
     if ti_resp.status_code not in (200, 201):

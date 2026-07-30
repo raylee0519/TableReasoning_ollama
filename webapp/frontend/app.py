@@ -9,6 +9,29 @@ BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 st.set_page_config(page_title="Table Reasoning Benchmark Runner", layout="wide")
 st.title("Table Reasoning Benchmark Runner")
 
+
+def _first_present(d: dict, keys: list):
+    for k in keys:
+        if k in d:
+            return d[k]
+    return None
+
+
+# Backend is the single source of truth for "what's running" — never our
+# own widget state, which resets on every page reload.
+try:
+    running_keys = requests.get(f"{BACKEND_URL}/running", timeout=5).json().get("running", [])
+except Exception:
+    running_keys = []
+
+is_running = len(running_keys) > 0
+
+try:
+    baselines = requests.get(f"{BACKEND_URL}/baselines", timeout=5).json()
+except Exception as e:
+    st.error(f"백엔드 연결 실패: {e}")
+    st.stop()
+
 left, right = st.columns(2)
 
 # ============================================================
@@ -38,29 +61,33 @@ with left:
         model_names = []
 
     if model_names:
-        selected_model = st.selectbox("모델", model_names)
+        st.selectbox("모델", model_names, disabled=is_running)
         st.caption("실행에 사용되는 모델은 아직 각 baseline 기본값으로 고정되어 있습니다.")
     else:
         st.warning("설치된 Ollama 모델이 없습니다.")
-        selected_model = None
 
     st.subheader("실행할 방식 선택")
-    try:
-        baselines = requests.get(f"{BACKEND_URL}/baselines", timeout=5).json()
-    except Exception as e:
-        st.error(f"백엔드 연결 실패: {e}")
-        st.stop()
+    if is_running:
+        st.caption("실행 중에는 선택을 바꿀 수 없습니다. 정지 후 다시 선택하세요.")
 
     selected_baselines = []
     for key, info in baselines.items():
-        if st.toggle(info["label"], key=f"baseline_{key}", value=False):
+        checked = st.toggle(
+            info["label"],
+            value=(key in running_keys),
+            disabled=is_running,
+            key=f"baseline_{key}",
+        )
+        if checked:
             selected_baselines.append(key)
 
     col_run, col_stop = st.columns(2)
     with col_run:
-        run_clicked = st.button("실행", disabled=not selected_baselines, use_container_width=True)
+        run_clicked = st.button(
+            "실행", disabled=is_running or not selected_baselines, use_container_width=True
+        )
     with col_stop:
-        stop_clicked = st.button("정지", disabled=not selected_baselines, use_container_width=True)
+        stop_clicked = st.button("정지", disabled=not is_running, use_container_width=True)
 
     if run_clicked:
         for key in selected_baselines:
@@ -69,63 +96,64 @@ with left:
                 st.success(f"{baselines[key]['label']} 트리거됨")
             else:
                 st.error(f"{baselines[key]['label']} 트리거 실패: {resp.text}")
+        st.rerun()
 
     if stop_clicked:
-        for key in selected_baselines:
+        for key in running_keys:
             resp = requests.post(f"{BACKEND_URL}/stop/{key}", timeout=10)
             if resp.ok:
                 st.success(f"{baselines[key]['label']} 정지됨")
             else:
                 st.error(f"{baselines[key]['label']} 정지 실패: {resp.text}")
+        st.rerun()
 
 # ============================================================
-# RIGHT: progress + recent results list
+# RIGHT: progress + recent results, only for what's actually running
 # ============================================================
 with right:
     st.subheader("진행 상황")
-    auto_refresh = st.checkbox("5초마다 자동 새로고침", value=False)
 
-    def _first_present(d: dict, keys: list):
-        for k in keys:
-            if k in d:
-                return d[k]
-        return None
+    if not running_keys:
+        st.caption("실행 중인 워크플로우가 없습니다.")
+    else:
+        st.caption("실행되는 동안 5초마다 자동으로 새로고침됩니다.")
 
-    for key, info in baselines.items():
-        progress = requests.get(f"{BACKEND_URL}/progress/{key}", timeout=5).json()
-        st.markdown(f"**{info['label']}** — {progress['done']}/{progress['total']} "
-                    f"({progress['percent']}%) — 상태: {progress['task_state']}")
-        st.progress(min(progress["percent"] / 100, 1.0))
+        for key in running_keys:
+            info = baselines[key]
+            progress = requests.get(f"{BACKEND_URL}/progress/{key}", timeout=5).json()
+            st.markdown(f"**{info['label']}** — {progress['done']}/{progress['total']} "
+                        f"({progress['percent']}%) — 상태: {progress['task_state']}")
+            st.progress(min(progress["percent"] / 100, 1.0))
 
-        results = requests.get(f"{BACKEND_URL}/results/{key}", params={"limit": 10}, timeout=5).json()
-        if results:
-            # Rendered as a hand-built markdown table (no pandas/pyarrow) — both
-            # st.dataframe and st.table route through pyarrow's pandas->Arrow
-            # conversion, which segfaults in this container (ARM64 pyarrow bug,
-            # see pyarrow.pandas_compat.convert_column). This sidesteps it entirely.
-            def _cell(value) -> str:
-                text = str(value if value is not None else "")
-                text = text.replace("|", "\\|").replace("\n", " ")
-                return text[:150] + "…" if len(text) > 150 else text
+            results = requests.get(f"{BACKEND_URL}/results/{key}", params={"limit": 10}, timeout=5).json()
+            if results:
+                # Rendered as a hand-built markdown table (no pandas/pyarrow) — both
+                # st.dataframe and st.table route through pyarrow's pandas->Arrow
+                # conversion, which segfaults in this container (ARM64 pyarrow bug,
+                # see pyarrow.pandas_compat.convert_column). This sidesteps it entirely.
+                def _cell(value) -> str:
+                    text = str(value if value is not None else "")
+                    text = text.replace("|", "\\|").replace("\n", " ")
+                    return text[:150] + "…" if len(text) > 150 else text
 
-            header = "| id | question | answer | prediction |"
-            separator = "| --- | --- | --- | --- |"
-            lines = [header, separator]
-            for r in results:
-                lines.append(
-                    "| " + " | ".join([
-                        _cell(_first_present(r, ["id", "question_id", "idx"])),
-                        _cell(_first_present(r, ["question"])),
-                        _cell(_first_present(r, ["gold_answer", "answer"])),
-                        _cell(_first_present(r, ["prediction", "text"])),
-                    ]) + " |"
-                )
-            st.markdown("\n".join(lines))
-        else:
-            st.caption("아직 결과 없음")
+                header = "| id | question | answer | prediction |"
+                separator = "| --- | --- | --- | --- |"
+                lines = [header, separator]
+                for r in results:
+                    lines.append(
+                        "| " + " | ".join([
+                            _cell(_first_present(r, ["id", "question_id", "idx"])),
+                            _cell(_first_present(r, ["question"])),
+                            _cell(_first_present(r, ["gold_answer", "answer"])),
+                            _cell(_first_present(r, ["prediction", "text"])),
+                        ]) + " |"
+                    )
+                st.markdown("\n".join(lines))
+            else:
+                st.caption("아직 결과 없음")
 
-        st.divider()
+            st.divider()
 
-if auto_refresh:
+if is_running:
     time.sleep(5)
     st.rerun()
