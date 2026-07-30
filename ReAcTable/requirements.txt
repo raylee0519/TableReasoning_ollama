@@ -1,0 +1,9 @@
+pandas
+numpy
+openai
+python-dateutil
+natsort
+tqdm
+python-dotenv
+pandasql
+pylcs
