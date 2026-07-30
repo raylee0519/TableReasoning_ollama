@@ -5,9 +5,5 @@ openai
 tiktoken
 recognizers-text-suite
 fuzzywuzzy
-datasets
-ragas
-evaluate
 nltk
-absl-py
 emoji==1.7.0

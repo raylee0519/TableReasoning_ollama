@@ -1,0 +1,258 @@
+"""
+Thin FastAPI backend that sits in front of Ollama's API and Airflow's REST API,
+so the Streamlit frontend (or anyone else) doesn't need to know either exists.
+"""
+import json
+import os
+import shutil
+import subprocess
+
+import requests
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
+REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+AIRFLOW_BASE_URL = os.environ.get("AIRFLOW_BASE_URL", "http://localhost:8080/api/v1")
+AIRFLOW_AUTH = ("admin", "admin")
+
+BASELINES = {
+    "tabsqlify": {
+        "label": "TabSQLify",
+        "dag_id": "table_reasoning_tabsqlify",
+        "task_id": "run_tabsqlify_wtq",
+        "progress_kind": "dir_count",
+        "progress_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "logs"),
+        "results_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "wtq_sql_results.jsonl"),
+        "total": 4344,
+    },
+    "tablellm_agent": {
+        "label": "tablellm (Agent)",
+        "dag_id": "table_reasoning_tablellm",
+        "task_id": "run_tablellm_agent_wtq",
+        "progress_kind": "line_count",
+        "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
+        "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
+        "total": 837,
+    },
+    "tablellm_cot": {
+        "label": "tablellm (CoT)",
+        "dag_id": "table_reasoning_tablellm",
+        "task_id": "run_tablellm_cot_wtq",
+        "progress_kind": "line_count",
+        "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
+        "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
+        "total": 837,
+    },
+}
+
+app = FastAPI(title="Table Reasoning Benchmark Runner")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+def _get_baseline_or_404(key: str) -> dict:
+    baseline = BASELINES.get(key)
+    if baseline is None:
+        raise HTTPException(status_code=404, detail=f"Unknown baseline '{key}'")
+    return baseline
+
+
+@app.get("/ollama/models")
+def list_ollama_models():
+    """Which models Ollama already has pulled — informational only for now,
+    doesn't change which model a triggered run actually uses."""
+    try:
+        resp = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        raise HTTPException(status_code=502, detail=f"Ollama not reachable: {e}")
+    return resp.json()
+
+
+@app.get("/ollama/status")
+def ollama_status():
+    try:
+        requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=3)
+        return {"running": True}
+    except requests.RequestException:
+        return {"running": False}
+
+
+@app.post("/ollama/start")
+def start_ollama():
+    """Starts Ollama in the background if it's not already running. Same
+    approach as each DAG's check_ollama_alive task. Only works when this
+    backend runs directly on the host — inside a container there's no
+    `ollama` binary to launch, and it wouldn't be starting it on the host
+    anyway, so Ollama must be started manually in that case."""
+    try:
+        requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=3)
+        return {"running": True, "started": False}
+    except requests.RequestException:
+        pass
+
+    if shutil.which("ollama") is None:
+        raise HTTPException(
+            status_code=501,
+            detail="No 'ollama' binary here (likely running inside a container). "
+                   "Start Ollama on the host manually: OLLAMA_CONTEXT_LENGTH=24576 ollama serve",
+        )
+
+    env = dict(os.environ)
+    env["OLLAMA_CONTEXT_LENGTH"] = "24576"
+    subprocess.Popen(
+        ["ollama", "serve"],
+        env=env,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    return {"running": False, "started": True}
+
+
+@app.get("/baselines")
+def list_baselines():
+    return {
+        key: {"label": b["label"], "dag_id": b["dag_id"], "total": b["total"]}
+        for key, b in BASELINES.items()
+    }
+
+
+@app.post("/run/{baseline_key}")
+def trigger_run(baseline_key: str):
+    baseline = _get_baseline_or_404(baseline_key)
+    dag_id = baseline["dag_id"]
+
+    # DAGs are paused by default when first created — unpause before triggering.
+    requests.patch(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}",
+        auth=AIRFLOW_AUTH,
+        json={"is_paused": False},
+        timeout=10,
+    )
+
+    resp = requests.post(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
+        auth=AIRFLOW_AUTH,
+        json={},
+        timeout=10,
+    )
+    if resp.status_code not in (200, 201):
+        raise HTTPException(status_code=502, detail=f"Airflow trigger failed: {resp.text}")
+    return resp.json()
+
+
+def _count_progress(baseline: dict) -> int:
+    path = baseline["progress_path"]
+    if baseline["progress_kind"] == "dir_count":
+        if not os.path.isdir(path):
+            return 0
+        return len([f for f in os.listdir(path) if f.endswith(".txt")])
+    if baseline["progress_kind"] == "line_count":
+        if not os.path.isfile(path):
+            return 0
+        with open(path) as f:
+            return sum(1 for _ in f)
+    return 0
+
+
+def _latest_run_id(dag_id: str) -> str | None:
+    runs_resp = requests.get(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
+        auth=AIRFLOW_AUTH,
+        params={"order_by": "-execution_date", "limit": 1},
+        timeout=10,
+    )
+    if runs_resp.status_code != 200:
+        return None
+    runs = runs_resp.json().get("dag_runs", [])
+    return runs[0]["dag_run_id"] if runs else None
+
+
+def _latest_task_state(dag_id: str, task_id: str) -> str:
+    run_id = _latest_run_id(dag_id)
+    if run_id is None:
+        return "no_runs_yet"
+
+    ti_resp = requests.get(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
+        auth=AIRFLOW_AUTH,
+        timeout=10,
+    )
+    if ti_resp.status_code != 200:
+        return "unknown"
+    return ti_resp.json().get("state", "unknown")
+
+
+@app.post("/stop/{baseline_key}")
+def stop_run(baseline_key: str):
+    """Actually stops a running baseline: marks its latest task instance
+    failed (Airflow's heartbeat kills the real process within one cycle),
+    then pauses the DAG so the retry policy doesn't immediately revive it."""
+    baseline = _get_baseline_or_404(baseline_key)
+    dag_id = baseline["dag_id"]
+    task_id = baseline["task_id"]
+
+    run_id = _latest_run_id(dag_id)
+    if run_id is None:
+        raise HTTPException(status_code=404, detail="No runs to stop")
+
+    ti_resp = requests.patch(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
+        auth=AIRFLOW_AUTH,
+        json={"new_state": "failed"},
+        timeout=10,
+    )
+    if ti_resp.status_code not in (200, 201):
+        raise HTTPException(status_code=502, detail=f"Failed to stop task: {ti_resp.text}")
+
+    requests.patch(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}",
+        auth=AIRFLOW_AUTH,
+        json={"is_paused": True},
+        timeout=10,
+    )
+    return {"stopped": True, "dag_id": dag_id, "task_id": task_id, "run_id": run_id}
+
+
+@app.get("/progress/{baseline_key}")
+def get_progress(baseline_key: str):
+    baseline = _get_baseline_or_404(baseline_key)
+    done = _count_progress(baseline)
+    total = baseline["total"]
+    return {
+        "done": done,
+        "total": total,
+        "percent": round(100 * done / total, 2) if total else 0,
+        "task_state": _latest_task_state(baseline["dag_id"], baseline["task_id"]),
+    }
+
+
+@app.get("/results/{baseline_key}")
+def get_recent_results(baseline_key: str, limit: int = 10):
+    """Most recently completed samples, newest first — for showing a live list
+    of what the benchmark has actually produced, not just a percentage."""
+    baseline = _get_baseline_or_404(baseline_key)
+    path = baseline["results_path"]
+    if not os.path.isfile(path):
+        return []
+
+    with open(path) as f:
+        lines = f.readlines()
+
+    results = []
+    for line in reversed(lines[-limit:]):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            results.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return results

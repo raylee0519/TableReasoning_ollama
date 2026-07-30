@@ -5,6 +5,8 @@ import tiktoken
 import timeout_decorator
 from typing import Optional, Union
 
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
+
 class Model:
     def __init__(self, model_name: str, provider: str = 'openai'):
         self.model_name = model_name
@@ -31,7 +33,7 @@ class Model:
             except KeyError:
                 self.tokenizer = tiktoken.get_encoding("cl100k_base")
             self.client = OpenAI(
-                base_url="http://localhost:11434/v1",
+                base_url=f"http://{OLLAMA_HOST}/v1",
                 api_key="ollama"
             )
             

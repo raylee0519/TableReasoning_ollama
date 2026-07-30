@@ -935,6 +935,8 @@ SQL: select date, attendance from T order by attendance desc
 import tiktoken
 import requests
 
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
+
 # LLaMA3.3에 맞는 토크나이저 (Hugging Face 모델 기준)
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
@@ -951,10 +953,10 @@ def truncate_tokens(prompt: str, max_length: int) -> str:
 def get_completion(prompt: str, model: str = "llama3.2:1b", temperature: float = 0.0, n: int = 1) -> str:
     """
     Calls Ollama's LLaMA3 model via REST API.
-    Assumes Ollama server is running at localhost:11434
+    Assumes Ollama server is running at OLLAMA_HOST (default localhost:11434)
     """
     response = requests.post(
-        "http://localhost:11434/api/generate",
+        f"http://{OLLAMA_HOST}/api/generate",
         json={
             "model": model, 
             "prompt": prompt,

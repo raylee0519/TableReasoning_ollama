@@ -1,0 +1,6 @@
+**/__pycache__/
+**/*.pyc
+TabSQLify/outputs/
+tablellm/output/
+tablellm/cache/
+.git/

@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+WORKDIR /workspace
+
+COPY TabSQLify/requirements.txt TabSQLify/requirements.txt
+COPY tablellm/requirements.txt tablellm/requirements.txt
+
+RUN pip install --no-cache-dir -r TabSQLify/requirements.txt -r tablellm/requirements.txt
+
+COPY TabSQLify/ TabSQLify/
+COPY tablellm/ tablellm/

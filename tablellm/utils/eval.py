@@ -10,14 +10,13 @@ def parse_header_checking_result(output):
     """
     # parse the choice
     match = re.search(r'\(A\)|\(B\)|\(C\)', output)
-    
-    result = match.group(0) if match else None
-    
-    # if (A) or (C), return False, if (B) return True
-    if "B" in result:
-        return True
-    else:
+
+    if not match:
+        # couldn't parse a valid choice from the model's response, default to no-transpose
         return False
+
+    # if (A) or (C), return False, if (B) return True
+    return "B" in match.group(0)
 
 
 def parse_header_sorting_result(output):
