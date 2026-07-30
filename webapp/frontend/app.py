@@ -70,22 +70,27 @@ with left:
     if is_running:
         st.caption("실행 중에는 선택을 바꿀 수 없습니다. 정지 후 다시 선택하세요.")
 
-    selected_baselines = []
-    for key, info in baselines.items():
-        checked = st.toggle(
-            info["label"],
-            value=(key in running_keys),
-            disabled=is_running,
-            key=f"baseline_{key}",
-        )
-        if checked:
-            selected_baselines.append(key)
+    label_to_key = {info["label"]: key for key, info in baselines.items()}
+    labels = list(label_to_key.keys())
+
+    if running_keys:
+        default_label = baselines[running_keys[0]]["label"]
+        default_index = labels.index(default_label) if default_label in labels else 0
+    else:
+        default_index = 0
+
+    selected_label = st.selectbox(
+        "방식",
+        labels,
+        index=default_index,
+        disabled=is_running,
+        key="baseline_select",
+    )
+    selected_baselines = [label_to_key[selected_label]]
 
     col_run, col_stop = st.columns(2)
     with col_run:
-        run_clicked = st.button(
-            "실행", disabled=is_running or not selected_baselines, use_container_width=True
-        )
+        run_clicked = st.button("실행", disabled=is_running, use_container_width=True)
     with col_stop:
         stop_clicked = st.button("정지", disabled=not is_running, use_container_width=True)
 

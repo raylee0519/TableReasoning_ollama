@@ -28,21 +28,21 @@ BASELINES = {
     },
     "tablellm_agent": {
         "label": "tablellm (Agent)",
-        "dag_id": "table_reasoning_tablellm",
+        "dag_id": "table_reasoning_tablellm_agent",
         "task_id": "run_tablellm_agent_wtq",
         "progress_kind": "line_count",
         "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
-        "total": 837,
+        "total": 4344,
     },
     "tablellm_cot": {
         "label": "tablellm (CoT)",
-        "dag_id": "table_reasoning_tablellm",
+        "dag_id": "table_reasoning_tablellm_cot",
         "task_id": "run_tablellm_cot_wtq",
         "progress_kind": "line_count",
         "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
-        "total": 837,
+        "total": 4344,
     },
 }
 
@@ -162,7 +162,7 @@ def _count_progress(baseline: dict) -> int:
     return 0
 
 
-TERMINAL_TASK_STATES = {"success", "failed", "skipped", "upstream_failed", "removed", None}
+ACTIVE_DAG_RUN_STATES = {"queued", "running"}
 
 
 def _latest_task_state(dag_id: str, task_id: str) -> str:
@@ -181,22 +181,32 @@ def _latest_task_state(dag_id: str, task_id: str) -> str:
     if not runs:
         return "no_runs_yet"
 
+    run = runs[0]
     ti_resp = requests.get(
-        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{runs[0]['dag_run_id']}/taskInstances/{task_id}",
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run['dag_run_id']}/taskInstances/{task_id}",
         auth=AIRFLOW_AUTH,
         timeout=10,
     )
-    if ti_resp.status_code != 200:
-        return "unknown"
-    return ti_resp.json().get("state") or "unknown"
+    ti_state = ti_resp.json().get("state") if ti_resp.status_code == 200 else None
+    # Right after a trigger, the DagRun row exists before its TaskInstance
+    # does (or the TI's state is still null) until the scheduler's next
+    # loop picks it up. Fall back to the DagRun's own state — set the
+    # instant the trigger call returns — so the UI shows something
+    # immediately instead of "unknown" for those first few seconds.
+    return ti_state or run.get("state") or "unknown"
 
 
-def _active_run_id(dag_id: str, task_id: str, limit: int = 3) -> str | None:
-    """The most recent run where this task is genuinely still active (not
-    finished) — the one actually worth stopping. Only called from /stop
-    (a one-off user action, not polled), so a handful of extra API calls
-    here is fine. `limit` is small since max_active_runs=1 on both DAGs
-    means more than 1-2 non-terminal runs would be unusual."""
+def _active_run_id(dag_id: str, limit: int = 3) -> str | None:
+    """The most recent run of this DAG that's genuinely still active
+    (queued or running) — the one actually worth stopping, and the signal
+    the frontend uses to know a baseline just got triggered. Checked at the
+    DagRun level rather than the task-instance level: a DagRun's own state
+    is set the instant a trigger succeeds, while its TaskInstance may not
+    exist (or may report state=None) until the scheduler's next loop —
+    checking task-instance state alone made a just-triggered baseline look
+    "not running" for several seconds. Each DAG now maps to exactly one
+    baseline (post agent/cot split), so the DAG's own state is enough —
+    no need to also inspect a specific task_id here."""
     runs_resp = requests.get(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
         auth=AIRFLOW_AUTH,
@@ -207,15 +217,8 @@ def _active_run_id(dag_id: str, task_id: str, limit: int = 3) -> str | None:
         return None
 
     for run in runs_resp.json().get("dag_runs", []):
-        run_id = run["dag_run_id"]
-        ti_resp = requests.get(
-            f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
-            auth=AIRFLOW_AUTH,
-            timeout=10,
-        )
-        state = ti_resp.json().get("state") if ti_resp.status_code == 200 else None
-        if state not in TERMINAL_TASK_STATES:
-            return run_id
+        if run.get("state") in ACTIVE_DAG_RUN_STATES:
+            return run["dag_run_id"]
     return None
 
 
@@ -226,37 +229,42 @@ def get_running_baselines():
     decide what to show/lock/auto-refresh."""
     running = [
         key for key, b in BASELINES.items()
-        if _active_run_id(b["dag_id"], b["task_id"]) is not None
+        if _active_run_id(b["dag_id"]) is not None
     ]
     return {"running": running}
 
 
 @app.post("/stop/{baseline_key}")
 def stop_run(baseline_key: str):
-    """Actually stops a running baseline: finds the run where this task is
-    genuinely still active (not just the newest run — see _active_run_id),
-    marks it failed (Airflow's heartbeat kills the real process within one
-    heartbeat cycle), then pauses the DAG so the retry policy doesn't
-    immediately revive it."""
+    """Actually stops a running baseline: force-fails the active DagRun
+    itself (not one hardcoded task instance). A DAG has 3 sequential tasks
+    (ensure_deps -> check_ollama_alive -> the actual run) and the live one
+    at stop-time could be any of them — patching only the last task_id did
+    nothing if e.g. ensure_deps was still installing packages. Force-
+    failing the run's own state also finalizes it out of queued/running
+    immediately, which matters because `_active_run_id`/`/running` check
+    the DagRun's state: without this, a run that never got past `queued`
+    (e.g. because the DAG was already paused when it was triggered) would
+    sit "active" forever with no live process and nothing left to stop.
+    Airflow cascades this into failing whichever task instances are still
+    non-terminal, and its heartbeat kills the actual live process the same
+    way a direct task-instance fail does. Then pauses the DAG so nothing
+    new starts before the user explicitly runs it again."""
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
-    task_id = baseline["task_id"]
 
-    run_id = _active_run_id(dag_id, task_id)
+    run_id = _active_run_id(dag_id)
     if run_id is None:
         raise HTTPException(status_code=404, detail="No active run to stop")
 
-    ti_resp = requests.patch(
-        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}/taskInstances/{task_id}",
+    run_resp = requests.patch(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns/{run_id}",
         auth=AIRFLOW_AUTH,
-        # dry_run defaults to true on this endpoint — without setting it to
-        # false explicitly, Airflow reports success but never actually
-        # changes the task's state.
-        json={"new_state": "failed", "dry_run": False},
+        json={"state": "failed"},
         timeout=10,
     )
-    if ti_resp.status_code not in (200, 201):
-        raise HTTPException(status_code=502, detail=f"Failed to stop task: {ti_resp.text}")
+    if run_resp.status_code not in (200, 201):
+        raise HTTPException(status_code=502, detail=f"Failed to stop run: {run_resp.text}")
 
     requests.patch(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}",
@@ -264,7 +272,7 @@ def stop_run(baseline_key: str):
         json={"is_paused": True},
         timeout=10,
     )
-    return {"stopped": True, "dag_id": dag_id, "task_id": task_id, "run_id": run_id}
+    return {"stopped": True, "dag_id": dag_id, "run_id": run_id}
 
 
 @app.get("/progress/{baseline_key}")

@@ -1,8 +1,8 @@
 # Airflow Setup
 
 Orchestrates the table-reasoning baselines in this repo as Airflow tasks instead of running each
-one by hand. **TabSQLify** and **tablellm** are wired up so far, each as its own DAG; the rest
-follow the same pattern.
+one by hand. **TabSQLify** and **tablellm** (its `agent` and `cot` modes as two separate DAGs) are
+wired up so far, each as its own DAG; the rest follow the same pattern.
 
 ## Prerequisites
 
@@ -64,13 +64,15 @@ airflow pools set ollama_pool 1 "Limits concurrent Ollama inference requests acr
 ## Add the DAGs
 
 DAG sources (version-controlled): [`airflow_dags/tabsqlify_dag.py`](airflow_dags/tabsqlify_dag.py),
-[`airflow_dags/tablellm_dag.py`](airflow_dags/tablellm_dag.py). Symlink both into Airflow's dags
-folder:
+[`airflow_dags/tablellm_agent_dag.py`](airflow_dags/tablellm_agent_dag.py),
+[`airflow_dags/tablellm_cot_dag.py`](airflow_dags/tablellm_cot_dag.py). Symlink all three into
+Airflow's dags folder:
 
 ```bash
 mkdir -p ~/airflow/dags
 ln -sf /path/to/Tablollama/airflow_dags/tabsqlify_dag.py ~/airflow/dags/tabsqlify_dag.py
-ln -sf /path/to/Tablollama/airflow_dags/tablellm_dag.py ~/airflow/dags/tablellm_dag.py
+ln -sf /path/to/Tablollama/airflow_dags/tablellm_agent_dag.py ~/airflow/dags/tablellm_agent_dag.py
+ln -sf /path/to/Tablollama/airflow_dags/tablellm_cot_dag.py ~/airflow/dags/tablellm_cot_dag.py
 ```
 
 Update the path constants at the top of each file for your machine (`TABSQLIFY_DIR`,
@@ -85,24 +87,28 @@ airflow webserver --port 8080 --workers 1 &
 airflow scheduler &
 ```
 
-Log in at `http://localhost:8080` (`admin` / `admin`) and trigger `table_reasoning_tabsqlify`
-and/or `table_reasoning_tablellm` — independently, since they're separate DAGs now.
+Log in at `http://localhost:8080` (`admin` / `admin`) and trigger `table_reasoning_tabsqlify`,
+`table_reasoning_tablellm_agent`, and/or `table_reasoning_tablellm_cot` — independently, since
+they're all separate DAGs now.
 
 ## Why separate DAGs instead of one shared DAG
 
-Originally these were one DAG (one healthcheck fanning out to both baseline tasks). Switched to
-two independent DAGs because a shared DAG couples their lifecycle: pausing the DAG to permanently
-stop one baseline's auto-retry also stops the other's. Splitting them gives independent pause/
-resume/retry control per baseline. The one thing a shared DAG bought — not hammering Ollama with
-both baselines at once — is instead handled by `ollama_pool` (1 slot), which is a global Airflow
-resource, not scoped to a single DAG. Both baseline tasks declare `pool="ollama_pool"`, so Airflow
-won't run more than one of them against Ollama at the same time even though they live in different
-DAGs. The healthcheck bash snippet is duplicated across the two DAG files as a result — a small,
-worthwhile trade for independent control.
+Originally tablellm's `agent` and `cot` modes lived in one DAG (one healthcheck fanning out to two
+parallel baseline tasks) — and before that, TabSQLify and tablellm also shared a DAG. Both were
+split for the same reason: a shared DAG couples lifecycle. Triggering the DAG runs every task in
+it, so the webapp's "run just this one baseline" couldn't actually run just one; pausing the DAG to
+permanently stop one baseline's auto-retry also stopped the other's; `max_active_runs=1` throttled
+across baselines that have nothing to do with each other. Splitting gives independent trigger/
+pause/resume/retry control per baseline. The one thing a shared DAG bought — not hammering Ollama
+with multiple baselines at once — is instead handled by `ollama_pool` (1 slot), which is a global
+Airflow resource, not scoped to a single DAG. Every baseline task declares `pool="ollama_pool"`, so
+Airflow won't run more than one of them against Ollama at the same time even though they live in
+different DAGs. The healthcheck bash snippet is duplicated across the DAG files as a result — a
+small, worthwhile trade for independent control.
 
 ## Automatic recovery
 
-Both baseline tasks have `retries=1000` / `retry_delay=1 min`. If a task dies mid-run (Ollama
+Every baseline task has `retries=1000` / `retry_delay=1 min`. If a task dies mid-run (Ollama
 hiccup, crash, etc.), Airflow relaunches it automatically — no manual retrigger needed.
 
 - `run_wtq_full.py` (TabSQLify) skips already-completed samples via its own `done_ids` checkpoint
@@ -142,9 +148,15 @@ currently scoped to TabSQLify and tablellm, the only two that have been reviewed
   (or shared, if versions actually check out) + own DAG, same pattern. Check each one's own
   checkpoint situation individually — don't assume it has one. Add each to the CI matrix once
   reviewed.
-- tablellm's default `sub_sample=True` only runs 837 of the WTQ questions (vs. TabSQLify's full
-  4344). TabSQLify at ~3 min/sample locally → ~9 days unattended for the full set; test on a small
-  subset first if timing tablellm against the same scale matters.
+- Both tablellm DAGs pass `--sub_sample=False` explicitly, so they run the full 4344 WTQ questions,
+  matching TabSQLify's scale (the scripts' own default is `sub_sample=True`, a fixed 837-question
+  subset baked into `data/wtq.json`'s `sampled_indices` field — useful for a quick smoke test via
+  `--sub_sample=True` on the command line, but no longer what's wired into Airflow). TabSQLify at
+  ~3 min/sample locally → full-set runs are multi-day unattended jobs; the `--resume=$(wc -l ...)`
+  checkpoint assumes the run order (and thus `--sub_sample` value) never changes mid-stream — if
+  `result.jsonl` already has lines from a `sub_sample=True` run, don't resume it under
+  `sub_sample=False` (or vice versa), since `global_i` enumerates a different, non-overlapping
+  order in each mode. Delete/rename the old output first.
 - TabSQLify has no TabFact entrypoint in this repo (only WTQ) despite leftover TabFact utility
   files (`utils/prompt_tabfact.py`, `utils/tabfact_data.py`) — would need a new runner script to
   actually use them.
