@@ -4,6 +4,18 @@ Orchestrates the table-reasoning baselines in this repo as Airflow tasks instead
 one by hand. **TabSQLify** and **tablellm** (its `agent` and `cot` modes as two separate DAGs) are
 wired up so far, each as its own DAG; the rest follow the same pattern.
 
+## Airflow Pipeline Affordable
+The following models have been tested and are currently supported for evaluation:
+
+- **H-STAR** (X)
+- **NormTab** (✓)
+- **ReAcTable** (✓)
+- **TabSQLify** (✓)
+- **Mix-SC** (✓)
+- **chain-of-Table** (X)
+- **ALTER** (✓)
+
+
 ## Prerequisites
 
 Ollama doesn't need to be running before you trigger a DAG — each one's `check_ollama_alive` polls
