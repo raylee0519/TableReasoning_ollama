@@ -1,4 +1,4 @@
-from langchain.prompts.prompt import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 Zero_shot_prompt = PromptTemplate(input_variables=["table", "claim", "aug"],
                                   template="""

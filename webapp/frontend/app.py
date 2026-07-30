@@ -147,10 +147,10 @@ with right:
                 for r in results:
                     lines.append(
                         "| " + " | ".join([
-                            _cell(_first_present(r, ["id", "question_id", "idx", "key"])),
+                            _cell(_first_present(r, ["id", "question_id", "idx", "key", "table_ids"])),
                             _cell(_first_present(r, ["question", "utterance"])),
                             _cell(_first_present(r, ["gold_answer", "answer", "target_value"])),
-                            _cell(_first_present(r, ["prediction", "text", "predicted_value"])),
+                            _cell(_first_present(r, ["prediction", "text", "predicted_value", "preds"])),
                         ]) + " |"
                     )
                 st.markdown("\n".join(lines))

@@ -2,6 +2,7 @@
 Thin FastAPI backend that sits in front of Ollama's API and Airflow's REST API,
 so the Streamlit frontend (or anyone else) doesn't need to know either exists.
 """
+import csv
 import json
 import os
 import shutil
@@ -67,6 +68,16 @@ BASELINES = {
         "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
         "total": 4339,
+    },
+    "alter": {
+        "label": "ALTER",
+        "dag_id": "table_reasoning_alter",
+        "task_id": "run_alter_pipeline",
+        "progress_kind": "csv_row_count",
+        "results_kind": "csv",
+        "progress_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
+        "results_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
+        "total": 4344,
     },
 }
 
@@ -183,6 +194,13 @@ def _count_progress(baseline: dict) -> int:
             return 0
         with open(path) as f:
             return sum(1 for _ in f)
+    if baseline["progress_kind"] == "csv_row_count":
+        # Raw line count is wrong here -- cells (model responses, etc.) can
+        # contain embedded newlines, so a plain line count over-counts rows.
+        if not os.path.isfile(path):
+            return 0
+        with open(path, newline="", encoding="utf-8") as f:
+            return max(sum(1 for _ in csv.reader(f)) - 1, 0)  # -1 for header
     return 0
 
 
@@ -320,6 +338,11 @@ def get_recent_results(baseline_key: str, limit: int = 10):
     path = baseline["results_path"]
     if not os.path.isfile(path):
         return []
+
+    if baseline.get("results_kind") == "csv":
+        with open(path, newline="", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        return list(reversed(rows[-limit:]))
 
     with open(path) as f:
         lines = f.readlines()
