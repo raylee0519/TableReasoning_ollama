@@ -1,13 +1,13 @@
 import json
 from data_loader import TableFormat
-from langchain.prompts.prompt import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI, OpenAI
 from utils import parse_output
 from prompt_manager import get_k_shot_with_string
 import logging
 from typing import List
-from langchain.chains import LLMChain
+from langchain_classic.chains import LLMChain
 from langchain_community.callbacks import get_openai_callback
 logger = logging.getLogger(__name__)
 

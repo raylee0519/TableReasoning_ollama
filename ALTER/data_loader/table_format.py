@@ -7,11 +7,10 @@ import pandas as pd
 import re
 import os
 from langchain_text_splitters import CharacterTextSplitter
-# from langchain_openai import OpenAIEmbeddings
-from langchain.embeddings import CacheBackedEmbeddings
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_classic.embeddings import CacheBackedEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.storage import LocalFileStore, RedisStore
+from langchain_classic.storage import LocalFileStore
+from langchain_community.storage import RedisStore
 from utils import parse_output, normalize_string_value, parse_datetime, normalize_rep_column, normalize_number, str_normalize
 from functools import partial
 dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -222,7 +221,7 @@ class TableFormat:
 
         return self
 
-    def save_row_embedding(self, embeddings, save_local=False):
+    def save_row_embedding(self, embeddings, save_local=True):
         if save_local:
             store = LocalFileStore(os.path.join(dir_path, "result/.cache/"))
         else:
@@ -256,7 +255,7 @@ class TableFormat:
         if sample_type == 'all':
             return self.all_data
 
-    def get_sample_column(self, embeddings, column_information,  threshold: float = 0.4, query: str = '', save_local=False):
+    def get_sample_column(self, embeddings, column_information,  threshold: float = 0.4, query: str = '', save_local=True):
         if save_local:
             store = LocalFileStore(os.path.join(dir_path, "result/.cache/"))
         else:

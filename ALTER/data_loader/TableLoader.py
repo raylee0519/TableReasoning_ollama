@@ -1,4 +1,5 @@
-from datasets import load_dataset
+import json
+import random
 import pandas as pd
 import re
 import os
@@ -31,12 +32,25 @@ class TableLoader:
         """
         self.table_name = table_name
         self.dataset = self.load_table(use_sample, split=split, cache_dir=cache_dir)
-        if small_test:
+        # The local wikitable loader below has no 'small_test' field to
+        # filter on (the shared wtq_test3.jsonl doesn't carry one) -- we
+        # always run the full WTQ split for this baseline, so this is a
+        # no-op there rather than a crash.
+        if small_test and self.table_name != 'wikitable':
             self.dataset = self.dataset.filter(
                 lambda example: example['small_test'])
 
     def load_table(self, use_sample: bool = True, split: str = None, cache_dir = None ):
         dir_path = os.path.dirname(os.path.abspath(__file__))
+        if self.table_name == 'wikitable':
+            return self._load_wikitable_local(use_sample=use_sample)
+        # Imported lazily: HuggingFace `datasets` dropped support for the
+        # script-based loaders the other task_names below rely on (raises
+        # "Dataset scripts are no longer supported"), and pinning an older
+        # `datasets` that still supports them conflicts with this env's
+        # pyarrow. Not our problem for wikitable specifically, since that
+        # path never touches this import at all.
+        from datasets import load_dataset
         if self.table_name == 'fetaqa':
             dataset = load_dataset('DongfuJiang/FeTaQA',  cache_dir=cache_dir)
         else:
@@ -48,6 +62,35 @@ class TableLoader:
             shuffled_dataset = dataset.shuffle(seed=42)
             return shuffled_dataset.select(range(300))
         return dataset
+
+    def _load_wikitable_local(self, use_sample: bool = True):
+        """WTQ from the local wtq_test3.jsonl already used by TabSQLify/
+        NormTab, instead of HuggingFace `datasets`' removed script-loading
+        mechanism. Returns a plain list of dicts shaped like the original
+        wikitable.py loader's raw records -- normalize_table() below is the
+        only thing that reads them, and a plain list already supports the
+        len()/indexing it needs."""
+        alter_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = os.path.join(alter_root, "datasets", "wtq_test3.jsonl")
+        records = []
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                dic = json.loads(line)
+                table_text = dic["table_text"]
+                records.append({
+                    "id": dic["ids"],
+                    "question": dic["statement"],
+                    "caption": dic["title"],
+                    "table": {
+                        "header": table_text[0],
+                        "rows": table_text[1:],
+                        "name": dic["ids"],
+                    },
+                    "answers": dic["answer"],
+                })
+        if use_sample and len(records) > 300:
+            return random.Random(42).sample(records, 300)
+        return records
 
     def normalize_table(self, _line: dict):
         if self.table_name == 'fetaqa':

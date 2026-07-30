@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from executor import SQLManager
-from langchain.chains import LLMChain
+from langchain_classic.chains import LLMChain
 from langchain_openai import ChatOpenAI, OpenAI
 from langchain_community.callbacks import get_openai_callback
 from data_loader import TableLoader, TableFormat, TableAug
@@ -15,7 +15,7 @@ from typing import List
 from tqdm import tqdm
 import pandas as pd
 import concurrent.futures
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_ollama import OllamaEmbeddings
 import yaml
 LOG_FORMAT = "%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"
 logger = logging.getLogger()
@@ -24,9 +24,10 @@ logging.basicConfig(format=LOG_FORMAT)
 
 
 def parallel_run_kwargs(func, args_list):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(lambda kwargs: func(**kwargs), args_list)
-        return list(results)
+    # Sequential, not ThreadPoolExecutor -- this DAG holds a single slot in
+    # Airflow's shared ollama_pool (1 concurrent request across all
+    # baselines), so firing a thread per query here defeated that.
+    return [func(**kwargs) for kwargs in args_list]
 
 
 def save_csv(input_list: List[List], label_list: List, file_path):
@@ -63,15 +64,32 @@ def pipeline(task_name: str,
     manager = SQLManager(engine=engine)
     table_loader = TableLoader(
         table_name=task_name, split=split, use_sample=use_sample, small_test=small_test, cache_dir=cache_dir)
-    num_samples = len(table_loader.dataset)
-    num_samples = 10
-    num_batches = num_samples // batch_size
     token_count = []
-    embeddings = HuggingFaceBgeEmbeddings(
-        model_name='BAAI/bge-large-en',
-        model_kwargs={'device': 'cuda:0', 'trust_remote_code': True},
-        encode_kwargs={'normalize_embeddings': True})
-    save_path = f"result/answer/{task_name}_{split}_{datetime.datetime.now().strftime('%m-%d_%H')}.csv"
+    # Ollama-native embedding model instead of HuggingFaceBgeEmbeddings, which
+    # hardcoded device='cuda:0' (crashes without an NVIDIA GPU) and needed
+    # torch/accelerate/sentence_transformers. CacheBackedEmbeddings/FAISS below
+    # only depend on the generic LangChain Embeddings interface, so this is a
+    # drop-in swap -- nothing downstream needed to change.
+    embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
+
+    # Fixed filename (was timestamped to the hour, so a retry that landed in a
+    # different hour silently started a brand new file instead of resuming).
+    save_path = f"result/answer/{task_name}_{split}_{model_name}.csv"
+
+    # Self-resume by skipping table ids already written to save_path -- the
+    # original loop had no such check at all, so any retry reprocessed (and
+    # re-appended duplicate rows for) every sample from scratch.
+    done_ids = set()
+    if os.path.exists(save_path):
+        done_ids = set(pd.read_csv(save_path)['table_ids'].astype(str))
+    print(f"Already processed: {len(done_ids)} tables")
+
+    remaining_indices = [
+        i for i in range(len(table_loader.dataset))
+        if str(table_loader.dataset[i]['id']) not in done_ids
+    ]
+    num_samples = len(remaining_indices)
+    num_batches = num_samples // batch_size
 
     summary_information = pd.read_csv(
         f"result/augmentation/{task_name}_{split}_summary.csv", index_col='table_id')
@@ -175,7 +193,7 @@ def pipeline(task_name: str,
             for i in range(batch_size):
                 all_tokens = 0
                 normalized_sample = table_loader.normalize_table(
-                    table_loader.dataset[start + i])
+                    table_loader.dataset[remaining_indices[start + i]])
                 table_names.append(normalized_sample['id'])
                 formatter = TableFormat(
                     format='none', data=normalized_sample, save_embedding=False)

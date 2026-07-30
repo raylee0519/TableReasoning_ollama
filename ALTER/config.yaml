@@ -10,7 +10,7 @@ sqlite:
 
 OPENAI:
   api_key: "ollama"
-  model: "llama3.3:70b"
+  model: "llama3.2:1b"
   base_url: "http://localhost:11434/v1"
   temperature: 0.01
   max_retries: 5

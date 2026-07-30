@@ -1,4 +1,5 @@
 import csv
+import os
 from pandasql import sqldf
 from sqlalchemy import create_engine
 from utils.preprocess import *
@@ -219,39 +220,58 @@ def df_to_list_of_lists(df):
 
 # ---------------------------------------------------------------
 
+OUTPUT_DIR = 'outputs'
+NORMALIZE_OUTPUT_PATH = os.path.join(OUTPUT_DIR, 'normTab_targeted_wtq_llama3.2:1b.csv')
+NORMALIZE_HEADER = ['id', 'table title', 'original_tab', 'norm_table_markdown', 'norm_table', 'norm_table_modified','norm_table_t', 'columns', 'transpose', 'last_row']
+
+
+def get_done_table_ids(path):
+    """Table ids already normalized in a prior run -- read via csv.DictReader
+    (not line-count) since fields like norm_table_markdown contain embedded
+    newlines that a plain line-count would miscount."""
+    done = set()
+    if os.path.exists(path) and os.path.getsize(path) > 0:
+        with open(path, newline='', encoding='utf-8') as f:
+            for row in csv.DictReader(f):
+                done.add(row['id'])
+    return done
+
+
 if __name__ == "__main__":
     path = 'datasets/wtq_test3.jsonl'
-    
-    start = 0
-    end = start + 3  # 테스트용으로 3개만
-    table_ids = UNIQUE_TAB_IDS_WTQ[start:end]
-    
-    f = open('sample_outputs/normTab_targeted_wtq_gpt3.5_turbo_debug.csv', 'a')
+
+    table_ids = UNIQUE_TAB_IDS_WTQ  # full range, not a debug slice
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    done_ids = get_done_table_ids(NORMALIZE_OUTPUT_PATH)
+    print(f"Already normalized: {len(done_ids)} tables")
+
+    write_header = not (os.path.exists(NORMALIZE_OUTPUT_PATH) and os.path.getsize(NORMALIZE_OUTPUT_PATH) > 0)
+    f = open(NORMALIZE_OUTPUT_PATH, 'a', newline='', encoding='utf-8')
     writer = csv.writer(f)
-    
-    header = ['id', 'table title', 'original_tab', 'norm_table_markdown', 'norm_table', 'norm_table_modified','norm_table_t', 'columns', 'transpose', 'last_row']
-    writer.writerow(header)
-    
-    counter = start - 1
+    if write_header:
+        writer.writerow(NORMALIZE_HEADER)
+        f.flush()
+
     normtab_mode = "targeted"  # 명확하게 설정
     error_ids = []
-    
+
     with open(path, encoding='utf-8') as f1:
         for i, l in enumerate(f1):
             if i in table_ids:
                 try:
                     dic = json.loads(l)
                     ids = dic['ids']
+                    if ids in done_ids:
+                        continue
+
                     title = dic['title']
                     table = dic['table_text']
-                    
+
                     print(f'\n\n[INFO] Processing id: {ids}, title: {title}')
-                    
+
                     T = dict2df(table)
                     original_table_markdown = T.to_markdown(index=False)
-                    counter += 1
-                    print(f'\n[INFO] Counter: {counter}')
-                    
+
                     if normtab_mode == "basic":
                         try:
                             norm_table_df = run_normtab_basic(T, title)
@@ -295,6 +315,7 @@ if __name__ == "__main__":
                     
                     # Write results
                     writer.writerow(data)
+                    f.flush()
                     print(f"[INFO] Written results for {ids}")
                     
                 except Exception as e:

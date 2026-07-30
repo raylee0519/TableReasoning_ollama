@@ -1,8 +1,7 @@
 from data_loader import TableFormat, TableLoader
 from langchain_openai import ChatOpenAI, OpenAI
 from langchain_core.messages import HumanMessage
-from langchain.prompts.prompt import PromptTemplate
-from langchain.prompts.few_shot import FewShotPromptTemplate
+from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
 
 
 def get_k_shot_with_answer_wiki(k: int = 1):
