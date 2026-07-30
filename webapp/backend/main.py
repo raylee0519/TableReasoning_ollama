@@ -44,6 +44,21 @@ BASELINES = {
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
         "total": 4344,
     },
+    "reactable": {
+        "label": "ReAcTable",
+        "dag_id": "table_reasoning_reactable",
+        "task_id": "run_reactable_wtq",
+        "progress_kind": "line_count",
+        "progress_path": os.path.join(
+            REPO_ROOT, "ReAcTable", "result",
+            "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+        ),
+        "results_path": os.path.join(
+            REPO_ROOT, "ReAcTable", "result",
+            "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+        ),
+        "total": 4344,
+    },
 }
 
 app = FastAPI(title="Table Reasoning Benchmark Runner")

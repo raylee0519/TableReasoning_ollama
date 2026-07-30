@@ -148,9 +148,9 @@ with right:
                     lines.append(
                         "| " + " | ".join([
                             _cell(_first_present(r, ["id", "question_id", "idx"])),
-                            _cell(_first_present(r, ["question"])),
-                            _cell(_first_present(r, ["gold_answer", "answer"])),
-                            _cell(_first_present(r, ["prediction", "text"])),
+                            _cell(_first_present(r, ["question", "utterance"])),
+                            _cell(_first_present(r, ["gold_answer", "answer", "target_value"])),
+                            _cell(_first_present(r, ["prediction", "text", "predicted_value"])),
                         ]) + " |"
                     )
                 st.markdown("\n".join(lines))

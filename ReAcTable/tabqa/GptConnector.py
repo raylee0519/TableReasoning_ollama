@@ -92,7 +92,8 @@ def is_chat_model(model):
         'gpt-3.5-turbo', 
         'gpt-3.5-turbo-0301',
         'gpt-35-turbo',
-        'llama3.3']:
+        'llama3.3',
+        'llama3.2:1b']:
         return True
     else:
         return False
