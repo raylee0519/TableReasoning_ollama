@@ -79,6 +79,16 @@ BASELINES = {
         "results_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
         "total": 4344,
     },
+    "hstar": {
+        "label": "H-STAR",
+        "dag_id": "table_reasoning_hstar",
+        "task_id": "run_hstar_reason_text",
+        "progress_kind": "json_dict_count",
+        "results_kind": "json_dict",
+        "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_exec_results.json"),
+        "results_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_exec_results.json"),
+        "total": 4344,
+    },
 }
 
 app = FastAPI(title="Table Reasoning Benchmark Runner")
@@ -201,6 +211,19 @@ def _count_progress(baseline: dict) -> int:
             return 0
         with open(path, newline="", encoding="utf-8") as f:
             return max(sum(1 for _ in csv.reader(f)) - 1, 0)  # -1 for header
+    if baseline["progress_kind"] == "json_dict_count":
+        # H-STAR's stages write one JSON object (keyed by example id) once
+        # at the very end of each stage rather than incrementally, so this
+        # reads as 0 for the whole run and jumps to `total` only once the
+        # final stage finishes -- not a smooth progress bar, but accurate
+        # given there's nothing to read before then.
+        if not os.path.isfile(path):
+            return 0
+        try:
+            with open(path, encoding="utf-8") as f:
+                return len(json.load(f))
+        except (json.JSONDecodeError, OSError):
+            return 0
     return 0
 
 
@@ -343,6 +366,25 @@ def get_recent_results(baseline_key: str, limit: int = 10):
         with open(path, newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
         return list(reversed(rows[-limit:]))
+
+    if baseline.get("results_kind") == "json_dict":
+        # H-STAR's final stage writes one JSON object keyed by example id,
+        # not a list/JSONL -- only appears once that stage fully finishes.
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return []
+        results = []
+        for eid, value in reversed(list(data.items())[-limit:]):
+            ori = value.get("ori_data_item", {}) if isinstance(value, dict) else {}
+            results.append({
+                "id": eid,
+                "question": ori.get("question"),
+                "answer": ori.get("answer_text"),
+                "prediction": value.get("generations") if isinstance(value, dict) else None,
+            })
+        return results
 
     with open(path) as f:
         lines = f.readlines()
