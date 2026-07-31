@@ -33,3 +33,4 @@ langchain-ollama
 records
 regex
 transformers
+mlflow  # pulls pandas down to 2.3.x from 3.0.x -- verified all 6 baselines still import fine under it
