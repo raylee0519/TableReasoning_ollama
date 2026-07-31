@@ -1,0 +1,35 @@
+# Unified convenience install for all Airflow-wired baselines (TabSQLify,
+# tablellm, ReAcTable, NormTab, ALTER, H-STAR) in one shared conda env.
+# This is a one-shot setup convenience file -- Airflow's own ensure_deps
+# task and CI still check each baseline's own requirements.txt
+# independently, so keep both in sync if a baseline's real dependencies
+# change.
+pandas
+numpy
+openai
+pandasql
+sqlalchemy
+tiktoken
+recognizers-text-suite
+fuzzywuzzy
+nltk
+emoji==1.7.0
+fire
+python-dateutil
+tqdm
+timeout-decorator
+natsort
+python-dotenv
+pylcs
+pyyaml
+tabulate
+sqlparse
+langchain
+langchain-core
+langchain-openai
+langchain-community
+langchain-text-splitters
+langchain-ollama
+records
+regex
+transformers

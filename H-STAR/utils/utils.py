@@ -8,8 +8,6 @@ from functools import cmp_to_key
 import math
 from collections.abc import Iterable
 
-from datasets import load_dataset
-
 ROOT_DIR = os.path.join(os.path.dirname(__file__), "../")
 
 def _load_table(table_path) -> dict:
@@ -145,7 +143,45 @@ def majority_vote(
     return pred_answer, pred_answer_nsqls
 
 
+def _load_wikitq_local(split):
+    """WTQ from the local wtq_test3.jsonl already used by TabSQLify/NormTab/
+    ALTER, instead of HuggingFace `datasets`' script-based loading (raises
+    "Dataset scripts are no longer supported" on the `datasets` version in
+    this env; pinning an older `datasets` that still supports it conflicts
+    with huggingface-hub/transformers instead). Only the 'test' split is
+    available locally, matching every other baseline wired into Airflow."""
+    if split != 'test':
+        raise ValueError(f"Local wikitq loader only has the 'test' split, got '{split}'")
+    path = os.path.join(ROOT_DIR, 'datasets', 'wtq_test3.jsonl')
+    records = []
+    with open(path, encoding='utf-8') as f:
+        for line in f:
+            dic = json.loads(line)
+            table_text = dic['table_text']
+            records.append({
+                'id': dic['ids'],
+                'question': dic['statement'],
+                'table_id': dic['ids'],
+                'table': {
+                    'page_title': dic['title'],
+                    'header': table_text[0],
+                    'rows': table_text[1:],
+                },
+                'answer_text': dic['answer'],
+            })
+    return records
+
+
 def load_data_split(dataset_to_load, split, data_dir=os.path.join(ROOT_DIR, 'datasets/')):
+    if dataset_to_load == 'wikitq':
+        return _load_wikitq_local(split)
+
+    # Imported lazily: this env's `datasets` version can't be made to work
+    # against both the script-based loaders below (removed in newer
+    # `datasets`) and transformers/huggingface-hub (needs a newer one) at
+    # the same time. Not our problem for wikitq specifically, since that
+    # path never touches this import at all.
+    from datasets import load_dataset
     dataset_split_loaded = load_dataset(
         path=os.path.join(data_dir, "{}.py".format(dataset_to_load)),
         cache_dir=os.path.join(data_dir, "data"))[split]

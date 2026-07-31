@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        baseline: [TabSQLify, tablellm]
+        baseline: [TabSQLify, tablellm, ReAcTable, NormTab, ALTER]
     steps:
       - uses: actions/checkout@v4
 
