@@ -16,6 +16,7 @@ REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 AIRFLOW_BASE_URL = os.environ.get("AIRFLOW_BASE_URL", "http://localhost:8080/api/v1")
 AIRFLOW_AUTH = ("admin", "admin")
+DEFAULT_MODEL = "llama3.2:1b"
 
 BASELINES = {
     "tabsqlify": {
@@ -33,12 +34,12 @@ BASELINES = {
         ],
     },
     "tablellm_agent": {
-        "label": "tablellm (Agent)",
+        "label": "Mix-SC (Agent)",
         "dag_id": "table_reasoning_tablellm_agent",
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
         "stages": [
             {
-                "label": "tablellm (Agent)",
+                "label": "Mix-SC (Agent)",
                 "task_id": "run_tablellm_agent_wtq",
                 "progress_kind": "line_count",
                 "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
@@ -47,12 +48,12 @@ BASELINES = {
         ],
     },
     "tablellm_cot": {
-        "label": "tablellm (CoT)",
+        "label": "Mix-SC (CoT)",
         "dag_id": "table_reasoning_tablellm_cot",
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
         "stages": [
             {
-                "label": "tablellm (CoT)",
+                "label": "Mix-SC (CoT)",
                 "task_id": "run_tablellm_cot_wtq",
                 "progress_kind": "line_count",
                 "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
@@ -63,18 +64,21 @@ BASELINES = {
     "reactable": {
         "label": "ReAcTable",
         "dag_id": "table_reasoning_reactable",
-        "results_path": os.path.join(
+        # ReAcTable bakes the model name into its own output filename, so
+        # this has to be resolved per-run against whichever model actually
+        # triggered it -- see _resolve_path().
+        "results_path": lambda model: os.path.join(
             REPO_ROOT, "ReAcTable", "result",
-            "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+            f"CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_model{model}.jsonl",
         ),
         "stages": [
             {
                 "label": "ReAcTable",
                 "task_id": "run_reactable_wtq",
                 "progress_kind": "line_count",
-                "progress_path": os.path.join(
+                "progress_path": lambda model: os.path.join(
                     REPO_ROOT, "ReAcTable", "result",
-                    "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+                    f"CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_model{model}.jsonl",
                 ),
                 "total": 4344,
             },
@@ -89,7 +93,10 @@ BASELINES = {
                 "label": "Normalize",
                 "task_id": "run_normtab_normalize",
                 "progress_kind": "csv_row_count",
-                "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_targeted_wtq_llama3.2:1b.csv"),
+                # Also model-specific, same reason as ReAcTable above.
+                "progress_path": lambda model: os.path.join(
+                    REPO_ROOT, "NormTab", "outputs", f"normTab_targeted_wtq_{model}.csv"
+                ),
                 "total": 416,
             },
             {
@@ -105,7 +112,9 @@ BASELINES = {
         "label": "ALTER",
         "dag_id": "table_reasoning_alter",
         "results_kind": "csv",
-        "results_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
+        "results_path": lambda model: os.path.join(
+            REPO_ROOT, "ALTER", "result", "answer", f"wikitable_test_{model}.csv"
+        ),
         "stages": [
             {
                 "label": "Augmentation",
@@ -118,7 +127,9 @@ BASELINES = {
                 "label": "Pipeline",
                 "task_id": "run_alter_pipeline",
                 "progress_kind": "csv_row_count",
-                "progress_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
+                "progress_path": lambda model: os.path.join(
+                    REPO_ROOT, "ALTER", "result", "answer", f"wikitable_test_{model}.csv"
+                ),
                 "total": 4344,
             },
         ],
@@ -254,7 +265,7 @@ def list_baselines():
 
 
 @app.post("/run/{baseline_key}")
-def trigger_run(baseline_key: str):
+def trigger_run(baseline_key: str, model: str = DEFAULT_MODEL):
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
 
@@ -266,10 +277,14 @@ def trigger_run(baseline_key: str):
         timeout=10,
     )
 
+    # The selected model rides along as DagRun conf -- each DAG's tasks read
+    # it back out via `{{ dag_run.conf.get('model', ...) }}` Jinja templating
+    # so the actual baseline script (and the results/progress lookups below)
+    # use whatever was picked, not a hardcoded default.
     resp = requests.post(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
         auth=AIRFLOW_AUTH,
-        json={},
+        json={"conf": {"model": model}},
         timeout=10,
     )
     if resp.status_code not in (200, 201):
@@ -277,8 +292,33 @@ def trigger_run(baseline_key: str):
     return resp.json()
 
 
-def _count_progress(stage: dict) -> int:
-    path = stage["progress_path"]
+def _resolve_path(path_or_fn, model: str) -> str:
+    return path_or_fn(model) if callable(path_or_fn) else path_or_fn
+
+
+def _active_run_model(dag_id: str) -> str:
+    """The model the most recent run of this DAG was actually triggered
+    with -- used to resolve model-dependent file paths (ReAcTable/NormTab/
+    ALTER bake the model name into their own output filenames) for
+    progress/results lookups, which don't otherwise know which model is
+    involved. Falls back to DEFAULT_MODEL if there's no run yet or its
+    conf didn't specify one."""
+    resp = requests.get(
+        f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
+        auth=AIRFLOW_AUTH,
+        params={"order_by": "-execution_date", "limit": 1},
+        timeout=10,
+    )
+    if resp.status_code != 200:
+        return DEFAULT_MODEL
+    runs = resp.json().get("dag_runs", [])
+    if not runs:
+        return DEFAULT_MODEL
+    return (runs[0].get("conf") or {}).get("model", DEFAULT_MODEL)
+
+
+def _count_progress(stage: dict, model: str) -> int:
+    path = _resolve_path(stage["progress_path"], model)
     if stage["progress_kind"] == "dir_count":
         if not os.path.isdir(path):
             return 0
@@ -429,11 +469,12 @@ def get_progress(baseline_key: str):
     H-STAR's 6-stage chain from costing 6x the API calls on every poll)."""
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
+    model = _active_run_model(dag_id)
     stages = []
     current_stage_index = 0
     still_checking = True
     for i, stage in enumerate(baseline["stages"]):
-        done = _count_progress(stage)
+        done = _count_progress(stage, model)
         total = stage["total"]
         if still_checking:
             task_state = _latest_task_state(dag_id, stage["task_id"])
@@ -461,7 +502,8 @@ def get_recent_results(baseline_key: str, limit: int = 10):
     """Most recently completed samples, newest first — for showing a live list
     of what the benchmark has actually produced, not just a percentage."""
     baseline = _get_baseline_or_404(baseline_key)
-    path = baseline["results_path"]
+    model = _active_run_model(baseline["dag_id"])
+    path = _resolve_path(baseline["results_path"], model)
     if not os.path.isfile(path):
         return []
 

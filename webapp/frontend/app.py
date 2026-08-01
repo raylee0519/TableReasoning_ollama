@@ -6,8 +6,9 @@ import streamlit as st
 
 BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
-st.set_page_config(page_title="Table Reasoning Benchmark Runner", layout="wide")
-st.title("Table Reasoning Benchmark Runner")
+st.set_page_config(page_title="Tablollama", layout="wide")
+st.title("Tablollama")
+st.caption("Table Reasoning Benchmark Runner")
 
 
 def _first_present(d: dict, keys: list):
@@ -29,7 +30,7 @@ is_running = len(running_keys) > 0
 try:
     baselines = requests.get(f"{BACKEND_URL}/baselines", timeout=5).json()
 except Exception as e:
-    st.error(f"백엔드 연결 실패: {e}")
+    st.error(f"Backend connection failed: {e}")
     st.stop()
 
 left, right = st.columns(2)
@@ -38,22 +39,22 @@ left, right = st.columns(2)
 # LEFT: ollama status, model selection, baseline selection, run/stop
 # ============================================================
 with left:
-    st.subheader("Ollama 상태")
+    st.subheader("Ollama Status")
     try:
         ollama_running = requests.get(f"{BACKEND_URL}/ollama/status", timeout=3).json()["running"]
     except Exception:
         ollama_running = False
 
     ollama_toggle = st.toggle(
-        "실행 중" if ollama_running else "꺼짐 — 토글을 켜면 시작합니다",
+        "Running" if ollama_running else "Off — toggle to start",
         value=ollama_running,
         key="ollama_toggle",
     )
     if ollama_toggle and not ollama_running:
         requests.post(f"{BACKEND_URL}/ollama/start", timeout=5)
-        st.info("Ollama를 시작하는 중입니다. 잠시 후 새로고침하세요.")
+        st.info("Starting Ollama. Refresh in a moment.")
 
-    st.subheader("Ollama 모델 선택")
+    st.subheader("Ollama Model Selection")
     try:
         models_resp = requests.get(f"{BACKEND_URL}/ollama/models", timeout=5).json()
         model_names = [m["name"] for m in models_resp.get("models", [])]
@@ -61,14 +62,14 @@ with left:
         model_names = []
 
     if model_names:
-        st.selectbox("모델", model_names, disabled=is_running)
-        st.caption("실행에 사용되는 모델은 아직 각 baseline 기본값으로 고정되어 있습니다.")
+        selected_model = st.selectbox("Model", model_names, disabled=is_running)
     else:
-        st.warning("설치된 Ollama 모델이 없습니다.")
+        st.warning("No Ollama models installed.")
+        selected_model = "llama3.2:1b"
 
-    st.subheader("실행할 방식 선택")
+    st.subheader("Select Method to Run")
     if is_running:
-        st.caption("실행 중에는 선택을 바꿀 수 없습니다. 정지 후 다시 선택하세요.")
+        st.caption("Selection can't be changed while running. Stop first to change it.")
 
     label_to_key = {info["label"]: key for key, info in baselines.items()}
     labels = list(label_to_key.keys())
@@ -80,7 +81,7 @@ with left:
         default_index = 0
 
     selected_label = st.selectbox(
-        "방식",
+        "Method",
         labels,
         index=default_index,
         disabled=is_running,
@@ -90,38 +91,38 @@ with left:
 
     col_run, col_stop = st.columns(2)
     with col_run:
-        run_clicked = st.button("실행", disabled=is_running, use_container_width=True)
+        run_clicked = st.button("Run", disabled=is_running, use_container_width=True)
     with col_stop:
-        stop_clicked = st.button("정지", disabled=not is_running, use_container_width=True)
+        stop_clicked = st.button("Stop", disabled=not is_running, use_container_width=True)
 
     if run_clicked:
         for key in selected_baselines:
-            resp = requests.post(f"{BACKEND_URL}/run/{key}", timeout=10)
+            resp = requests.post(f"{BACKEND_URL}/run/{key}", params={"model": selected_model}, timeout=10)
             if resp.ok:
-                st.success(f"{baselines[key]['label']} 트리거됨")
+                st.success(f"{baselines[key]['label']} triggered")
             else:
-                st.error(f"{baselines[key]['label']} 트리거 실패: {resp.text}")
+                st.error(f"{baselines[key]['label']} trigger failed: {resp.text}")
         st.rerun()
 
     if stop_clicked:
         for key in running_keys:
             resp = requests.post(f"{BACKEND_URL}/stop/{key}", timeout=10)
             if resp.ok:
-                st.success(f"{baselines[key]['label']} 정지됨")
+                st.success(f"{baselines[key]['label']} stopped")
             else:
-                st.error(f"{baselines[key]['label']} 정지 실패: {resp.text}")
+                st.error(f"{baselines[key]['label']} stop failed: {resp.text}")
         st.rerun()
 
 # ============================================================
 # RIGHT: progress + recent results, only for what's actually running
 # ============================================================
 with right:
-    st.subheader("진행 상황")
+    st.subheader("Progress")
 
     if not running_keys:
-        st.caption("실행 중인 워크플로우가 없습니다.")
+        st.caption("No workflow is running.")
     else:
-        st.caption("실행되는 동안 5초마다 자동으로 새로고침됩니다.")
+        st.caption("Auto-refreshes every 5 seconds while running.")
 
         for key in running_keys:
             info = baselines[key]
@@ -139,7 +140,7 @@ with right:
                 else:
                     icon = "⏳"
                 st.markdown(f"{icon} **{stage['label']}** — {stage['done']}/{stage['total']} "
-                            f"({stage['percent']}%) — 상태: {stage['task_state']}")
+                            f"({stage['percent']}%) — status: {stage['task_state']}")
                 st.progress(min(stage["percent"] / 100, 1.0))
 
             results = requests.get(f"{BACKEND_URL}/results/{key}", params={"limit": 10}, timeout=5).json()
@@ -167,7 +168,7 @@ with right:
                     )
                 st.markdown("\n".join(lines))
             else:
-                st.caption("아직 결과 없음")
+                st.caption("No results yet.")
 
             st.divider()
 

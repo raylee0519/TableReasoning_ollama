@@ -10,7 +10,7 @@ dataset = pd.read_csv('./dataset/WikiTableQuestions/data/pristine-unseen-tables.
 
 NNDemo = False
 max_demo = 5
-gpt_model = 'llama3.2:1b'
+gpt_model = os.environ.get('MODEL_NAME', 'llama3.2:1b')
 program = 'sql-py'
 template = 'original-sql-py-no-intermediate'
 

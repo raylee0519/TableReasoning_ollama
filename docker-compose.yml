@@ -14,7 +14,7 @@
 x-airflow-common: &airflow-common
   build:
     context: .
-    dockerfile: docker/airflow/Dockerfile
+    dockerfile: airflow_dags/Dockerfile
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: SequentialExecutor
@@ -35,7 +35,7 @@ services:
   mlflow:
     build:
       context: .
-      dockerfile: docker/mlflow/Dockerfile
+      dockerfile: mlflow_tracking/Dockerfile
     ports:
       # host 5000 is often taken by macOS AirPlay Receiver -- container-internal
       # traffic (http://mlflow:5000) is unaffected, only the host-exposed port

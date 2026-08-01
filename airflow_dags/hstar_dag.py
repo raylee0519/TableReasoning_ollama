@@ -30,7 +30,7 @@ echo "Ollama failed to start" >&2
 exit 1
 """
 
-ENGINE = "llama3.2:1b"
+ENGINE = "{{ dag_run.conf.get('model', 'llama3.2:1b') }}"
 
 
 def stage_bash(module, prompt_file, input_program_file=None, n_parallel_prompts=3,

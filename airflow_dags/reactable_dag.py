@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
 TABLE_PYTHON = os.environ.get("TABLE_PYTHON", "/opt/anaconda3/envs/table/bin/python")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
+MODEL = "{{ dag_run.conf.get('model', 'llama3.2:1b') }}"
 
 REACTABLE_DIR = os.path.join(REPO_ROOT, "ReAcTable")
 ENSURE_REQUIREMENTS_SCRIPT = os.path.join(REPO_ROOT, "airflow_dags", "ensure_requirements.py")
@@ -57,6 +58,8 @@ with DAG(
     run_reactable = BashOperator(
         task_id="run_reactable_wtq",
         bash_command=f"cd {REACTABLE_DIR} && {TABLE_PYTHON} -u WikiTQ_inference.py",
+        env={"MODEL_NAME": MODEL},
+        append_env=True,
         retries=1000,
         retry_delay=timedelta(minutes=1),
         pool="ollama_pool",
@@ -64,7 +67,7 @@ with DAG(
 
     log_to_mlflow = BashOperator(
         task_id="log_to_mlflow",
-        bash_command=f"{TABLE_PYTHON} {MLFLOW_LOG_SCRIPT} --baseline reactable",
+        bash_command=f"{TABLE_PYTHON} {MLFLOW_LOG_SCRIPT} --baseline reactable --model {MODEL}",
         retries=3,
         retry_delay=timedelta(seconds=30),
     )
