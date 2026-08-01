@@ -1,0 +1,105 @@
+# One-command distribution setup for this repo: `docker compose up` gets
+# Airflow (webserver+scheduler) + MLflow + the webapp (backend+frontend)
+# running, with the unified requirements.txt baked into the Airflow image
+# instead of requiring conda. Ollama stays host-native (not a service here)
+# -- unlike MLflow's tracking data, which is self-contained within this
+# compose stack, Ollama's pulled models are the user's own pre-existing,
+# actively-curated state (and multi-GB downloads), reached from every
+# container via host.docker.internal.
+#
+# Prereq: Ollama running on the host (`ollama serve`).
+# Usage:  docker compose up --build
+# MLflow UI: http://localhost:5001
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: docker/airflow/Dockerfile
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    AIRFLOW__CORE__DAGS_FOLDER: /repo/airflow_dags
+    AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session
+    REPO_ROOT: /repo
+    TABLE_PYTHON: python
+    OLLAMA_HOST: host.docker.internal:11434
+    MLFLOW_TRACKING_URI: http://mlflow:5000
+  volumes:
+    - airflow_home:/opt/airflow
+    - .:/repo
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  mlflow:
+    build:
+      context: .
+      dockerfile: docker/mlflow/Dockerfile
+    ports:
+      # host 5000 is often taken by macOS AirPlay Receiver -- container-internal
+      # traffic (http://mlflow:5000) is unaffected, only the host-exposed port
+      # changes.
+      - "5001:5000"
+    volumes:
+      - mlflow_data:/mlflow-data
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow db migrate
+        airflow users create --username admin --password admin \
+          --firstname admin --lastname admin --role Admin --email admin@example.com || true
+        airflow pools set ollama_pool 1 "Limits concurrent Ollama inference requests across baseline DAGs"
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+      mlflow:
+        condition: service_started
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+      mlflow:
+        condition: service_started
+
+  backend:
+    build: ./webapp/backend
+    ports:
+      - "8000:8000"
+    environment:
+      - REPO_ROOT=/repo
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - AIRFLOW_BASE_URL=http://airflow-webserver:8080/api/v1
+    volumes:
+      - .:/repo:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - airflow-webserver
+
+  frontend:
+    build: ./webapp/frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - PYTHONFAULTHANDLER=1
+    depends_on:
+      - backend
+
+volumes:
+  airflow_home:
+  mlflow_data:

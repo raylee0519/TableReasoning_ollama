@@ -39,6 +39,7 @@ def augmentation(task_name: str,
                  small_test: bool = True):
     with open('config.yaml', 'r') as f:
         config = yaml.safe_load(f)
+    config['OPENAI']['base_url'] = f"http://{os.environ.get('OLLAMA_HOST', 'localhost:11434')}/v1"
     model = ChatOpenAI(model_name=model_name,
                        openai_api_key=config['OPENAI']['api_key'], base_url=config['OPENAI']['base_url'], temperature=config['OPENAI']['temperature'], max_retries=config['OPENAI']['max_retries'], request_timeout=config['OPENAI']['request_timeout'])
     table_loader = TableLoader(

@@ -126,9 +126,21 @@ with right:
         for key in running_keys:
             info = baselines[key]
             progress = requests.get(f"{BACKEND_URL}/progress/{key}", timeout=5).json()
-            st.markdown(f"**{info['label']}** — {progress['done']}/{progress['total']} "
-                        f"({progress['percent']}%) — 상태: {progress['task_state']}")
-            st.progress(min(progress["percent"] / 100, 1.0))
+            stages = progress["stages"]
+            current_idx = progress["current_stage_index"]
+
+            if len(stages) > 1:
+                st.markdown(f"**{info['label']}**")
+            for i, stage in enumerate(stages):
+                if stage["task_state"] == "success":
+                    icon = "✅"
+                elif i == current_idx:
+                    icon = "▶️"
+                else:
+                    icon = "⏳"
+                st.markdown(f"{icon} **{stage['label']}** — {stage['done']}/{stage['total']} "
+                            f"({stage['percent']}%) — 상태: {stage['task_state']}")
+                st.progress(min(stage["percent"] / 100, 1.0))
 
             results = requests.get(f"{BACKEND_URL}/results/{key}", params={"limit": 10}, timeout=5).json()
             if results:

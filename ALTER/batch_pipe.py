@@ -58,6 +58,8 @@ def pipeline(task_name: str,
              aug_type: List):
     with open('config.yaml', 'r') as f:
         config = yaml.safe_load(f)
+    ollama_host = os.environ.get('OLLAMA_HOST', 'localhost:11434')
+    config['OPENAI']['base_url'] = f'http://{ollama_host}/v1'
     model = ChatOpenAI(model_name=model_name,
                        openai_api_key=config['OPENAI']['api_key'], base_url=config['OPENAI']['base_url'], temperature=config['OPENAI']['temperature'], max_retries=config['OPENAI']['max_retries'], request_timeout=config['OPENAI']['request_timeout'])
     engine = create_engine(config['sqlite']['url'], echo=False)
@@ -70,7 +72,7 @@ def pipeline(task_name: str,
     # torch/accelerate/sentence_transformers. CacheBackedEmbeddings/FAISS below
     # only depend on the generic LangChain Embeddings interface, so this is a
     # drop-in swap -- nothing downstream needed to change.
-    embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url='http://localhost:11434')
+    embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url=f'http://{ollama_host}')
 
     # Fixed filename (was timestamped to the hour, so a retry that landed in a
     # different hour silently started a brand new file instead of resuming).

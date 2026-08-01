@@ -116,7 +116,10 @@ def main():
     parser.add_argument("--baseline", required=True, choices=list(BASELINE_CONFIGS.keys()))
     parser.add_argument("--model", default="llama3.2:1b")
     parser.add_argument("--dataset", default="wtq")
-    parser.add_argument("--tracking-uri", default="http://127.0.0.1:5000")
+    parser.add_argument(
+        "--tracking-uri",
+        default=os.environ.get("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000"),
+    )
     args = parser.parse_args()
 
     config = BASELINE_CONFIGS[args.baseline]

@@ -5,7 +5,7 @@ import time
 import pprint
 
 client = OpenAI(
-    base_url="http://localhost:11434/v1",  # Ollama OpenAI compatible endpoint
+    base_url=f"http://{os.environ.get('OLLAMA_HOST', 'localhost:11434')}/v1",  # Ollama OpenAI compatible endpoint
     api_key="ollama",
 )
 
