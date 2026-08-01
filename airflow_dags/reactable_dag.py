@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 REACTABLE_DIR = "/Users/jeongwoo/new_github/Tablollama/ReAcTable"
 TABLE_PYTHON = "/opt/anaconda3/envs/table/bin/python"
 ENSURE_REQUIREMENTS_SCRIPT = "/Users/jeongwoo/new_github/Tablollama/airflow_dags/ensure_requirements.py"
+MLFLOW_LOG_SCRIPT = "/Users/jeongwoo/new_github/Tablollama/mlflow_tracking/log_run.py"
 
 CHECK_OLLAMA_BASH = """
 for i in $(seq 1 6); do
@@ -56,4 +57,11 @@ with DAG(
         pool="ollama_pool",
     )
 
-    ensure_deps >> check_ollama >> run_reactable
+    log_to_mlflow = BashOperator(
+        task_id="log_to_mlflow",
+        bash_command=f"{TABLE_PYTHON} {MLFLOW_LOG_SCRIPT} --baseline reactable",
+        retries=3,
+        retry_delay=timedelta(seconds=30),
+    )
+
+    ensure_deps >> check_ollama >> run_reactable >> log_to_mlflow
