@@ -8,7 +8,7 @@ os.environ['OPENAI_API_KEY'] = "ollama"  # Ollama에서는 실제 키가 필요�
 
 # Ollama OpenAI 호환 API 클라이언트 설정
 client = OpenAI(
-    base_url="http://localhost:11434/v1",  # Ollama OpenAI 호환 엔드포인트
+    base_url=f"http://{os.environ.get('OLLAMA_HOST', 'localhost:11434')}/v1",  # Ollama OpenAI 호환 엔드포인트
     api_key="ollama"  # Ollama에서는 실제로 사용되지 않음
 )
 

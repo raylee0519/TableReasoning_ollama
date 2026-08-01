@@ -2,6 +2,7 @@
 Ollama 기반 Generator (OpenAI 호환 API 사용)
 """
 
+import os
 import time
 from typing import Dict, List, Union, Tuple
 from openai import OpenAI
@@ -20,7 +21,7 @@ class Generator(object):
 
         # Ollama OpenAI 호환 API 클라이언트 설정
         self.client = OpenAI(
-            base_url="http://localhost:11434/v1",  # Ollama API 엔드포인트
+            base_url=f"http://{os.environ.get('OLLAMA_HOST', 'localhost:11434')}/v1",  # Ollama API 엔드포인트
             api_key="ollama"                       # Ollama는 실제 키 불필요
         )
 

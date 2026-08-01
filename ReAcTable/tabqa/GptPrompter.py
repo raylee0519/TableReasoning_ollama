@@ -1,3 +1,4 @@
+import os
 import re
 import pandas as pd
 import openai
@@ -5,11 +6,9 @@ from openai import OpenAI
 
 
 client = OpenAI(
-    base_url="http://localhost:11434/v1",  # Ollama OpenAI compatible endpoint
+    base_url=f"http://{os.environ.get('OLLAMA_HOST', 'localhost:11434')}/v1",  # Ollama OpenAI compatible endpoint
     api_key="ollama",
 )
-
-import os
 import json
 # from gpt3_sandbox.api.gpt import GPT
 # from gpt3_sandbox.api.gpt import Example

@@ -27,6 +27,7 @@ from utils.normalizer import post_process_sql
 from nsql.sql_exec import Executor, extract_answers
 import pandas as pd
 import numpy as np
+from scripts.model_ollama.checkpoint_utils import load_checkpoint, save_checkpoint
 
 
 def worker_annotate(
@@ -34,6 +35,7 @@ def worker_annotate(
         args,
         g_eids: List,
         row_col,
+        save_path,
 ):
     """
     A worker process for annotating.
@@ -187,7 +189,8 @@ def worker_annotate(
             for eid, g_pairs in response_dict.items():
                 g_pairs = sorted(g_pairs, key=lambda x: x[-1], reverse=True)
                 g_dict[eid]['generations'] = g_pairs
-            
+
+            save_checkpoint(save_path, g_dict)
             built_few_shot_prompts = []
 
         except Exception as e:
@@ -204,6 +207,7 @@ def worker_annotate(
         for eid, g_pairs in response_dict.items():
             g_pairs = sorted(g_pairs, key=lambda x: x[-1], reverse=True)
             g_dict[eid]['generations'] = g_pairs
+        save_checkpoint(save_path, g_dict)
 
     return g_dict
 
@@ -301,9 +305,13 @@ def main():
 
     # Annotate
     generator = Generator(args, keys=keys)
+    save_file_name = f'{args.dataset}_{args.dataset_split}_exec_results.json'
+    save_path = os.path.join(args.save_dir, save_file_name)
+    existing_dict = load_checkpoint(save_path)
     # Enter dataset size for inference: range(0, len(dataset))
     generate_eids = list(range(0, len(dataset)))
-    # generate_eids = list(range(0,10)) # for test 0~10
+    generate_eids = [eid for eid in generate_eids if str(eid) not in existing_dict]
+    print(f"{len(existing_dict)} already done, {len(generate_eids)} remaining")
     generate_eids_group = [[] for _ in range(args.n_processes)]
     for g_eid in generate_eids:
         generate_eids_group[int(g_eid) % args.n_processes].append(g_eid)
@@ -317,6 +325,7 @@ def main():
             args,
             generate_eids_group[pid],
             row_col_dict_group[pid],
+            save_path,
         )))
 
     # Merge annotation results
@@ -326,14 +335,12 @@ def main():
     pool.close()
     pool.join()
 
-    # Save annotation results
-    save_file_name = f'{args.dataset}_{args.dataset_split}_exec_results.json'
-
-    with open(os.path.join(args.save_dir, save_file_name), 'w') as f:
-        json.dump(g_dict, f, indent=4)
+    # Save annotation results (merges with whatever's already on disk, so
+    # this is safe even if generate_eids was empty)
+    save_checkpoint(save_path, g_dict)
 
     print(f"Elapsed time: {time.time() - start_time}")
-    return g_dict
+    return load_checkpoint(save_path)
 
 if __name__ == '__main__':
     if platform.system() == "Darwin":

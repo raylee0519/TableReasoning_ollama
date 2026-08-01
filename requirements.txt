@@ -1,14 +1,7 @@
-# Unified convenience install for all Airflow-wired baselines (TabSQLify,
-# tablellm, ReAcTable, NormTab, ALTER, H-STAR) in one shared conda env.
-# This is a one-shot setup convenience file -- Airflow's own ensure_deps
-# task and CI still check each baseline's own requirements.txt
-# independently, so keep both in sync if a baseline's real dependencies
-# change.
 pandas
 numpy
 openai
 pandasql
-sqlalchemy
 tiktoken
 recognizers-text-suite
 fuzzywuzzy
@@ -24,13 +17,21 @@ pylcs
 pyyaml
 tabulate
 sqlparse
-langchain
-langchain-core
-langchain-openai
-langchain-community
-langchain-text-splitters
-langchain-ollama
-records
+docopt
+openpyxl
+tablib
+records==0.6.0
 regex
 transformers
-mlflow  # pulls pandas down to 2.3.x from 3.0.x -- verified all 6 baselines still import fine under it
+mlflow 
+sqlalchemy==1.4.54
+cryptography==42.0.8
+typing_extensions==4.16.0
+langchain==1.3.14
+langchain-core==1.5.2
+langchain-classic==1.0.8
+langchain-community==0.4.2
+langchain-openai==1.4.1
+langchain-text-splitters==1.1.2
+langchain-ollama==1.1.0
+langchain-protocol==0.0.18

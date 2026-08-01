@@ -21,73 +21,157 @@ BASELINES = {
     "tabsqlify": {
         "label": "TabSQLify",
         "dag_id": "table_reasoning_tabsqlify",
-        "task_id": "run_tabsqlify_wtq",
-        "progress_kind": "dir_count",
-        "progress_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "logs"),
         "results_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "wtq_sql_results.jsonl"),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "TabSQLify",
+                "task_id": "run_tabsqlify_wtq",
+                "progress_kind": "dir_count",
+                "progress_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "logs"),
+                "total": 4344,
+            },
+        ],
     },
     "tablellm_agent": {
         "label": "tablellm (Agent)",
         "dag_id": "table_reasoning_tablellm_agent",
-        "task_id": "run_tablellm_agent_wtq",
-        "progress_kind": "line_count",
-        "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "tablellm (Agent)",
+                "task_id": "run_tablellm_agent_wtq",
+                "progress_kind": "line_count",
+                "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_agent_ollama", "result.jsonl"),
+                "total": 4344,
+            },
+        ],
     },
     "tablellm_cot": {
         "label": "tablellm (CoT)",
         "dag_id": "table_reasoning_tablellm_cot",
-        "task_id": "run_tablellm_cot_wtq",
-        "progress_kind": "line_count",
-        "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "tablellm (CoT)",
+                "task_id": "run_tablellm_cot_wtq",
+                "progress_kind": "line_count",
+                "progress_path": os.path.join(REPO_ROOT, "tablellm", "output", "wtq_cot_ollama", "result.jsonl"),
+                "total": 4344,
+            },
+        ],
     },
     "reactable": {
         "label": "ReAcTable",
         "dag_id": "table_reasoning_reactable",
-        "task_id": "run_reactable_wtq",
-        "progress_kind": "line_count",
-        "progress_path": os.path.join(
-            REPO_ROOT, "ReAcTable", "result",
-            "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
-        ),
         "results_path": os.path.join(
             REPO_ROOT, "ReAcTable", "result",
             "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
         ),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "ReAcTable",
+                "task_id": "run_reactable_wtq",
+                "progress_kind": "line_count",
+                "progress_path": os.path.join(
+                    REPO_ROOT, "ReAcTable", "result",
+                    "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+                ),
+                "total": 4344,
+            },
+        ],
     },
     "normtab": {
         "label": "NormTab",
         "dag_id": "table_reasoning_normtab",
-        "task_id": "run_normtab_eval",
-        "progress_kind": "line_count",
-        "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
         "results_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
-        "total": 4339,
+        "stages": [
+            {
+                "label": "Normalize",
+                "task_id": "run_normtab_normalize",
+                "progress_kind": "csv_row_count",
+                "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_targeted_wtq_llama3.2:1b.csv"),
+                "total": 416,
+            },
+            {
+                "label": "Eval",
+                "task_id": "run_normtab_eval",
+                "progress_kind": "line_count",
+                "progress_path": os.path.join(REPO_ROOT, "NormTab", "outputs", "normTab_eval_targeted_wtq.jsonl"),
+                "total": 4339,
+            },
+        ],
     },
     "alter": {
         "label": "ALTER",
         "dag_id": "table_reasoning_alter",
-        "task_id": "run_alter_pipeline",
-        "progress_kind": "csv_row_count",
         "results_kind": "csv",
-        "progress_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
         "results_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "Augmentation",
+                "task_id": "run_alter_augmentation",
+                "progress_kind": "csv_row_count",
+                "progress_path": os.path.join(REPO_ROOT, "ALTER", "result", "augmentation", "wikitable_test_summary.csv"),
+                "total": 4344,
+            },
+            {
+                "label": "Pipeline",
+                "task_id": "run_alter_pipeline",
+                "progress_kind": "csv_row_count",
+                "progress_path": os.path.join(REPO_ROOT, "ALTER", "result", "answer", "wikitable_test_llama3.2:1b.csv"),
+                "total": 4344,
+            },
+        ],
     },
     "hstar": {
         "label": "H-STAR",
         "dag_id": "table_reasoning_hstar",
-        "task_id": "run_hstar_reason_text",
-        "progress_kind": "json_dict_count",
         "results_kind": "json_dict",
-        "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_exec_results.json"),
         "results_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_exec_results.json"),
-        "total": 4344,
+        "stages": [
+            {
+                "label": "col_sql",
+                "task_id": "run_hstar_col_sql",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_col_sql.json"),
+                "total": 4344,
+            },
+            {
+                "label": "col_text",
+                "task_id": "run_hstar_col_text",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_col_text.json"),
+                "total": 4344,
+            },
+            {
+                "label": "row_sql",
+                "task_id": "run_hstar_row_sql",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_row_sql.json"),
+                "total": 4344,
+            },
+            {
+                "label": "row_text",
+                "task_id": "run_hstar_row_text",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_row_text.json"),
+                "total": 4344,
+            },
+            {
+                "label": "reason_sql",
+                "task_id": "run_hstar_reason_sql",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_sql_reason.json"),
+                "total": 4344,
+            },
+            {
+                "label": "reason_text",
+                "task_id": "run_hstar_reason_text",
+                "progress_kind": "json_dict_count",
+                "progress_path": os.path.join(REPO_ROOT, "H-STAR", "results", "model_ollama", "wikitq_test_exec_results.json"),
+                "total": 4344,
+            },
+        ],
     },
 }
 
@@ -164,7 +248,7 @@ def start_ollama():
 @app.get("/baselines")
 def list_baselines():
     return {
-        key: {"label": b["label"], "dag_id": b["dag_id"], "total": b["total"]}
+        key: {"label": b["label"], "dag_id": b["dag_id"], "total": b["stages"][-1]["total"]}
         for key, b in BASELINES.items()
     }
 
@@ -193,30 +277,27 @@ def trigger_run(baseline_key: str):
     return resp.json()
 
 
-def _count_progress(baseline: dict) -> int:
-    path = baseline["progress_path"]
-    if baseline["progress_kind"] == "dir_count":
+def _count_progress(stage: dict) -> int:
+    path = stage["progress_path"]
+    if stage["progress_kind"] == "dir_count":
         if not os.path.isdir(path):
             return 0
         return len([f for f in os.listdir(path) if f.endswith(".txt")])
-    if baseline["progress_kind"] == "line_count":
+    if stage["progress_kind"] == "line_count":
         if not os.path.isfile(path):
             return 0
         with open(path) as f:
             return sum(1 for _ in f)
-    if baseline["progress_kind"] == "csv_row_count":
+    if stage["progress_kind"] == "csv_row_count":
         # Raw line count is wrong here -- cells (model responses, etc.) can
         # contain embedded newlines, so a plain line count over-counts rows.
         if not os.path.isfile(path):
             return 0
         with open(path, newline="", encoding="utf-8") as f:
             return max(sum(1 for _ in csv.reader(f)) - 1, 0)  # -1 for header
-    if baseline["progress_kind"] == "json_dict_count":
-        # H-STAR's stages write one JSON object (keyed by example id) once
-        # at the very end of each stage rather than incrementally, so this
-        # reads as 0 for the whole run and jumps to `total` only once the
-        # final stage finishes -- not a smooth progress bar, but accurate
-        # given there's nothing to read before then.
+    if stage["progress_kind"] == "json_dict_count":
+        # H-STAR's stages now checkpoint after every batch (see
+        # checkpoint_utils.py), so this grows smoothly like the other kinds.
         if not os.path.isfile(path):
             return 0
         try:
@@ -342,14 +423,36 @@ def stop_run(baseline_key: str):
 
 @app.get("/progress/{baseline_key}")
 def get_progress(baseline_key: str):
+    """Per-stage progress for the baseline's whole task chain. Only hits the
+    Airflow API for stages up to and including the first one that isn't done
+    yet -- later stages haven't started, so there's nothing to check (keeps
+    H-STAR's 6-stage chain from costing 6x the API calls on every poll)."""
     baseline = _get_baseline_or_404(baseline_key)
-    done = _count_progress(baseline)
-    total = baseline["total"]
+    dag_id = baseline["dag_id"]
+    stages = []
+    current_stage_index = 0
+    still_checking = True
+    for i, stage in enumerate(baseline["stages"]):
+        done = _count_progress(stage)
+        total = stage["total"]
+        if still_checking:
+            task_state = _latest_task_state(dag_id, stage["task_id"])
+            if task_state == "success":
+                current_stage_index = i + 1
+            else:
+                still_checking = False
+        else:
+            task_state = "not_started"
+        stages.append({
+            "label": stage["label"],
+            "done": done,
+            "total": total,
+            "percent": round(100 * done / total, 2) if total else 0,
+            "task_state": task_state,
+        })
     return {
-        "done": done,
-        "total": total,
-        "percent": round(100 * done / total, 2) if total else 0,
-        "task_state": _latest_task_state(baseline["dag_id"], baseline["task_id"]),
+        "stages": stages,
+        "current_stage_index": min(current_stage_index, len(stages) - 1),
     }
 
 

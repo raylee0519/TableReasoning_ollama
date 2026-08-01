@@ -97,6 +97,32 @@ class NeuralDB(object):
         self.db = records.Database('sqlite:///{}'.format(self.db_path))
         self.records_conn = self.db.get_connection()
 
+    def close(self):
+        """Every NeuralDB gets its own throwaway sqlite file under tmp/ --
+        nothing ever cleaned these up, so a full run (thousands of
+        NeuralDB() calls per stage) left thousands of orphaned .db files
+        behind. Close both connections and delete the file."""
+        try:
+            self.records_conn.close()
+        except Exception:
+            pass
+        try:
+            self.db.close()
+        except Exception:
+            pass
+        try:
+            self.sqlite_conn.close()
+        except Exception:
+            pass
+        try:
+            if os.path.exists(self.db_path):
+                os.remove(self.db_path)
+        except OSError:
+            pass
+
+    def __del__(self):
+        self.close()
+
     def __str__(self):
         return str(self.execute_query("SELECT * FROM {}".format(self.table_name)))
 

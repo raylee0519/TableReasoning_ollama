@@ -1,14 +1,19 @@
+import os
+
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta
 
-ALTER_DIR = "/Users/jeongwoo/new_github/Tablollama/ALTER"
-TABLE_PYTHON = "/opt/anaconda3/envs/table/bin/python"
-ENSURE_REQUIREMENTS_SCRIPT = "/Users/jeongwoo/new_github/Tablollama/airflow_dags/ensure_requirements.py"
+REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
+TABLE_PYTHON = os.environ.get("TABLE_PYTHON", "/opt/anaconda3/envs/table/bin/python")
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
 
-CHECK_OLLAMA_BASH = """
+ALTER_DIR = os.path.join(REPO_ROOT, "ALTER")
+ENSURE_REQUIREMENTS_SCRIPT = os.path.join(REPO_ROOT, "airflow_dags", "ensure_requirements.py")
+
+CHECK_OLLAMA_BASH = f"""
 for i in $(seq 1 6); do
-  curl -sf -m 5 http://localhost:11434/api/tags > /dev/null && exit 0
+  curl -sf -m 5 http://{OLLAMA_HOST}/api/tags > /dev/null && exit 0
   sleep 5
 done
 
@@ -17,7 +22,7 @@ OLLAMA_CONTEXT_LENGTH=24576 nohup ollama serve > /tmp/ollama_serve.log 2>&1 &
 disown
 
 for i in $(seq 1 12); do
-  curl -sf -m 5 http://localhost:11434/api/tags > /dev/null && exit 0
+  curl -sf -m 5 http://{OLLAMA_HOST}/api/tags > /dev/null && exit 0
   sleep 5
 done
 
