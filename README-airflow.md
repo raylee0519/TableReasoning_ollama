@@ -1,174 +1,67 @@
 # Airflow Setup
 
-Orchestrates the table-reasoning baselines in this repo as Airflow tasks instead of running each
-one by hand. **TabSQLify** and **tablellm** (its `agent` and `cot` modes as two separate DAGs) are
-wired up so far, each as its own DAG; the rest follow the same pattern.
+Orchestrates 6 of this repo's table-reasoning baselines as Airflow DAGs instead of running each
+one by hand: **TabSQLify**, **Mix-SC** (tablellm's `agent` and `cot` modes, as two DAGs),
+**ReAcTable**, **NormTab**, **ALTER**, **H-STAR**. `chain-of-table` is not wired up (its code needs
+a real rewrite, not just bug fixes).
 
-## Airflow Pipeline Affordable
-The following models have been tested and are currently supported for evaluation:
+## Architecture
 
-- **H-STAR** (X)
-- **NormTab** (✓)
-- **ReAcTable** (✓)
-- **TabSQLify** (✓)
-- **Mix-SC** (✓)
-- **chain-of-Table** (X)
-- **ALTER** (✓)
-
-
-## Prerequisites
-
-Ollama doesn't need to be running before you trigger a DAG — each one's `check_ollama_alive` polls
-it for 30s, and if it's not up, starts it itself (`OLLAMA_CONTEXT_LENGTH=24576 ollama serve`,
-detached) and polls for another 60s before giving up. You can still start it manually if you prefer:
+Everything runs via Docker Compose (`docker-compose.yml` at the repo root): Airflow
+(webserver + scheduler), MLflow, and the webapp (FastAPI backend + Streamlit frontend). Ollama is
+the one exception — it stays host-native, reached from containers via `host.docker.internal`,
+since the models a user has pulled are their own actively-curated state, not something to duplicate
+into a container.
 
 ```bash
-OLLAMA_CONTEXT_LENGTH=24576 ollama serve
+ollama serve                # on the host, once
+docker compose up --build   # everything else
 ```
 
-Each baseline runs in its own conda env with its own `requirements.txt`. TabSQLify and tablellm
-currently share one env (`table`) — checked compatible versions of overlapping packages first
-(openai, pandas, tiktoken, etc.), only installed the handful of genuinely missing packages, and
-never touch already-pinned versions.
+Webapp: `http://localhost:8501` · Airflow UI: `http://localhost:8080` (`admin`/`admin`) · MLflow
+UI: `http://localhost:5001`.
 
-Each DAG's first task, `ensure_deps`, automates that same check on every run:
-[`airflow_dags/ensure_requirements.py`](airflow_dags/ensure_requirements.py) reads the baseline's
-`requirements.txt`, checks which packages are actually missing from the target env, and installs
-only those — by name, without the pinned version — so it never downgrades a package the shared env
-already has at a newer version. Task order is `ensure_deps → check_ollama_alive → run_<baseline>`.
+## DAG pattern
 
-If a future baseline turns out to have a real conflicting pin
-(e.g. H-STAR's `openai==0.28.0` vs tablellm's `1.12.0`), give it its own env instead.
+Each baseline is its own DAG in [`airflow_dags/`](airflow_dags/), following the same task chain:
 
-Airflow itself always gets its own separate env — it only needs to shell out to each baseline's
-interpreter, not share a runtime with any of them.
-
-## Install
-
-```bash
-conda create -n airflow python=3.11 -y
-conda activate airflow
-export AIRFLOW_HOME=~/airflow
-
-pip install "apache-airflow==2.10.4" apache-airflow-providers-http \
-  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.4/constraints-3.11.txt"
+```
+ensure_deps → check_ollama_alive → run_<baseline> [→ run_<stage2> → ...] → log_to_mlflow
 ```
 
-## Initialize
+- `ensure_deps`: installs only whatever's missing from that baseline's `requirements.txt`, never
+  touches already-installed versions.
+- `check_ollama_alive`: polls the host Ollama for up to 90s before failing.
+- The run task(s): every task shares `pool="ollama_pool"` (1 slot), so only one baseline ever hits
+  Ollama at a time even though they're all separate DAGs. `retries=1000` — a crashed task just
+  relaunches. Every baseline's own script self-resumes from its own output file, so a retry never
+  redoes finished work.
+- `log_to_mlflow` (5 of 6 baselines — see below): reads the baseline's result file after it
+  finishes and logs it to MLflow.
 
-```bash
-export AIRFLOW_HOME=~/airflow
-airflow db migrate
+NormTab, ALTER, and H-STAR are multi-stage (2, 2, and 6 tasks respectively); the rest are single-task.
 
-# disable Airflow's ~70 bundled example DAGs: set load_examples = False
-# in $AIRFLOW_HOME/airflow.cfg under [core], then:
-airflow db reset -y
+## Model selection
 
-airflow users create --username admin --password admin \
-  --firstname <first> --lastname <last> --role Admin --email <email>
+The model picked in the webapp actually drives the run now — it used to be cosmetic. The flow:
+webapp trigger → Airflow `dag_run.conf["model"]` → each DAG reads it back via Jinja
+(`{{ dag_run.conf.get('model', 'llama3.2:1b') }}`) → passed into the baseline as either a CLI flag
+(ALTER, H-STAR, Mix-SC) or a `MODEL_NAME` env var (TabSQLify, ReAcTable, NormTab, whose own code
+has no CLI support for it). ReAcTable, NormTab, and ALTER also bake the model name into their
+output filenames, so the webapp and MLflow logging resolve those paths dynamically per-run instead
+of assuming a fixed name.
 
-airflow connections add ollama_default --conn-type http --conn-host localhost --conn-port 11434
+## MLflow tracking
 
-# limits how many baseline tasks (across ALL DAGs) can hit Ollama at once
-airflow pools set ollama_pool 1 "Limits concurrent Ollama inference requests across baseline DAGs"
-```
+[`mlflow_tracking/log_run.py`](mlflow_tracking/log_run.py) reads a baseline's result file post-hoc
+and logs params (baseline/model/dataset/git commit) + metrics (done count, accuracy where
+computable) + the result file as an artifact. Accuracy is computed for TabSQLify, Mix-SC
+(agent/cot), ReAcTable, and NormTab — not ALTER or H-STAR, whose saved output doesn't currently
+include enough to score without new parsing work.
 
-## Add the DAGs
+## Known gaps
 
-DAG sources (version-controlled): [`airflow_dags/tabsqlify_dag.py`](airflow_dags/tabsqlify_dag.py),
-[`airflow_dags/tablellm_agent_dag.py`](airflow_dags/tablellm_agent_dag.py),
-[`airflow_dags/tablellm_cot_dag.py`](airflow_dags/tablellm_cot_dag.py). Symlink all three into
-Airflow's dags folder:
-
-```bash
-mkdir -p ~/airflow/dags
-ln -sf /path/to/Tablollama/airflow_dags/tabsqlify_dag.py ~/airflow/dags/tabsqlify_dag.py
-ln -sf /path/to/Tablollama/airflow_dags/tablellm_agent_dag.py ~/airflow/dags/tablellm_agent_dag.py
-ln -sf /path/to/Tablollama/airflow_dags/tablellm_cot_dag.py ~/airflow/dags/tablellm_cot_dag.py
-```
-
-Update the path constants at the top of each file for your machine (`TABSQLIFY_DIR`,
-`TABLELLM_DIR`, `TABLE_PYTHON`).
-
-## Run
-
-```bash
-export AIRFLOW_HOME=~/airflow
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES   # works around a macOS gunicorn crash, see below
-airflow webserver --port 8080 --workers 1 &
-airflow scheduler &
-```
-
-Log in at `http://localhost:8080` (`admin` / `admin`) and trigger `table_reasoning_tabsqlify`,
-`table_reasoning_tablellm_agent`, and/or `table_reasoning_tablellm_cot` — independently, since
-they're all separate DAGs now.
-
-## Why separate DAGs instead of one shared DAG
-
-Originally tablellm's `agent` and `cot` modes lived in one DAG (one healthcheck fanning out to two
-parallel baseline tasks) — and before that, TabSQLify and tablellm also shared a DAG. Both were
-split for the same reason: a shared DAG couples lifecycle. Triggering the DAG runs every task in
-it, so the webapp's "run just this one baseline" couldn't actually run just one; pausing the DAG to
-permanently stop one baseline's auto-retry also stopped the other's; `max_active_runs=1` throttled
-across baselines that have nothing to do with each other. Splitting gives independent trigger/
-pause/resume/retry control per baseline. The one thing a shared DAG bought — not hammering Ollama
-with multiple baselines at once — is instead handled by `ollama_pool` (1 slot), which is a global
-Airflow resource, not scoped to a single DAG. Every baseline task declares `pool="ollama_pool"`, so
-Airflow won't run more than one of them against Ollama at the same time even though they live in
-different DAGs. The healthcheck bash snippet is duplicated across the DAG files as a result — a
-small, worthwhile trade for independent control.
-
-## Automatic recovery
-
-Every baseline task has `retries=1000` / `retry_delay=1 min`. If a task dies mid-run (Ollama
-hiccup, crash, etc.), Airflow relaunches it automatically — no manual retrigger needed.
-
-- `run_wtq_full.py` (TabSQLify) skips already-completed samples via its own `done_ids` checkpoint
-  (`outputs/logs/`).
-- `run_agent_ollama.py` (tablellm) has **no built-in checkpoint** — it takes a manual `--resume=N`
-  index instead of auto-detecting progress. The task's `bash_command` counts existing lines in
-  `output/wtq_agent_ollama/result.jsonl` and passes that count as `--resume` on every launch, so
-  automatic retries resume correctly instead of re-appending duplicate results from index 0. Any
-  future baseline without its own checkpoint needs the same treatment — don't assume `retries=`
-  alone is safe.
-
-To stop a task on purpose, mark it "Failed" in the UI (or via the API) — Airflow's own heartbeat
-detects the state change and kills the underlying process within one heartbeat cycle. To stop it
-for good (not just this attempt), pause that specific DAG too, otherwise the retry policy revives
-it — pausing only affects that one baseline now, not both.
-
-## Known issue: webserver log viewer crashes (macOS)
-
-The webserver's gunicorn workers can die with `SIGSEGV` repeatedly on macOS, which shows up as
-"No task logs found" in the UI even though the task is running fine and writing real output.
-`--workers 1` plus `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` reduces but doesn't fully eliminate
-it. If the UI log viewer is unreliable, tail the log file directly instead — it's always accurate:
-
-```bash
-tail -f ~/airflow/logs/dag_id=<dag_id>/run_id=<run_id>/task_id=<task_id>/attempt=1.log
-```
-
-## CI
-
-[`.github/workflows/requirements-check.yml`](.github/workflows/requirements-check.yml) installs
-each wired-up baseline's `requirements.txt` in a fresh venv on every push/PR that touches it —
-currently scoped to TabSQLify and tablellm, the only two that have been reviewed/cleaned up so far.
-
-## TODO
-
-- Add the other 5 baselines (ALTER, H-STAR, NormTab, ReAcTable, chain-of-table) — own conda env
-  (or shared, if versions actually check out) + own DAG, same pattern. Check each one's own
-  checkpoint situation individually — don't assume it has one. Add each to the CI matrix once
-  reviewed.
-- Both tablellm DAGs pass `--sub_sample=False` explicitly, so they run the full 4344 WTQ questions,
-  matching TabSQLify's scale (the scripts' own default is `sub_sample=True`, a fixed 837-question
-  subset baked into `data/wtq.json`'s `sampled_indices` field — useful for a quick smoke test via
-  `--sub_sample=True` on the command line, but no longer what's wired into Airflow). TabSQLify at
-  ~3 min/sample locally → full-set runs are multi-day unattended jobs; the `--resume=$(wc -l ...)`
-  checkpoint assumes the run order (and thus `--sub_sample` value) never changes mid-stream — if
-  `result.jsonl` already has lines from a `sub_sample=True` run, don't resume it under
-  `sub_sample=False` (or vice versa), since `global_i` enumerates a different, non-overlapping
-  order in each mode. Delete/rename the old output first.
-- TabSQLify has no TabFact entrypoint in this repo (only WTQ) despite leftover TabFact utility
-  files (`utils/prompt_tabfact.py`, `utils/tabfact_data.py`) — would need a new runner script to
-  actually use them.
+- `chain-of-table` isn't wired up.
+- ALTER/H-STAR aren't scored in MLflow yet.
+- `nltk`'s `punkt_tab` data isn't pre-downloaded — will crash a sample that exercises
+  `word_tokenize`.
