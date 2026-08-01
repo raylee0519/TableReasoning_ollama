@@ -1,16 +1,12 @@
-<p align="center">
+# Tablollama 
   <img src="assets/logo.png" width="200" alt="Tablollama logo"/>
-</p>
-
-<h1 align="center">Tablollama</h1>
-<p align="center"><i>Table Reasoning Benchmark Runner</i></p>
+Table Reasoning Benchmark Runner
 
 ## What is this?
 
 Tablollama evaluates table reasoning methods on the WikiTableQuestions (WikiTQ) dataset, powered
-by locally-run open-source LLMs via [Ollama](https://ollama.com) instead of a paid API. It wraps 6
-independent baselines behind one Airflow + MLflow + webapp stack, so you can trigger a run, watch
-its progress, and see the tracked accuracy without touching each baseline's own scripts by hand:
+by locally-run open-source LLMs via [Ollama](https://ollama.com). It wraps 6
+independent baselines behind one Airflow + MLflow + webapp stack, so you can trigger a run models without touching each baseline's own scripts by hand:
 
 - **TabSQLify**
 - **Mix-SC**
@@ -19,8 +15,7 @@ its progress, and see the tracked accuracy without touching each baseline's own 
 - **ALTER**
 - **H-STAR**
 
-**Unsupported**: `chain-of-table` is present in the repo but not wired up — it needs a real code
-rewrite, not just bug fixes.
+**Unsupported**: `chain-of-table`
 
 ## Prerequisites
 
