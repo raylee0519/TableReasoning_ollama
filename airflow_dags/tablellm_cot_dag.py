@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
 TABLE_PYTHON = os.environ.get("TABLE_PYTHON", "/opt/anaconda3/envs/table/bin/python")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
+MODEL = "{{ dag_run.conf.get('model', 'llama3.2:1b') }}"
 
 TABLELLM_DIR = os.path.join(REPO_ROOT, "tablellm")
 ENSURE_REQUIREMENTS_SCRIPT = os.path.join(REPO_ROOT, "airflow_dags", "ensure_requirements.py")
@@ -62,7 +63,7 @@ with DAG(
         RESUME=$(wc -l < "$LOG_DIR/result.jsonl" 2>/dev/null | tr -d ' ')
         RESUME=${{RESUME:-0}}
         echo "Resuming tablellm cot from index $RESUME"
-        {TABLE_PYTHON} -u run_cot_ollama.py --dataset=wtq --sub_sample=False --log_dir=$LOG_DIR --resume=$RESUME
+        {TABLE_PYTHON} -u run_cot_ollama.py --dataset=wtq --sub_sample=False --log_dir=$LOG_DIR --resume=$RESUME --model={MODEL} --long_model={MODEL}
         """,
         retries=1000,
         retry_delay=timedelta(minutes=1),
@@ -71,7 +72,7 @@ with DAG(
 
     log_to_mlflow = BashOperator(
         task_id="log_to_mlflow",
-        bash_command=f"{TABLE_PYTHON} {MLFLOW_LOG_SCRIPT} --baseline tablellm_cot",
+        bash_command=f"{TABLE_PYTHON} {MLFLOW_LOG_SCRIPT} --baseline tablellm_cot --model {MODEL}",
         retries=3,
         retry_delay=timedelta(seconds=30),
     )

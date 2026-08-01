@@ -950,7 +950,7 @@ def truncate_tokens(prompt: str, max_length: int) -> str:
         prompt = tokenizer.decode(input_ids[:max_length])
     return prompt
 
-def get_completion(prompt: str, model: str = "llama3.2:1b", temperature: float = 0.0, n: int = 1) -> str:
+def get_completion(prompt: str, model: str = os.environ.get("MODEL_NAME", "llama3.2:1b"), temperature: float = 0.0, n: int = 1) -> str:
     """
     Calls Ollama's LLaMA3 model via REST API.
     Assumes Ollama server is running at OLLAMA_HOST (default localhost:11434)

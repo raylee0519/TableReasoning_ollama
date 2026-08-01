@@ -42,9 +42,12 @@ BASELINE_CONFIGS = {
         "pred_field": "text",
     },
     "reactable": {
-        "results_path": os.path.join(
+        # ReAcTable bakes the model name into its own output filename, so
+        # this has to be resolved per-run against whichever model actually
+        # produced it (see main()).
+        "results_path": lambda model: os.path.join(
             REPO_ROOT, "ReAcTable", "result",
-            "CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_modelllama3.2:1b.jsonl",
+            f"CodexAnswerCOTExecutor_HighTemperaturMajorityVote_original-sql-py-no-intermediate_sql-py_NNDemo=False_model{model}.jsonl",
         ),
         "format": "jsonl",
         "correct_field": "execution_match",
@@ -82,8 +85,13 @@ def _load_jsonl(path):
     return rows
 
 
-def compute_metrics(config):
+def _resolve_path(config, model):
     path = config["results_path"]
+    return path(model) if callable(path) else path
+
+
+def compute_metrics(config, model):
+    path = _resolve_path(config, model)
     if not os.path.isfile(path):
         return {"done": 0}
 
@@ -123,7 +131,7 @@ def main():
     args = parser.parse_args()
 
     config = BASELINE_CONFIGS[args.baseline]
-    metrics = compute_metrics(config)
+    metrics = compute_metrics(config, args.model)
 
     mlflow.set_tracking_uri(args.tracking_uri)
     mlflow.set_experiment("table-reasoning-wtq")
@@ -135,8 +143,9 @@ def main():
         mlflow.log_param("git_commit", git_commit_hash())
         for name, value in metrics.items():
             mlflow.log_metric(name, value)
-        if os.path.isfile(config["results_path"]):
-            mlflow.log_artifact(config["results_path"])
+        results_path = _resolve_path(config, args.model)
+        if os.path.isfile(results_path):
+            mlflow.log_artifact(results_path)
 
     print(f"Logged {args.baseline}: {metrics}")
 

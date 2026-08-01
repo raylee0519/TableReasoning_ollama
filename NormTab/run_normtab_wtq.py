@@ -221,7 +221,8 @@ def df_to_list_of_lists(df):
 # ---------------------------------------------------------------
 
 OUTPUT_DIR = 'outputs'
-NORMALIZE_OUTPUT_PATH = os.path.join(OUTPUT_DIR, 'normTab_targeted_wtq_llama3.2:1b.csv')
+MODEL_NAME = os.environ.get('MODEL_NAME', 'llama3.2:1b')
+NORMALIZE_OUTPUT_PATH = os.path.join(OUTPUT_DIR, f'normTab_targeted_wtq_{MODEL_NAME}.csv')
 NORMALIZE_HEADER = ['id', 'table title', 'original_tab', 'norm_table_markdown', 'norm_table', 'norm_table_modified','norm_table_t', 'columns', 'transpose', 'last_row']
 
 

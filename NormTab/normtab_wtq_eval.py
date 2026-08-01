@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # original paper's outputs_GPT4/ reference file -- otherwise this would
     # be scoring an Ollama QA model against GPT-4-normalized tables instead
     # of evaluating our own end-to-end pipeline.
-    norm_table_path = "outputs/normTab_targeted_wtq_llama3.2:1b.csv"
+    norm_table_path = f"outputs/normTab_targeted_wtq_{os.environ.get('MODEL_NAME', 'llama3.2:1b')}.csv"
 
     # -----------------------------------------------------------------------------------------------------------
     tab_group_path = "datasets/table_group_wtq.json"

@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
 TABLE_PYTHON = os.environ.get("TABLE_PYTHON", "/opt/anaconda3/envs/table/bin/python")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "localhost:11434")
+MODEL = "{{ dag_run.conf.get('model', 'llama3.2:1b') }}"
 
 ALTER_DIR = os.path.join(REPO_ROOT, "ALTER")
 ENSURE_REQUIREMENTS_SCRIPT = os.path.join(REPO_ROOT, "airflow_dags", "ensure_requirements.py")
@@ -59,7 +60,7 @@ with DAG(
         bash_command=(
             f"cd {ALTER_DIR} && {TABLE_PYTHON} -u run.py "
             "--task_name wikitable --split test --mode Augmentation "
-            "--aug_type summary schema composition --model llama3.2:1b"
+            f"--aug_type summary schema composition --model {MODEL}"
         ),
         retries=1000,
         retry_delay=timedelta(minutes=1),
@@ -73,7 +74,7 @@ with DAG(
         bash_command=(
             f"cd {ALTER_DIR} && {TABLE_PYTHON} -u run.py "
             "--task_name wikitable --split test --mode Pipeline "
-            "--save_file --model llama3.2:1b"
+            f"--save_file --model {MODEL}"
         ),
         retries=1000,
         retry_delay=timedelta(minutes=1),

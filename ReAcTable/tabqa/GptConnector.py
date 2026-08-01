@@ -84,19 +84,16 @@ def prompt2messages(prompt):
     return messages
 
 def is_chat_model(model):
-    if model in [
-        'gpt-4', 
-        'gpt-4-0314', 
-        'gpt-4-32k', 
-        'gpt-4-32k-0314', 
-        'gpt-3.5-turbo', 
-        'gpt-3.5-turbo-0301',
-        'gpt-35-turbo',
-        'llama3.3',
-        'llama3.2:1b']:
-        return True
-    else:
-        return False
+    # Every model here goes through Ollama's OpenAI-compatible endpoint,
+    # which is chat-completions-only -- the old hardcoded whitelist only
+    # matched two exact tags ('llama3.2:1b', 'llama3.3'), so any other
+    # pulled model (e.g. 'llama3.3:latest') fell through to the "non-chat"
+    # branch below, which is broken anyway (calls
+    # client.chat.completions.create with legacy completions-API params
+    # like prompt=/suffix=/engine=, raising inside its own try/except and
+    # silently returning None -- surfaces downstream as "'NoneType' object
+    # has no attribute 'choices'").
+    return True
 
 def GptCompletion(
     engine, 
