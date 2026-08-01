@@ -15,7 +15,7 @@ independent baselines behind one Airflow + MLflow + webapp stack, so you can tri
 - **ALTER**
 - **H-STAR**
 
-**Unsupported**: `chain-of-table`
+**Not supported yet**: `chain-of-table`
 
 ## Prerequisites
 
