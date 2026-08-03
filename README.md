@@ -1,6 +1,6 @@
 # Tablollama 
   <img src="assets/logo.png" width="200" alt="Tablollama logo"/>
-Table Reasoning Benchmark Runner
+Local LLM Table QA Benchmark Pipeline
 
 ## What is this?
 
