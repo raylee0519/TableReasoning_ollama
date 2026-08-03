@@ -1,0 +1,22 @@
+services:
+  airflow-scheduler:
+    networks:
+      - default
+      - kind
+    volumes:
+      - ./k8s/kubeconfig-in-cluster.yaml:/kubeconfig.yaml:ro
+    environment:
+      KUBECONFIG: /kubeconfig.yaml
+
+  airflow-webserver:
+    networks:
+      - default
+      - kind
+    volumes:
+      - ./k8s/kubeconfig-in-cluster.yaml:/kubeconfig.yaml:ro
+    environment:
+      KUBECONFIG: /kubeconfig.yaml
+
+networks:
+  kind:
+    external: true

@@ -14,3 +14,8 @@ NormTab/outputs/
 ALTER/result/
 H-STAR/results/model_ollama/
 H-STAR/tmp/
+
+# Generated per-cluster on `kind create cluster` -- contains embedded certs
+# tied to that specific cluster instance, regenerate via k8s/README instead
+# of committing.
+k8s/kubeconfig-in-cluster.yaml
