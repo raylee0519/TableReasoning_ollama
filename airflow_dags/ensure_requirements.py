@@ -1,11 +1,3 @@
-"""
-Installs only the packages from a requirements.txt that are genuinely
-missing from the target Python environment — never force-installs the
-pinned versions, since that can silently downgrade packages a shared
-conda env already has at a newer, working version.
-
-Usage: python ensure_requirements.py <requirements.txt> <python_executable>
-"""
 import re
 import subprocess
 import sys

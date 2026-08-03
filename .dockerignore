@@ -1,6 +1,2 @@
-# The Airflow image only needs requirements.txt at build time -- the rest of
-# the repo (baseline code, DAGs, datasets, run outputs) is bind-mounted in at
-# runtime, not copied into the image. Excluding it here keeps `docker build`'s
-# context upload fast instead of shipping ~600MB on every build.
 *
 !requirements.txt

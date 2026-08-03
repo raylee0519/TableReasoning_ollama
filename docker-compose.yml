@@ -1,12 +1,3 @@
-# One-command distribution setup for this repo: `docker compose up` gets
-# Airflow (webserver+scheduler) + MLflow + the webapp (backend+frontend)
-# running, with the unified requirements.txt baked into the Airflow image
-# instead of requiring conda. Ollama stays host-native (not a service here)
-# -- unlike MLflow's tracking data, which is self-contained within this
-# compose stack, Ollama's pulled models are the user's own pre-existing,
-# actively-curated state (and multi-GB downloads), reached from every
-# container via host.docker.internal.
-#
 # Prereq: Ollama running on the host (`ollama serve`).
 # Usage:  docker compose up --build
 # MLflow UI: http://localhost:5001

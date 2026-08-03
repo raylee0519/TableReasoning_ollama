@@ -3,9 +3,6 @@ move_trash.py
 __pycache__/
 *.pyc
 
-# Generated run output from the Airflow-wired baselines (TabSQLify, tablellm,
-# ReAcTable, NormTab, ALTER, H-STAR) -- not source, regenerates on every run,
-# checkpoint files.
 TabSQLify/outputs/
 tablellm/output/
 tablellm/cache/

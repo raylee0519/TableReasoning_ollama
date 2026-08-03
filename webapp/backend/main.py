@@ -277,10 +277,6 @@ def trigger_run(baseline_key: str, model: str = DEFAULT_MODEL):
         timeout=10,
     )
 
-    # The selected model rides along as DagRun conf -- each DAG's tasks read
-    # it back out via `{{ dag_run.conf.get('model', ...) }}` Jinja templating
-    # so the actual baseline script (and the results/progress lookups below)
-    # use whatever was picked, not a hardcoded default.
     resp = requests.post(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
         auth=AIRFLOW_AUTH,
@@ -374,25 +370,10 @@ def _latest_task_state(dag_id: str, task_id: str) -> str:
         timeout=10,
     )
     ti_state = ti_resp.json().get("state") if ti_resp.status_code == 200 else None
-    # Right after a trigger, the DagRun row exists before its TaskInstance
-    # does (or the TI's state is still null) until the scheduler's next
-    # loop picks it up. Fall back to the DagRun's own state — set the
-    # instant the trigger call returns — so the UI shows something
-    # immediately instead of "unknown" for those first few seconds.
     return ti_state or run.get("state") or "unknown"
 
 
 def _active_run_id(dag_id: str, limit: int = 3) -> str | None:
-    """The most recent run of this DAG that's genuinely still active
-    (queued or running) — the one actually worth stopping, and the signal
-    the frontend uses to know a baseline just got triggered. Checked at the
-    DagRun level rather than the task-instance level: a DagRun's own state
-    is set the instant a trigger succeeds, while its TaskInstance may not
-    exist (or may report state=None) until the scheduler's next loop —
-    checking task-instance state alone made a just-triggered baseline look
-    "not running" for several seconds. Each DAG now maps to exactly one
-    baseline (post agent/cot split), so the DAG's own state is enough —
-    no need to also inspect a specific task_id here."""
     runs_resp = requests.get(
         f"{AIRFLOW_BASE_URL}/dags/{dag_id}/dagRuns",
         auth=AIRFLOW_AUTH,
@@ -410,9 +391,6 @@ def _active_run_id(dag_id: str, limit: int = 3) -> str | None:
 
 @app.get("/running")
 def get_running_baselines():
-    """Which baseline keys are genuinely active right now — the frontend
-    uses this (not its own widget state, which resets on page reload) to
-    decide what to show/lock/auto-refresh."""
     running = [
         key for key, b in BASELINES.items()
         if _active_run_id(b["dag_id"]) is not None
@@ -422,20 +400,6 @@ def get_running_baselines():
 
 @app.post("/stop/{baseline_key}")
 def stop_run(baseline_key: str):
-    """Actually stops a running baseline: force-fails the active DagRun
-    itself (not one hardcoded task instance). A DAG has 3 sequential tasks
-    (ensure_deps -> check_ollama_alive -> the actual run) and the live one
-    at stop-time could be any of them — patching only the last task_id did
-    nothing if e.g. ensure_deps was still installing packages. Force-
-    failing the run's own state also finalizes it out of queued/running
-    immediately, which matters because `_active_run_id`/`/running` check
-    the DagRun's state: without this, a run that never got past `queued`
-    (e.g. because the DAG was already paused when it was triggered) would
-    sit "active" forever with no live process and nothing left to stop.
-    Airflow cascades this into failing whichever task instances are still
-    non-terminal, and its heartbeat kills the actual live process the same
-    way a direct task-instance fail does. Then pauses the DAG so nothing
-    new starts before the user explicitly runs it again."""
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
 
@@ -463,10 +427,6 @@ def stop_run(baseline_key: str):
 
 @app.get("/progress/{baseline_key}")
 def get_progress(baseline_key: str):
-    """Per-stage progress for the baseline's whole task chain. Only hits the
-    Airflow API for stages up to and including the first one that isn't done
-    yet -- later stages haven't started, so there's nothing to check (keeps
-    H-STAR's 6-stage chain from costing 6x the API calls on every poll)."""
     baseline = _get_baseline_or_404(baseline_key)
     dag_id = baseline["dag_id"]
     model = _active_run_model(dag_id)
@@ -499,8 +459,6 @@ def get_progress(baseline_key: str):
 
 @app.get("/results/{baseline_key}")
 def get_recent_results(baseline_key: str, limit: int = 10):
-    """Most recently completed samples, newest first — for showing a live list
-    of what the benchmark has actually produced, not just a percentage."""
     baseline = _get_baseline_or_404(baseline_key)
     model = _active_run_model(baseline["dag_id"])
     path = _resolve_path(baseline["results_path"], model)

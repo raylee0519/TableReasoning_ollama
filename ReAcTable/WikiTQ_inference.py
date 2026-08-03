@@ -73,13 +73,7 @@ def run_one(i):
 if __name__ == '__main__':
     done_ids = get_done_ids(output_result_file)
     print(f"Already processed: {len(done_ids)}")
-
-    # Sequential, not joblib.Parallel(n_jobs=3): this DAG holds a single slot
-    # in Airflow's shared ollama_pool (1 concurrent request across all
-    # baselines), so firing 3 threads at Ollama from inside one task defeats
-    # that. Each result is appended and flushed immediately (not collected
-    # in memory and dumped once at the end) so retries resume from
-    # get_done_ids() instead of redoing -- and losing -- everything.
+    
     with open(output_result_file, 'a', encoding='utf-8') as f:
         for i in tqdm(range(dataset.shape[0])):
             row_id = dataset.iloc[i]['id']

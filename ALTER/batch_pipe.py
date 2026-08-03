@@ -67,20 +67,11 @@ def pipeline(task_name: str,
     table_loader = TableLoader(
         table_name=task_name, split=split, use_sample=use_sample, small_test=small_test, cache_dir=cache_dir)
     token_count = []
-    # Ollama-native embedding model instead of HuggingFaceBgeEmbeddings, which
-    # hardcoded device='cuda:0' (crashes without an NVIDIA GPU) and needed
-    # torch/accelerate/sentence_transformers. CacheBackedEmbeddings/FAISS below
-    # only depend on the generic LangChain Embeddings interface, so this is a
-    # drop-in swap -- nothing downstream needed to change.
+    # Ollama-native embedding model instead of HuggingFaceBgeEmbeddings
     embeddings = OllamaEmbeddings(model='nomic-embed-text', base_url=f'http://{ollama_host}')
 
-    # Fixed filename (was timestamped to the hour, so a retry that landed in a
-    # different hour silently started a brand new file instead of resuming).
     save_path = f"result/answer/{task_name}_{split}_{model_name}.csv"
 
-    # Self-resume by skipping table ids already written to save_path -- the
-    # original loop had no such check at all, so any retry reprocessed (and
-    # re-appended duplicate rows for) every sample from scratch.
     done_ids = set()
     if os.path.exists(save_path):
         done_ids = set(pd.read_csv(save_path)['table_ids'].astype(str))

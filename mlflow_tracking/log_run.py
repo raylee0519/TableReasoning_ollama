@@ -1,10 +1,3 @@
-"""
-Reads a baseline's own result file (already written by its Airflow task) and
-logs params/metrics/artifact to MLflow. Doesn't touch any baseline's code --
-same "wrap, don't rewrite" approach as the Airflow DAGs themselves.
-
-Usage: python log_run.py --baseline <key> [--model llama3.2:1b] [--tracking-uri ...]
-"""
 import argparse
 import csv
 import json
@@ -15,14 +8,6 @@ import mlflow
 
 REPO_ROOT = os.environ.get("REPO_ROOT", "/Users/jeongwoo/new_github/Tablollama")
 
-# Only baselines whose saved output actually lets us compute accuracy without
-# re-deriving it: TabSQLify/ReAcTable already save a per-row correctness bool
-# (computed by their own scripts against the real gold answer); tablellm/
-# NormTab save both the gold answer and the prediction so we can match them
-# ourselves. ALTER's saved CSV never wrote the gold answer at all, and
-# H-STAR's final stage only saves raw model generations, not an extracted
-# final answer -- both would need real per-baseline parsing work to score,
-# not something worth guessing at here.
 BASELINE_CONFIGS = {
     "tabsqlify": {
         "results_path": os.path.join(REPO_ROOT, "TabSQLify", "outputs", "wtq_sql_results.jsonl"),
